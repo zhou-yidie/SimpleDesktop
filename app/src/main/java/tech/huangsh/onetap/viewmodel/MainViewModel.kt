@@ -5,13 +5,18 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import tech.huangsh.onetap.data.model.Contact
 import tech.huangsh.onetap.data.model.WeatherInfo
-import tech.huangsh.onetap.data.remote.WeatherService
 import tech.huangsh.onetap.data.repository.AppRepository
 import tech.huangsh.onetap.data.repository.ContactRepository
+import tech.huangsh.onetap.data.repository.WeatherRepository
 import tech.huangsh.onetap.utils.DateUtils
 import java.util.*
 import javax.inject.Inject
@@ -23,7 +28,7 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     private val contactRepository: ContactRepository,
     private val appRepository: AppRepository,
-    private val weatherService: WeatherService
+    private val weatherRepository: WeatherRepository
 ) : ViewModel() {
     
     // 联系人数据
@@ -67,16 +72,8 @@ class MainViewModel @Inject constructor(
     
     init {
         updateTime()
-        // 启动时更新天气
-        updateWeather()
-
-        // 定时更新天气（每小时）
-        viewModelScope.launch {
-            while (true) {
-                delay(60 * 60 * 1000) // 1小时
-                updateWeather()
-            }
-        }
+        observeWeather()
+        refreshWeather()
     }
     
     /**
@@ -146,19 +143,21 @@ class MainViewModel @Inject constructor(
     /**
      * 更新天气信息
      */
-    fun updateWeather() {
+    private fun observeWeather() {
+        viewModelScope.launch {
+            weatherRepository.weatherInfo.collect { info ->
+                _weatherInfo.value = info
+            }
+        }
+    }
+
+    fun refreshWeather() {
         viewModelScope.launch {
             try {
-                _weatherInfo.value = weatherService.getWeatherInfo()
-            } catch (e: Exception) {
-                e.printStackTrace()
-                // 保持之前的天气信息或使用默认值
+                weatherRepository.refreshWeather()
+            } catch (ignored: Exception) {
                 if (_weatherInfo.value == null) {
-                    _weatherInfo.value = WeatherInfo(
-                        temperature = 25,
-                        weather = "晴",
-                        weatherIcon = "☀️"
-                    )
+                    _weatherInfo.value = WeatherInfo()
                 }
             }
         }

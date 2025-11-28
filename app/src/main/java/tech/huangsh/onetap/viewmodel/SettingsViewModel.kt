@@ -26,6 +26,7 @@ class SettingsViewModel @Inject constructor(
 ) : ViewModel() {
     
     val settings = settingsRepository.settings
+    val onboardingCompleted = settingsRepository.onboardingCompleted
     
     private val _voiceAssistant = MutableStateFlow<VoiceAssistant?>(null)
     val voiceAssistant: StateFlow<VoiceAssistant?> = _voiceAssistant
@@ -217,6 +218,12 @@ class SettingsViewModel @Inject constructor(
     fun updateLauncherExitConfirmation(needConfirmation: Boolean) {
         viewModelScope.launch {
             settingsRepository.updateLauncherExitConfirmation(needConfirmation)
+        }
+    }
+
+    fun markOnboardingCompleted() {
+        viewModelScope.launch {
+            settingsRepository.updateOnboardingCompleted(true)
         }
     }
     

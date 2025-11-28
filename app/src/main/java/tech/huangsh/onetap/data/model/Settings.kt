@@ -17,6 +17,7 @@ data class Settings(
     val isDefaultLauncher: Boolean = false, // 是否为默认桌面
     val showExitLauncher: Boolean = true, // 是否显示退出桌面功能
     val launcherExitConfirmation: Boolean = true, // 退出桌面时是否需要确认
+    val onboardingCompleted: Boolean = false // 首次启动引导是否完成
 ) {
     // 以下属性是为了方便UI使用而添加的计算属性
     val voiceAssistantEnabled: Boolean get() = voiceEnabled
@@ -30,13 +31,15 @@ data class Settings(
 enum class FontSize {
     SMALL,
     MEDIUM,
-    LARGE;
+    LARGE,
+    EXTRA_LARGE;
 
     val intValue: Int
         get() = when (this) {
             SMALL -> 0
             MEDIUM -> 1
             LARGE -> 2
+            EXTRA_LARGE -> 3
         }
 }
 

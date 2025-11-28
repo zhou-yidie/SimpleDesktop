@@ -13,6 +13,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import tech.huangsh.onetap.data.model.Settings
 import tech.huangsh.onetap.ui.screens.home.HomeScreen
+import tech.huangsh.onetap.ui.screens.onboarding.PermissionOnboardingScreen
 import tech.huangsh.onetap.ui.theme.OneTapTheme
 import tech.huangsh.onetap.utils.LauncherUtils
 import tech.huangsh.onetap.viewmodel.MainViewModel
@@ -39,7 +40,13 @@ class MainActivity : ComponentActivity() {
                 fontSize = settings.fontSize,
                 themeMode = settings.themeMode
             ) {
-                HomeScreen(viewModel)
+                if (settings.onboardingCompleted) {
+                    HomeScreen(viewModel)
+                } else {
+                    PermissionOnboardingScreen(
+                        onFinished = { settingsViewModel.markOnboardingCompleted() }
+                    )
+                }
             }
         }
     }

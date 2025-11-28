@@ -22,6 +22,8 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
@@ -36,6 +38,7 @@ fun ContactItem(
     onClick: () -> Unit = {},
     isHomeScreen: Boolean = false // 新增参数标识是否在首页使用
 ) {
+    val contactDescription = stringResource(R.string.contact_item_description, contact.name)
     Card(
         modifier = modifier
             .let { 
@@ -47,7 +50,8 @@ fun ContactItem(
                     it.fillMaxWidth().height(120.dp) // 其他页面使用固定高度
                 }
             }
-            .clickable { onClick() },
+            .clickable { onClick() }
+            .semantics { this.contentDescription = contactDescription },
         shape = if (isHomeScreen) RoundedCornerShape(16.dp) else RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(
             containerColor = if (isHomeScreen) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surface
@@ -84,7 +88,7 @@ fun ContactItem(
                             .data(contact.avatarUri)
                             .crossfade(true)
                             .build(),
-                        contentDescription = stringResource(R.string.contact_avatar),
+                        contentDescription = stringResource(R.string.contact_avatar_description, contact.name),
                         modifier = Modifier.fillMaxSize(),
                         contentScale = ContentScale.Crop,
                         onError = { error ->
@@ -98,7 +102,7 @@ fun ContactItem(
                     android.util.Log.d("ContactAvatar", "No avatar URI for ${contact.name}")
                     Icon(
                         imageVector = Icons.Default.Person,
-                        contentDescription = null,
+                        contentDescription = stringResource(R.string.contact_avatar_description, contact.name),
                         modifier = Modifier
                             .fillMaxSize(if (isHomeScreen) 0.5f else if (modifier == Modifier.size(50.dp)) 0.7f else 0.7f)
                             .align(Alignment.Center),
@@ -214,7 +218,7 @@ fun CommonTopBar(
         IconButton(onClick = onBack) {
             Icon(
                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                contentDescription = null,
+                contentDescription = stringResource(R.string.settings_back),
                 tint = MaterialTheme.colorScheme.onPrimary
             )
         }
@@ -258,7 +262,7 @@ fun ActionButton(
             if (icon != null) {
                 Icon(
                     imageVector = icon,
-                    contentDescription = null,
+                    contentDescription = text,
                     modifier = Modifier.size(24.dp),
                     tint = contentColor
                 )

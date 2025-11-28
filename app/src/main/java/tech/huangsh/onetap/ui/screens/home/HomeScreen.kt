@@ -21,6 +21,8 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -213,10 +215,18 @@ fun AppCard(
     modifier: Modifier = Modifier,
     onClick: (String) -> Unit
 ) {
+    val contentDescriptionText = stringResource(
+        id = R.string.app_open_description,
+        app.appName
+    )
+
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
             .clickable { onClick(app.packageName) }
+            .semantics {
+                contentDescription = contentDescriptionText
+            }
             .fillMaxWidth()
     ) {
         Card(

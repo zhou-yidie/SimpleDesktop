@@ -200,6 +200,23 @@ fun OneTapTheme(
             labelMedium = Typography.labelMedium.copy(fontSize = 18.sp),
             labelSmall = Typography.labelSmall.copy(fontSize = 16.sp)
         )
+        FontSize.EXTRA_LARGE -> _root_ide_package_.androidx.compose.material3.Typography(
+            displayLarge = Typography.displayLarge.copy(fontSize = 96.sp),
+            displayMedium = Typography.displayMedium.copy(fontSize = 64.sp),
+            displaySmall = Typography.displaySmall.copy(fontSize = 48.sp),
+            headlineLarge = Typography.headlineLarge.copy(fontSize = 48.sp),
+            headlineMedium = Typography.headlineMedium.copy(fontSize = 40.sp),
+            headlineSmall = Typography.headlineSmall.copy(fontSize = 34.sp),
+            titleLarge = Typography.titleLarge.copy(fontSize = 32.sp),
+            titleMedium = Typography.titleMedium.copy(fontSize = 26.sp),
+            titleSmall = Typography.titleSmall.copy(fontSize = 22.sp),
+            bodyLarge = Typography.bodyLarge.copy(fontSize = 28.sp),
+            bodyMedium = Typography.bodyMedium.copy(fontSize = 26.sp),
+            bodySmall = Typography.bodySmall.copy(fontSize = 22.sp),
+            labelLarge = Typography.labelLarge.copy(fontSize = 24.sp),
+            labelMedium = Typography.labelMedium.copy(fontSize = 22.sp),
+            labelSmall = Typography.labelSmall.copy(fontSize = 20.sp)
+        )
     }
 
     MaterialTheme(

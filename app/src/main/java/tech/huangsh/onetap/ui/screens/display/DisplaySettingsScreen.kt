@@ -90,6 +90,7 @@ fun DisplaySettingsScreen(
                     FontSize.SMALL -> stringResource(R.string.font_small)
                     FontSize.MEDIUM -> stringResource(R.string.font_medium)
                     FontSize.LARGE -> stringResource(R.string.font_large)
+                    FontSize.EXTRA_LARGE -> stringResource(R.string.font_extra_large)
                 }
             ) {
                 // 紧凑的字体大小选择器
@@ -116,6 +117,13 @@ fun DisplaySettingsScreen(
                         currentFontSize = settings.fontSize,
                         title = stringResource(R.string.font_large),
                         onClick = { settingsViewModel.updateFontSize(FontSize.LARGE) }
+                    )
+
+                    CompactFontSizeOption(
+                        fontSize = FontSize.EXTRA_LARGE,
+                        currentFontSize = settings.fontSize,
+                        title = stringResource(R.string.font_extra_large),
+                        onClick = { settingsViewModel.updateFontSize(FontSize.EXTRA_LARGE) }
                     )
                 }
             }
@@ -147,6 +155,12 @@ fun DisplaySettingsScreen(
                         onClick = { settingsViewModel.updateContrastMode(true) }
                     )
                 }
+                Spacer(modifier = Modifier.height(12.dp))
+                Text(
+                    text = stringResource(R.string.contrast_high_helper),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
             }
         }
     }
@@ -289,6 +303,7 @@ fun RowScope.CompactFontSizeOption(
                 FontSize.SMALL -> MaterialTheme.typography.labelMedium  // 14sp
                 FontSize.MEDIUM -> MaterialTheme.typography.bodyMedium  // 18sp
                 FontSize.LARGE -> MaterialTheme.typography.titleMedium  // 20sp
+                FontSize.EXTRA_LARGE -> MaterialTheme.typography.titleLarge // 24sp
             }
         )
     }

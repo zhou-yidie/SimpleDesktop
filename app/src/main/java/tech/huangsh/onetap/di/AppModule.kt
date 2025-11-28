@@ -12,10 +12,11 @@ import kotlinx.coroutines.SupervisorJob
 import tech.huangsh.onetap.data.local.AppDatabase
 import tech.huangsh.onetap.data.local.dao.AppInfoDao
 import tech.huangsh.onetap.data.local.dao.ContactDao
-import tech.huangsh.onetap.data.remote.WeatherService
 import tech.huangsh.onetap.data.repository.AppRepository
 import tech.huangsh.onetap.data.repository.ContactRepository
 import tech.huangsh.onetap.data.repository.SettingsRepository
+import tech.huangsh.onetap.data.repository.WeatherRepository
+import tech.huangsh.onetap.data.remote.WeatherService
 import javax.inject.Singleton
 
 /**
@@ -81,5 +82,14 @@ object AppModule {
         @ApplicationContext context: Context
     ): WeatherService {
         return WeatherService(context)
+    }
+
+    @Provides
+    @Singleton
+    fun provideWeatherRepository(
+        @ApplicationContext context: Context,
+        weatherService: WeatherService
+    ): WeatherRepository {
+        return WeatherRepository(context, weatherService)
     }
 }
