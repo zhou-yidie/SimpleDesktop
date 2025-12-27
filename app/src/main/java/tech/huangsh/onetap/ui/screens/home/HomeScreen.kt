@@ -1,7 +1,10 @@
 package tech.huangsh.onetap.ui.screens.home
 
 import android.Manifest
+import android.content.Context
 import android.content.Intent
+import android.hardware.camera2.CameraCharacteristics
+import android.hardware.camera2.CameraManager
 import android.widget.Toast
 import com.hjq.permissions.XXPermissions
 import com.hjq.permissions.OnPermissionCallback
@@ -15,11 +18,14 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Android
+import androidx.compose.material.icons.filled.FlashlightOn
+import androidx.compose.material.icons.filled.FlashlightOff
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -50,6 +56,45 @@ fun HomeScreen(viewModel: MainViewModel) {
     val weatherInfo by viewModel.weatherInfo.collectAsState() // 天气
     val showBottomSheet by viewModel.showBottomSheet.collectAsState()
     val selectedContact by viewModel.selectedContact.collectAsState()
+    
+    // 手电筒状态
+    var isFlashlightOn by remember { mutableStateOf(false) }
+    
+    // 手电筒开关函数
+    fun toggleFlashlight() {
+        try {
+            val cameraManager = context.getSystemService(Context.CAMERA_SERVICE) as CameraManager
+            val cameraId = cameraManager.cameraIdList.firstOrNull { id ->
+                cameraManager.getCameraCharacteristics(id)
+                    .get(CameraCharacteristics.FLASH_INFO_AVAILABLE) == true
+            }
+            if (cameraId != null) {
+                isFlashlightOn = !isFlashlightOn
+                cameraManager.setTorchMode(cameraId, isFlashlightOn)
+            } else {
+                Toast.makeText(context, "您的设备不支持手电筒", Toast.LENGTH_SHORT).show()
+            }
+        } catch (e: Exception) {
+            Toast.makeText(context, "手电筒操作失败", Toast.LENGTH_SHORT).show()
+            isFlashlightOn = false
+        }
+    }
+    
+    // 页面销毁时关闭手电筒
+    DisposableEffect(Unit) {
+        onDispose {
+            if (isFlashlightOn) {
+                try {
+                    val cameraManager = context.getSystemService(Context.CAMERA_SERVICE) as CameraManager
+                    val cameraId = cameraManager.cameraIdList.firstOrNull { id ->
+                        cameraManager.getCameraCharacteristics(id)
+                            .get(CameraCharacteristics.FLASH_INFO_AVAILABLE) == true
+                    }
+                    cameraId?.let { cameraManager.setTorchMode(it, false) }
+                } catch (_: Exception) {}
+            }
+        }
+    }
     
     // 使用XXPermissions申请电话权限并拨打电话
     fun requestPhonePermissionAndCall(phoneNumber: String) {
@@ -186,7 +231,7 @@ fun HomeScreen(viewModel: MainViewModel) {
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            // 联系人网格 (每行2个)
+            // 联系人网格 + 手电筒卡片 (每行2个)
             LazyVerticalGrid(
                 columns = GridCells.Fixed(2),
                 modifier = Modifier.fillMaxSize(),
@@ -199,6 +244,14 @@ fun HomeScreen(viewModel: MainViewModel) {
                         contact = contact,
                         onClick = { viewModel.showContactActions(contact) },
                         isHomeScreen = true
+                    )
+                }
+                
+                // 手电筒大卡片
+                item {
+                    FlashlightCard(
+                        isOn = isFlashlightOn,
+                        onClick = { toggleFlashlight() }
                     )
                 }
             }
@@ -280,6 +333,46 @@ fun AppCard(
             color = MaterialTheme.colorScheme.onSurface,
             fontSize = 16.sp
         )
+    }
+}
+
+/**
+ * 手电筒大卡片，和联系人卡片样式一致
+ */
+@Composable
+fun FlashlightCard(
+    isOn: Boolean,
+    onClick: () -> Unit
+) {
+    Card(
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = if (isOn) Color(0xFFFFD54F) else MaterialTheme.colorScheme.surface
+        ),
+        modifier = Modifier
+            .fillMaxWidth()
+            .aspectRatio(1f)
+            .clickable { onClick() }
+    ) {
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            Icon(
+                imageVector = if (isOn) Icons.Default.FlashlightOn else Icons.Default.FlashlightOff,
+                contentDescription = "手电筒",
+                modifier = Modifier.size(80.dp),
+                tint = if (isOn) Color(0xFF424242) else MaterialTheme.colorScheme.primary
+            )
+            Spacer(Modifier.height(12.dp))
+            Text(
+                text = if (isOn) "手电筒(开)" else "手电筒",
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Medium,
+                color = if (isOn) Color(0xFF424242) else MaterialTheme.colorScheme.onSurface
+            )
+        }
     }
 }
 
