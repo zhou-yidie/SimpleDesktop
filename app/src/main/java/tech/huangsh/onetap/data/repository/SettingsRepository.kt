@@ -42,6 +42,7 @@ class SettingsRepository(private val context: Context) {
         val IS_DEFAULT_LAUNCHER = booleanPreferencesKey("is_default_launcher")
         val SHOW_EXIT_LAUNCHER = booleanPreferencesKey("show_exit_launcher")
         val LAUNCHER_EXIT_CONFIRMATION = booleanPreferencesKey("launcher_exit_confirmation")
+        val IS_FIRST_LAUNCH = booleanPreferencesKey("is_first_launch")
     }
 
     // 语音设置
@@ -70,6 +71,7 @@ class SettingsRepository(private val context: Context) {
     val isDefaultLauncher: Flow<Boolean> = dataStore.data.map { it[IS_DEFAULT_LAUNCHER] ?: false }
     val showExitLauncher: Flow<Boolean> = dataStore.data.map { it[SHOW_EXIT_LAUNCHER] ?: true }
     val launcherExitConfirmation: Flow<Boolean> = dataStore.data.map { it[LAUNCHER_EXIT_CONFIRMATION] ?: true }
+    val isFirstLaunch: Flow<Boolean> = dataStore.data.map { it[IS_FIRST_LAUNCH] ?: true }
 
     // 获取所有设置
     val settings: Flow<Settings> = dataStore.data.map { preferences ->
@@ -86,7 +88,8 @@ class SettingsRepository(private val context: Context) {
             password = preferences[PASSWORD] ?: "123456",
             isDefaultLauncher = preferences[IS_DEFAULT_LAUNCHER] ?: false,
             showExitLauncher = preferences[SHOW_EXIT_LAUNCHER] ?: true,
-            launcherExitConfirmation = preferences[LAUNCHER_EXIT_CONFIRMATION] ?: true
+            launcherExitConfirmation = preferences[LAUNCHER_EXIT_CONFIRMATION] ?: true,
+            isFirstLaunch = preferences[IS_FIRST_LAUNCH] ?: true
         )
     }
 
@@ -141,6 +144,10 @@ class SettingsRepository(private val context: Context) {
 
     suspend fun updateLauncherExitConfirmation(needConfirmation: Boolean) {
         dataStore.edit { it[LAUNCHER_EXIT_CONFIRMATION] = needConfirmation }
+    }
+
+    suspend fun updateIsFirstLaunch(isFirst: Boolean) {
+        dataStore.edit { it[IS_FIRST_LAUNCH] = isFirst }
     }
 
     /**

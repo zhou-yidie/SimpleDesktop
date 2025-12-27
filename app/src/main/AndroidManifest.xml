@@ -64,8 +64,7 @@
     android:theme="@style/Theme.OneTap"
     tools:targetApi="31">
 
-    <!-- 主Activity - 作为Launcher -->
-    <activity
+    <!-- 主Activity - 作为Launcher -->\n    <activity
             android:name=".ui.activity.MainActivity"
             android:exported="true"
             android:launchMode="singleTask"
@@ -74,18 +73,43 @@
             android:clearTaskOnLaunch="true"
             android:theme="@style/Theme.OneTap" tools:ignore="DiscouragedApi">
 
-      <!-- Launcher Intent Filter -->
+      <!-- 应用启动器（从应用列表打开） -->\n      <intent-filter>
+        <action android:name="android.intent.action.MAIN" />
+        <category android:name="android.intent.category.LAUNCHER" />
+      </intent-filter>
+      
+      <!-- 桌面启动器（按Home键启动） -->
       <intent-filter android:priority="1000">
         <action android:name="android.intent.action.MAIN" />
         <category android:name="android.intent.category.HOME" />
         <category android:name="android.intent.category.DEFAULT" />
-        <category android:name="android.intent.category.LAUNCHER" />
       </intent-filter>
     </activity>
 
     <!-- 设置Activity -->
     <activity
             android:name=".ui.activity.SettingsActivity"
+            android:exported="false"
+            android:screenOrientation="user"
+            android:theme="@style/Theme.OneTap" tools:ignore="DiscouragedApi"/>
+    
+    <!-- 引导页Activity -->
+    <activity
+            android:name=".ui.activity.OnboardingActivity"
+            android:exported="false"
+            android:screenOrientation="user"
+            android:theme="@style/Theme.OneTap" tools:ignore="DiscouragedApi"/>
+    
+    <!-- 权限设置Activity -->
+    <activity
+            android:name=".ui.activity.PermissionSetupActivity"
+            android:exported="false"
+            android:screenOrientation="user"
+            android:theme="@style/Theme.OneTap" tools:ignore="DiscouragedApi"/>
+            
+    <!-- 插件管理Activity -->
+    <activity
+            android:name=".ui.activity.PluginManagementActivity"
             android:exported="false"
             android:screenOrientation="user"
             android:theme="@style/Theme.OneTap" tools:ignore="DiscouragedApi"/>

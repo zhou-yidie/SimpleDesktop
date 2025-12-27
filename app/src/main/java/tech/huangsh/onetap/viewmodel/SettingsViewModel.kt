@@ -162,7 +162,7 @@ class SettingsViewModel @Inject constructor(
      */
     fun testVoice() {
         voiceAssistant.value?.let { assistant ->
-            assistant.speak("您好，我是一键通，很高兴为您服务！")
+            assistant.speak("您好，我是简易桌面，很高兴为您服务！")
         }
     }
     
@@ -217,6 +217,15 @@ class SettingsViewModel @Inject constructor(
     fun updateLauncherExitConfirmation(needConfirmation: Boolean) {
         viewModelScope.launch {
             settingsRepository.updateLauncherExitConfirmation(needConfirmation)
+        }
+    }
+    
+    /**
+     * 更新首次启动标记
+     */
+    fun updateIsFirstLaunch(isFirst: Boolean) {
+        viewModelScope.launch {
+            settingsRepository.updateIsFirstLaunch(isFirst)
         }
     }
     

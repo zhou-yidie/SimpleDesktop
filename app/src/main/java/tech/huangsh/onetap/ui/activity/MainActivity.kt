@@ -1,5 +1,6 @@
 package tech.huangsh.onetap.ui.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.KeyEvent
 import androidx.activity.ComponentActivity
@@ -10,6 +11,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import tech.huangsh.onetap.data.model.Settings
 import tech.huangsh.onetap.ui.screens.home.HomeScreen
@@ -27,6 +29,9 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        
+        // 检查是否首次启动
+        checkFirstLaunch()
         
         // 检查并更新默认启动器状态
         updateLauncherStatus()
@@ -70,6 +75,22 @@ class MainActivity : ComponentActivity() {
                 }
             }
             else -> super.onKeyDown(keyCode, event)
+        }
+    }
+    
+    /**
+     * 检查是否首次启动
+     */
+    private fun checkFirstLaunch() {
+        lifecycleScope.launch {
+            val settings = settingsViewModel.settings.first()
+            if (settings.isFirstLaunch) {
+                // 跳转到引导页
+                val intent = Intent(this@MainActivity, OnboardingActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                startActivity(intent)
+                finish()
+            }
         }
     }
     

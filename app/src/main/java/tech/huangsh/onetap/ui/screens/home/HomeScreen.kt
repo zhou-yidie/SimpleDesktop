@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import tech.huangsh.onetap.R
 import tech.huangsh.onetap.data.model.AppInfo
+import tech.huangsh.onetap.ui.activity.PluginManagementActivity
 import tech.huangsh.onetap.ui.activity.SettingsActivity
 import tech.huangsh.onetap.ui.screens.components.ContactActionBottomSheet
 import tech.huangsh.onetap.ui.screens.components.ContactItem
@@ -115,14 +116,36 @@ fun HomeScreen(viewModel: MainViewModel) {
                             )
                         }
 
-                        IconButton(
-                            onClick = {
-                                val intent = Intent(context, SettingsActivity::class.java)
-                                context.startActivity(intent)
-                            },
-                            modifier = Modifier.size(50.dp).align(Alignment.TopEnd)
+                        Row(
+                            modifier = Modifier.align(Alignment.TopEnd),
+                            horizontalArrangement = Arrangement.spacedBy(8.dp)
                         ) {
-                            Icon(Icons.Default.Settings, contentDescription = stringResource(R.string.settings), modifier = Modifier.size(50.dp), tint = MaterialTheme.colorScheme.onPrimary)
+                            // 插件管理按钮
+                            IconButton(
+                                onClick = {
+                                    val intent = Intent(context, PluginManagementActivity::class.java)
+                                    context.startActivity(intent)
+                                },
+                                modifier = Modifier.size(40.dp)
+                            ) {
+                                Icon(
+                                    Icons.Default.Android, 
+                                    contentDescription = "插件管理", 
+                                    modifier = Modifier.size(40.dp), 
+                                    tint = MaterialTheme.colorScheme.onPrimary
+                                )
+                            }
+                            
+                            // 设置按钮
+                            IconButton(
+                                onClick = {
+                                    val intent = Intent(context, SettingsActivity::class.java)
+                                    context.startActivity(intent)
+                                },
+                                modifier = Modifier.size(50.dp)
+                            ) {
+                                Icon(Icons.Default.Settings, contentDescription = stringResource(R.string.settings), modifier = Modifier.size(50.dp), tint = MaterialTheme.colorScheme.onPrimary)
+                            }
                         }
                     }
 

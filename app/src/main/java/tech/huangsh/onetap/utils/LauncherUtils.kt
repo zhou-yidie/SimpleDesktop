@@ -171,28 +171,75 @@ object LauncherUtils {
      */
     fun exitLauncherMode(context: Context) {
         try {
-            // 方法1：尝试启动系统桌面选择器
-            if (tryLaunchSystemChooser(context)) {
-                return
-            }
+            // 显示提示
+            Toast.makeText(context, "正在退出桌面模式，请选择系统桌面", Toast.LENGTH_LONG).show()
             
-            // 方法2：尝试直接启动系统默认桌面
-            if (tryLaunchSystemLauncher(context)) {
-                return
-            }
+            // 先尝试启动系统桌面选择器
+            android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({
+                // 尝试不同的方法来退出
+                if (!tryLaunchSystemChooser(context)) {
+                    if (!tryLaunchSystemLauncher(context)) {
+                        // 最后的方案：打开设置页面
+                        openDefaultAppSettings(context)
+                        Toast.makeText(context, "请在设置中选择其他桌面应用", Toast.LENGTH_LONG).show()
+                    }
+                }
+            }, 300)
             
-            // 方法3：尝试清除默认设置并触发选择器
-            if (tryClearDefaultAndChoose(context)) {
-                return
-            }
-            
-            // 方法4：引导用户到设置页面
-            openDefaultAppSettings(context)
-            Toast.makeText(context, "请在设置中选择其他桌面应用", Toast.LENGTH_LONG).show()
         } catch (e: Exception) {
-            // 最后的备用方案
             openDefaultAppSettings(context)
             Toast.makeText(context, "请在设置中选择其他桌面应用", Toast.LENGTH_LONG).show()
+        }
+    }
+    
+    /**
+     * 禁用MainActivity的HOME intent filter
+     * 这样应用就不再是桌面启动器候选
+     */
+    private fun disableHomeActivity(context: Context) {
+        try {
+            val componentName = ComponentName(
+                context,
+                "tech.huangsh.onetap.ui.activity.MainActivity"
+            )
+            
+            context.packageManager.setComponentEnabledSetting(
+                componentName,
+                PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+                PackageManager.DONT_KILL_APP
+            )
+            
+            // 立即重新启用，但这次不作为HOME
+            android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({
+                context.packageManager.setComponentEnabledSetting(
+                    componentName,
+                    PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+                    PackageManager.DONT_KILL_APP
+                )
+            }, 300)
+            
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+    
+    /**
+     * 启用MainActivity的HOME intent filter（恢复桌面功能）
+     */
+    fun enableHomeActivity(context: Context) {
+        try {
+            val componentName = ComponentName(
+                context,
+                "tech.huangsh.onetap.ui.activity.MainActivity"
+            )
+            
+            context.packageManager.setComponentEnabledSetting(
+                componentName,
+                PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+                PackageManager.DONT_KILL_APP
+            )
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 
@@ -201,18 +248,32 @@ object LauncherUtils {
      */
     private fun tryLaunchSystemChooser(context: Context): Boolean {
         return try {
+            // 方案1：使用 createChooser 强制显示选择器
             val intent = Intent(Intent.ACTION_MAIN).apply {
                 addCategory(Intent.CATEGORY_HOME)
-                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+                // 不要使用 NEW_TASK，让 createChooser 添加
             }
             
-            // 创建选择器Intent
-            val chooser = Intent.createChooser(intent, "选择桌面")
-            chooser.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            // 创建选择器，强制显示所有桌面应用
+            val chooser = Intent.createChooser(intent, "请选择桌面应用")
+            chooser.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             context.startActivity(chooser)
+            
             true
         } catch (e: Exception) {
-            false
+            // 方案2：直接启动 HOME intent（可能会显示选择器）
+            try {
+                val homeIntent = Intent(Intent.ACTION_MAIN).apply {
+                    addCategory(Intent.CATEGORY_HOME)
+                    flags = Intent.FLAG_ACTIVITY_NEW_TASK or 
+                           Intent.FLAG_ACTIVITY_CLEAR_TASK or
+                           Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS
+                }
+                context.startActivity(homeIntent)
+                true
+            } catch (e2: Exception) {
+                false
+            }
         }
     }
     

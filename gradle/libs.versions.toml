@@ -1,8 +1,8 @@
 [versions]
-agp = "8.10.0"
+agp = "8.6.1"
 kotlin = "2.0.21"
 ksp = "2.0.21-1.0.25"
-compose-bom = "2024.09.00"
+compose-bom = "2024.08.00"
 hilt = "2.56.2"
 reorderable = "0.9.6"
 room = "2.6.1"

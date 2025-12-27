@@ -13,6 +13,7 @@ import androidx.compose.material.icons.filled.DisplaySettings
 import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.People
+import androidx.compose.material.icons.filled.Security
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -76,6 +77,16 @@ fun SettingsScreen(
                 title = stringResource(R.string.app_settings),
                 onClick = {
                     val intent = Intent(context, AppManagementActivity::class.java)
+                    context.startActivity(intent)
+                }
+            )
+            
+            // 权限管理
+            SettingsItem(
+                icon = Icons.Default.Security,
+                title = stringResource(R.string.permission_management),
+                onClick = {
+                    val intent = Intent(context, tech.huangsh.onetap.ui.activity.PermissionSetupActivity::class.java)
                     context.startActivity(intent)
                 }
             )
