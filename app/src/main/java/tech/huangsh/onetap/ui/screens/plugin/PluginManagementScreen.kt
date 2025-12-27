@@ -5,7 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -14,6 +14,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import tech.huangsh.onetap.plugin.BasePlugin
@@ -30,8 +31,8 @@ fun PluginManagementScreen(
     viewModel: PluginManagementViewModel = hiltViewModel(),
     onBack: () -> Unit
 ) {
+    val context = LocalContext.current
     val registeredPlugins by viewModel.registeredPlugins.collectAsStateWithLifecycle()
-    val registrationState by viewModel.registrationState.collectAsStateWithLifecycle()
     
     Scaffold(
         topBar = {
@@ -44,7 +45,7 @@ fun PluginManagementScreen(
             ) {
                 IconButton(onClick = onBack) {
                     Icon(
-                        imageVector = Icons.Default.ArrowBack,
+                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                         contentDescription = null,
                         tint = MaterialTheme.colorScheme.onPrimary
                     )
@@ -104,7 +105,9 @@ fun PluginManagementScreen(
                                 viewModel.disablePlugin(plugin.pluginId)
                             }
                         },
-                        onConfigure = { viewModel.configurePlugin(plugin.pluginId) }
+                        onConfigure = { 
+                            viewModel.configurePlugin(context, plugin.pluginId, plugin.name)
+                        }
                     )
                 }
             }

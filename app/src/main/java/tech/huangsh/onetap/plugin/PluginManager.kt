@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.sync.Mutex
@@ -51,11 +52,8 @@ class PluginManager @Inject constructor(
     // DataStore 键
     private val ENABLED_PLUGINS_KEY = stringSetPreferencesKey("enabled_plugins")
     
-    init {
-        // 从配置中加载已启用的插件
-        // TODO: 临时注释，修复后启用
-        // loadEnabledPlugins()
-    }
+    // 不在init中加载，而是在应用启动后主动调用
+    // 这样可以避免DataStore初始化时的异步问题
     
     override fun getContext(): Context = context
     
@@ -210,26 +208,50 @@ class PluginManager @Inject constructor(
     
     /**
      * 加载已启用的插件
+     * 从DataStore读取上次保存的启用状态，并恢复插件状态
      */
-    private suspend fun loadEnabledPlugins() {
-        dataStore.data.collect { preferences ->
-            val enabledPluginIds = preferences[ENABLED_PLUGINS_KEY] ?: emptySet()
-            
-            // 启用配置中记录的插件
-            enabledPluginIds.forEach { pluginId ->
-                installedPlugins[pluginId]?.let { plugin ->
-                    if (!plugin.isEnabled) {
-                        try {
-                            plugin.start()
-                            plugin.isEnabled = true
-                        } catch (e: Exception) {
-                            e.printStackTrace()
+    suspend fun loadEnabledPlugins() {
+        return pluginMutex.withLock {
+            try {
+                // 使用first()读取一次数据，避免持续监听
+                val preferences = dataStore.data.first()
+                val enabledPluginIds = preferences[ENABLED_PLUGINS_KEY] ?: emptySet()
+                
+                android.util.Log.d("PluginManager", "加载已启用的插件: $enabledPluginIds")
+                
+                // 如果是首次启动（没有保存的配置），默认启用所有插件
+                if (enabledPluginIds.isEmpty() && installedPlugins.isNotEmpty()) {
+                    android.util.Log.d("PluginManager", "首次启动，启用所有插件")
+                    enableAllPlugins()
+                    return@withLock
+                }
+                
+                // 按照依赖顺序启用插件
+                val startupOrder = getStartupOrder()
+                
+                startupOrder.forEach { pluginId ->
+                    if (pluginId in enabledPluginIds) {
+                        installedPlugins[pluginId]?.let { plugin ->
+                            if (!plugin.isEnabled) {
+                                try {
+                                    android.util.Log.d("PluginManager", "启动插件: $pluginId")
+                                    plugin.start()
+                                    plugin.isEnabled = true
+                                } catch (e: Exception) {
+                                    android.util.Log.e("PluginManager", "启动插件失败: $pluginId", e)
+                                    e.printStackTrace()
+                                }
+                            }
                         }
                     }
                 }
+                
+                updatePluginLists()
+                android.util.Log.d("PluginManager", "插件加载完成，已启用: ${_enabledPluginsFlow.value.map { it.pluginId }}")
+            } catch (e: Exception) {
+                android.util.Log.e("PluginManager", "加载启用插件失败", e)
+                e.printStackTrace()
             }
-            
-            updatePluginLists()
         }
     }
     

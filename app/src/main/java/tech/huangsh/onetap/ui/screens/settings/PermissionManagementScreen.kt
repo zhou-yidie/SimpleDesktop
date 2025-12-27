@@ -21,8 +21,12 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.google.android.accessibility.selecttospeak.SelectToSpeakService
 import com.hjq.permissions.XXPermissions
+import kotlinx.coroutines.launch
 import tech.huangsh.onetap.R
 import tech.huangsh.onetap.ui.screens.components.AccessibilityGuideDialog
 import tech.huangsh.onetap.ui.screens.components.CommonTopBar
@@ -40,11 +44,44 @@ data class PermissionItem(
 
 @Composable
 fun PermissionManagementScreen(
-    onBack: () -> Unit
+    onBack: () -> Unit,
+    appRepository: tech.huangsh.onetap.data.repository.AppRepository? = null
 ) {
     val context = LocalContext.current
+    val lifecycleOwner = LocalLifecycleOwner.current
+    val scope = rememberCoroutineScope()
     var showAccessibilityGuide by remember { mutableStateOf(false) }
     var refreshTrigger by remember { mutableStateOf(0) }
+    
+    // onResume 时刷新状态并重新扫描应用
+    DisposableEffect(lifecycleOwner) {
+        val observer = LifecycleEventObserver { _, event ->
+            if (event == Lifecycle.Event.ON_RESUME) {
+                refreshTrigger++
+                appRepository?.let { repo ->
+                    scope.launch {
+                        try {
+                            repo.scanInstalledApps()
+                        } catch (_: Exception) {}
+                    }
+                }
+            }
+        }
+        lifecycleOwner.lifecycle.addObserver(observer)
+        onDispose { lifecycleOwner.lifecycle.removeObserver(observer) }
+    }
+    
+    // 创建刷新回调
+    val onPermissionResult = remember {
+        object : com.hjq.permissions.OnPermissionCallback {
+            override fun onGranted(permissions: MutableList<String>, allGranted: Boolean) {
+                refreshTrigger++
+            }
+            override fun onDenied(permissions: MutableList<String>, doNotAskAgain: Boolean) {
+                refreshTrigger++
+            }
+        }
+    }
     
     val permissions = remember(refreshTrigger) {
         listOf(
@@ -61,10 +98,7 @@ fun PermissionManagementScreen(
                 requestMethod = { ctx ->
                     XXPermissions.with(ctx as androidx.activity.ComponentActivity)
                         .permission(Manifest.permission.CALL_PHONE)
-                        .request(object : com.hjq.permissions.OnPermissionCallback {
-                        override fun onGranted(permissions: MutableList<String>, allGranted: Boolean) {}
-                        override fun onDenied(permissions: MutableList<String>, doNotAskAgain: Boolean) {}
-                    })
+                        .request(onPermissionResult)
                 }
             ),
             PermissionItem(
@@ -79,10 +113,7 @@ fun PermissionManagementScreen(
                 requestMethod = { ctx ->
                     XXPermissions.with(ctx as androidx.activity.ComponentActivity)
                         .permission(Manifest.permission.READ_CONTACTS)
-                        .request(object : com.hjq.permissions.OnPermissionCallback {
-                        override fun onGranted(permissions: MutableList<String>, allGranted: Boolean) {}
-                        override fun onDenied(permissions: MutableList<String>, doNotAskAgain: Boolean) {}
-                    })
+                        .request(onPermissionResult)
                 }
             ),
             PermissionItem(
@@ -95,6 +126,44 @@ fun PermissionManagementScreen(
                 },
                 requestMethod = { ctx ->
                     LauncherUtils.triggerDefaultLauncherChooser(ctx)
+                }
+            ),
+            PermissionItem(
+                icon = Icons.Default.Apps,
+                title = "应用列表权限",
+                description = "用于扫描和管理设备上已安装的应用，以便添加常用应用到桌面",
+                isEssential = true,
+                permissionName = Manifest.permission.QUERY_ALL_PACKAGES,
+                checkMethod = { ctx ->
+                    try {
+                        val pm = ctx.packageManager
+                        val apps = pm.getInstalledApplications(android.content.pm.PackageManager.GET_META_DATA)
+                        val hasPermission = apps.size >= 30
+                        android.util.Log.d("PermissionCheck", "查询到 ${apps.size} 个应用，权限状态: $hasPermission")
+                        hasPermission
+                    } catch (e: Exception) {
+                        android.util.Log.e("PermissionCheck", "检查应用列表权限失败", e)
+                        false
+                    }
+                },
+                requestMethod = { ctx ->
+                    try {
+                        val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                        intent.data = android.net.Uri.parse("package:${ctx.packageName}")
+                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                        ctx.startActivity(intent)
+                        android.widget.Toast.makeText(
+                            ctx,
+                            "请在权限/查看所有应用中手动开启后返回",
+                            android.widget.Toast.LENGTH_LONG
+                        ).show()
+                    } catch (e: Exception) {
+                        android.widget.Toast.makeText(
+                            ctx,
+                            "无法打开设置，请手动到系统设置为本应用开启查看所有应用",
+                            android.widget.Toast.LENGTH_LONG
+                        ).show()
+                    }
                 }
             ),
             
@@ -111,10 +180,7 @@ fun PermissionManagementScreen(
                 requestMethod = { ctx ->
                     XXPermissions.with(ctx as androidx.activity.ComponentActivity)
                         .permission(Manifest.permission.CAMERA)
-                        .request(object : com.hjq.permissions.OnPermissionCallback {
-                        override fun onGranted(permissions: MutableList<String>, allGranted: Boolean) {}
-                        override fun onDenied(permissions: MutableList<String>, doNotAskAgain: Boolean) {}
-                    })
+                        .request(onPermissionResult)
                 }
             ),
             PermissionItem(
@@ -129,10 +195,7 @@ fun PermissionManagementScreen(
                 requestMethod = { ctx ->
                     XXPermissions.with(ctx as androidx.activity.ComponentActivity)
                         .permission(Manifest.permission.ACCESS_FINE_LOCATION)
-                        .request(object : com.hjq.permissions.OnPermissionCallback {
-                        override fun onGranted(permissions: MutableList<String>, allGranted: Boolean) {}
-                        override fun onDenied(permissions: MutableList<String>, doNotAskAgain: Boolean) {}
-                    })
+                        .request(onPermissionResult)
                 }
             ),
             PermissionItem(

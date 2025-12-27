@@ -110,9 +110,11 @@ class AppPlugin @Inject constructor(
      */
     private suspend fun scanApps() {
         try {
-            // TODO: 临时注释，修复后启用
-            // appRepository.refreshApps()
+            android.util.Log.d("AppPlugin", "开始扫描已安装应用...")
+            appRepository.scanInstalledApps()
+            android.util.Log.d("AppPlugin", "应用扫描完成")
         } catch (e: Exception) {
+            android.util.Log.e("AppPlugin", "扫描应用失败", e)
             e.printStackTrace()
         }
     }
@@ -122,34 +124,33 @@ class AppPlugin @Inject constructor(
      */
     private suspend fun handleGetApps(message: PluginMessage): PluginMessage {
         return try {
-            // TODO: 临时注释，修复后启用
-            /*
-            val showSystemApps = message.data["showSystemApps"]?.toBoolean() ?: false
-            val apps = if (showSystemApps) {
-                appRepository.allApps.first()
-            } else {
-                appRepository.userApps.first()
-            }
+            android.util.Log.d("AppPlugin", "处理获取应用列表请求")
             
-            val appsJson = apps.map { app ->
-                mapOf(
-                    "packageName" to app.packageName,
-                    "appName" to app.appName,
-                    "order" to app.order.toString(),
-                    "isEnabled" to app.isEnabled.toString()
+            val showSystemApps = message.data["showSystemApps"]?.toBoolean() ?: false
+            val apps = appRepository.allApps.first()
+            
+            // 将应用信息转换为简单的键值对格式
+            val appsData = apps.mapIndexed { index, app ->
+                // 每个应用的数据使用 "app_{index}_{field}" 的格式
+                listOf(
+                    "app_${index}_packageName" to app.packageName,
+                    "app_${index}_appName" to app.appName,
+                    "app_${index}_order" to app.order.toString(),
+                    "app_${index}_isEnabled" to app.isEnabled.toString()
                 )
-            }
-            */
-            val appsJson = emptyList<Map<String, String>>()
+            }.flatten().toMap().toMutableMap()
+            
+            // 添加应用数量
+            appsData["count"] = apps.size.toString()
+            
+            android.util.Log.d("AppPlugin", "返回 ${apps.size} 个应用")
             
             PluginMessage.createResponse(
                 message,
-                mapOf(
-                    "apps" to appsJson.toString(),
-                    "count" to appsJson.size.toString()
-                )
+                appsData
             )
         } catch (e: Exception) {
+            android.util.Log.e("AppPlugin", "获取应用列表失败", e)
             e.printStackTrace()
             return PluginMessage.createResponse(
                 message,

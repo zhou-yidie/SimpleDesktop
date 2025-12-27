@@ -69,9 +69,12 @@ class PluginManagementViewModel @Inject constructor(
     /**
      * 配置插件
      */
-    fun configurePlugin(pluginId: String) {
-        // TODO: 实现插件配置界面
-        // 可以使用Navigation Compose跳转到插件配置界面
+    fun configurePlugin(context: android.content.Context, pluginId: String, pluginName: String) {
+        // 启动插件配置界面
+        val intent = android.content.Intent(context, tech.huangsh.onetap.ui.activity.PluginConfigActivity::class.java)
+        intent.putExtra("plugin_id", pluginId)
+        intent.putExtra("plugin_name", pluginName)
+        context.startActivity(intent)
     }
     
     /**

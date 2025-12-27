@@ -15,11 +15,13 @@ import com.hjq.permissions.XXPermissions
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import tech.huangsh.onetap.data.model.Settings
+import tech.huangsh.onetap.data.repository.AppRepository
 import tech.huangsh.onetap.ui.screens.onboarding.OnboardingScreen
 import tech.huangsh.onetap.ui.screens.settings.PermissionManagementScreen
 import tech.huangsh.onetap.ui.theme.OneTapTheme
 import tech.huangsh.onetap.utils.LauncherUtils
 import tech.huangsh.onetap.viewmodel.SettingsViewModel
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class OnboardingActivity : ComponentActivity() {
@@ -61,6 +63,10 @@ class OnboardingActivity : ComponentActivity() {
 class PermissionSetupActivity : ComponentActivity() {
     
     private val settingsViewModel: SettingsViewModel by viewModels()
+    
+    @Inject
+    lateinit var appRepository: AppRepository
+    
     private var hasRequestedPermissions = false
     private var isFromOnboarding = false
     
@@ -97,7 +103,8 @@ class PermissionSetupActivity : ComponentActivity() {
                             // 如果是从设置页面进入，直接返回
                             finish()
                         }
-                    }
+                    },
+                    appRepository = appRepository
                 )
             }
         }

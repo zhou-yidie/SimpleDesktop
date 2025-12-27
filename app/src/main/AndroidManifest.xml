@@ -113,6 +113,13 @@
             android:exported="false"
             android:screenOrientation="user"
             android:theme="@style/Theme.OneTap" tools:ignore="DiscouragedApi"/>
+    
+    <!-- 插件配置Activity -->
+    <activity
+            android:name=".ui.activity.PluginConfigActivity"
+            android:exported="false"
+            android:screenOrientation="user"
+            android:theme="@style/Theme.OneTap" tools:ignore="DiscouragedApi"/>
 
     <!-- 联系人管理Activity -->
     <activity

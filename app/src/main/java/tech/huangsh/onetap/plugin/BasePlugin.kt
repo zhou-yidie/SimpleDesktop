@@ -201,8 +201,9 @@ abstract class BasePlugin : IPlugin {
     
     /**
      * 获取插件配置存储
+     * 可以被子类和外部访问，用于配置界面
      */
-    protected fun getConfigStorage(): IPluginConfigStorage {
+    fun getConfigStorage(): IPluginConfigStorage {
         return pluginHost.getPluginConfigStorage(pluginId)
     }
     

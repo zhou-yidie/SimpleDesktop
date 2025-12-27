@@ -57,15 +57,24 @@ class OneTapApp : Application(), ImageLoaderFactory {
     private fun initializePluginSystem() {
         applicationScope.launch {
             try {
-                // 注册所有内置插件
-                val success = pluginRegistry.registerAllBuiltinPlugins()
-                if (success) {
-                    // 启用依赖顺序内所有插件
-                    pluginManager.enableAllPlugins()
-                    // 通知应用已启动
-                    pluginManager.notifyPluginEvent(PluginEvent.AppStarted)
+                // 步骤1: 注册所有内置插件
+                val registerSuccess = pluginRegistry.registerAllBuiltinPlugins()
+                if (!registerSuccess) {
+                    android.util.Log.e("OneTapApp", "注册内置插件失败")
+                    return@launch
                 }
+                android.util.Log.d("OneTapApp", "内置插件注册成功")
+                
+                // 步骤2: 加载上次保存的插件启用状态
+                // 如果是首次启动，会自动启用所有插件
+                pluginManager.loadEnabledPlugins()
+                android.util.Log.d("OneTapApp", "插件启用状态加载完成")
+                
+                // 步骤3: 通知应用已启动
+                pluginManager.notifyPluginEvent(PluginEvent.AppStarted)
+                android.util.Log.d("OneTapApp", "插件系统初始化完成")
             } catch (e: Exception) {
+                android.util.Log.e("OneTapApp", "初始化插件系统失败", e)
                 e.printStackTrace()
             }
         }
