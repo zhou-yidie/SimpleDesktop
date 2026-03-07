@@ -6,11 +6,9 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ExitToApp
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.Apps
 import androidx.compose.material.icons.filled.DisplaySettings
-import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.People
 import androidx.compose.material3.*
@@ -33,8 +31,10 @@ import tech.huangsh.onetap.data.model.Settings
 import tech.huangsh.onetap.ui.activity.AppManagementActivity
 import tech.huangsh.onetap.ui.activity.ContactManagementActivity
 import tech.huangsh.onetap.ui.activity.DisplaySettingsActivity
+import tech.huangsh.onetap.ui.activity.PermissionGuideActivity
 import tech.huangsh.onetap.ui.screens.components.CommonTopBar
 import tech.huangsh.onetap.viewmodel.SettingsViewModel
+import androidx.compose.material.icons.filled.Bolt
 
 @Composable
 fun SettingsScreen(
@@ -86,6 +86,16 @@ fun SettingsScreen(
                 title = stringResource(R.string.display_settings),
                 onClick = {
                     val intent = Intent(context, DisplaySettingsActivity::class.java)
+                    context.startActivity(intent)
+                }
+            )
+            
+            // 权限指引
+            SettingsItem(
+                icon = Icons.Default.Bolt,
+                title = stringResource(R.string.permission_guide),
+                onClick = {
+                    val intent = Intent(context, PermissionGuideActivity::class.java)
                     context.startActivity(intent)
                 }
             )
@@ -164,96 +174,90 @@ fun SettingsItem(
 @Composable
 fun LauncherSettingsSection(settingsViewModel: SettingsViewModel) {
     val context = LocalContext.current
-    val settings by settingsViewModel.settings.collectAsState(initial = Settings())
     val isDefaultLauncher by settingsViewModel.isDefaultLauncher.collectAsState()
-    var showExitDialog by remember { mutableStateOf(false) }
+    val launcherMode by settingsViewModel.launcherMode.collectAsState()
+    var pendingLauncherMode by remember { mutableStateOf<Boolean?>(null) }
+    var showLauncherDialog by remember { mutableStateOf(false) }
+    var dialogType by remember { mutableStateOf<LauncherDialogType?>(null) }
+    val switchState = pendingLauncherMode ?: launcherMode
     
     Column(
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        // 默认桌面状态
-        SettingsItemWithDescription(
+        // 合并为单个开关：是否开启应用桌面
+        SettingsItem(
             icon = Icons.Default.Home,
-            title = stringResource(R.string.default_launcher_status),
-            description = if (isDefaultLauncher) {
-                stringResource(R.string.is_default_launcher)
-            } else {
-                stringResource(R.string.not_default_launcher) + "\n" + stringResource(R.string.set_as_default_launcher)
-            },
-            descriptionColor = if (isDefaultLauncher) {
-                MaterialTheme.colorScheme.primary
-            } else {
-                MaterialTheme.colorScheme.onSurfaceVariant
-            },
-            onClick = {
-                if (!isDefaultLauncher) {
-                    // 先尝试简单方法
-                    settingsViewModel.triggerDefaultLauncherChooser()
-                } else {
-                    // 如果已经是默认桌面，刷新状态
-                    settingsViewModel.refreshDefaultLauncherStatus()
-                }
+            title = stringResource(R.string.enable_app_launcher),
+            trailing = {
+                Switch(
+                    checked = switchState,
+                    onCheckedChange = { checked ->
+                        pendingLauncherMode = checked
+                        dialogType = if (checked) LauncherDialogType.Enable else LauncherDialogType.Disable
+                        showLauncherDialog = true
+                    }
+                )
             }
         )
-        
-        // 如果不是默认桌面，提供备用设置方法
-        if (!isDefaultLauncher) {
-            SettingsItemWithDescription(
-                icon = Icons.Default.DisplaySettings,
-                title = stringResource(R.string.open_launcher_settings),
-                description = "如果上方方法无效，请使用此选项",
-                onClick = {
-                    settingsViewModel.openDefaultAppSettings()
-                }
-            )
-        }
-        
-        // 退出桌面启动器
-        if (isDefaultLauncher) {
-            SettingsItemWithDescription(
-                icon = Icons.AutoMirrored.Filled.ExitToApp,
-                title = stringResource(R.string.exit_launcher_mode),
-                description = stringResource(R.string.exit_launcher_mode_desc),
-                onClick = {
-                    if (settings.launcherExitConfirmation) {
-                        showExitDialog = true
-                    } else {
-                        settingsViewModel.exitLauncherMode()
-                    }
-                }
-            )
-        }
+
+        // 不再显示“打开桌面设置”入口，开关仅控制是否吞掉返回/Home 操作以防老人误触
     }
     
-    // 退出确认对话框
-    if (showExitDialog) {
+    if (showLauncherDialog && dialogType != null) {
+        val targetMode = pendingLauncherMode ?: launcherMode
+        val (title, message, confirmLabel) = when (dialogType) {
+            LauncherDialogType.Enable -> Triple(
+                stringResource(R.string.launcher_enable_dialog_title),
+                stringResource(R.string.launcher_enable_dialog_message),
+                stringResource(R.string.launcher_enable_dialog_confirm)
+            )
+            LauncherDialogType.Disable -> Triple(
+                stringResource(R.string.launcher_disable_dialog_title),
+                stringResource(R.string.launcher_disable_dialog_message),
+                stringResource(R.string.launcher_disable_dialog_confirm)
+            )
+            else -> Triple("", "", "")
+        }
+
         AlertDialog(
-            onDismissRequest = { showExitDialog = false },
+            onDismissRequest = {
+                pendingLauncherMode = null
+                showLauncherDialog = false
+                dialogType = null
+            },
             title = {
-                Text(
-                    text = stringResource(R.string.exit_launcher_dialog_title),
-                    style = MaterialTheme.typography.headlineSmall
-                )
+                Text(text = title, style = MaterialTheme.typography.headlineSmall)
             },
             text = {
-                Text(
-                    text = stringResource(R.string.exit_launcher_dialog_message),
-                    style = MaterialTheme.typography.bodyMedium
-                )
+                Text(text = message, style = MaterialTheme.typography.bodyMedium)
             },
             confirmButton = {
                 TextButton(
                     onClick = {
-                        showExitDialog = false
-                        settingsViewModel.exitLauncherMode()
+                        dialogType?.let {
+                            if (it == LauncherDialogType.Enable) {
+                                settingsViewModel.updateLauncherMode(true)
+                                settingsViewModel.triggerDefaultLauncherChooser()
+                            } else {
+                                settingsViewModel.updateLauncherMode(false)
+                                settingsViewModel.exitLauncherMode()
+                            }
+                        }
+                        pendingLauncherMode = null
+                        showLauncherDialog = false
+                        dialogType = null
                     }
                 ) {
-                    Text(stringResource(R.string.confirm))
+                    Text(confirmLabel)
                 }
             },
             dismissButton = {
                 TextButton(
-                    onClick = { showExitDialog = false }
+                    onClick = {
+                        pendingLauncherMode = null
+                        showLauncherDialog = false
+                        dialogType = null
+                    }
                 ) {
                     Text(stringResource(R.string.cancel))
                 }
@@ -339,4 +343,9 @@ fun SettingsItemWithDescription(
             trailing()
         }
     }
+}
+
+private enum class LauncherDialogType {
+    Enable,
+    Disable
 }

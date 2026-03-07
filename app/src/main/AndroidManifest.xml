@@ -118,6 +118,21 @@
             android:screenOrientation="user"
             android:theme="@style/Theme.OneTap" tools:ignore="DiscouragedApi"/>
 
+    <!-- 权限指引Activity -->
+    <activity
+            android:name=".ui.activity.PermissionGuideActivity"
+            android:exported="false"
+            android:screenOrientation="user"
+            android:theme="@style/Theme.OneTap" tools:ignore="DiscouragedApi"/>
+
+                <receiver
+                                                android:name=".utils.LauncherGuardReceiver"
+                                                android:exported="false">
+                        <intent-filter>
+                                <action android:name="android.intent.action.CLOSE_SYSTEM_DIALOGS" />
+                        </intent-filter>
+                </receiver>
+
     <!-- 桌面选择器Activity -->
     <activity
             android:name=".ui.activity.LauncherChooserActivity"

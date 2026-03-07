@@ -189,11 +189,15 @@ fun HomeScreen(viewModel: MainViewModel) {
                 contact = selectedContact!!,
                 onDismiss = { viewModel.hideBottomSheet() },
                 onVideoCall = {
-                    viewModel.startWeChatVideoCall(selectedContact!!.wechatNickname)
+                    selectedContact?.let {
+                        viewModel.startWeChatVideoCall(it)
+                    }
                     viewModel.hideBottomSheet()
                 },
                 onVoiceCall = {
-                    viewModel.startWeChatVoiceCall(selectedContact!!.wechatNickname)
+                    selectedContact?.let {
+                        viewModel.startWeChatVoiceCall(it)
+                    }
                     viewModel.hideBottomSheet()
                 },
                 onPhoneCall = { phone ->

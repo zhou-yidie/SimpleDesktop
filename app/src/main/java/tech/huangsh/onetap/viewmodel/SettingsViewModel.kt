@@ -40,11 +40,20 @@ class SettingsViewModel @Inject constructor(
     private val _isDefaultLauncher = MutableStateFlow(false)
     val isDefaultLauncher: StateFlow<Boolean> = _isDefaultLauncher
     
+    private val _launcherMode = MutableStateFlow(true)
+    val launcherMode: StateFlow<Boolean> = _launcherMode
+    
     init {
         checkLauncherMode()
         loadFloatingBallSetting()
         initializeVoiceAssistant()
         checkDefaultLauncherStatus()
+        // 初始化本地的 launcherMode 值
+        viewModelScope.launch {
+            settingsRepository.launcherMode.collect { mode ->
+                _launcherMode.value = mode
+            }
+        }
     }
     
     /**
@@ -218,6 +227,15 @@ class SettingsViewModel @Inject constructor(
     fun updateLauncherExitConfirmation(needConfirmation: Boolean) {
         viewModelScope.launch {
             settingsRepository.updateLauncherExitConfirmation(needConfirmation)
+        }
+    }
+
+    /**
+     * 更新是否启用应用桌面（本地设置）
+     */
+    fun updateLauncherMode(enabled: Boolean) {
+        viewModelScope.launch {
+            settingsRepository.updateLauncherMode(enabled)
         }
     }
 

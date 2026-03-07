@@ -103,6 +103,18 @@
   <string name="onboarding_notification_title">通知权限</string>
   <string name="onboarding_notification_desc">允许应用推送重要提示（如天气突变、待办事项）。</string>
   <string name="onboarding_notification_point_one">在状态栏收到温馨提醒</string>
+  <string name="onboarding_popup_title">后台弹出权限</string>
+  <string name="onboarding_popup_desc">允许应用在后台时仍可拉起微信界面，保证呼叫不中断。</string>
+  <string name="onboarding_popup_point_one">从桌面返回后自动切回微信</string>
+  <string name="onboarding_popup_point_two">确保视频/语音呼叫可以连续执行</string>
+  <string name="onboarding_app_list_title">应用列表访问</string>
+  <string name="onboarding_app_list_desc">授权后可读取设备已安装的应用，方便把常用软件放到首页。</string>
+  <string name="onboarding_app_list_point_one">扫描手机上所有应用</string>
+  <string name="onboarding_app_list_point_two">把常用APP固定在首页快捷区</string>
+  <string name="onboarding_accessibility_title">无障碍辅助服务</string>
+  <string name="onboarding_accessibility_desc">开启后可自动在微信中搜索联系人并点击通话按钮，家人无需再手动操作。</string>
+  <string name="onboarding_accessibility_point_one">自动完成微信搜索与点击</string>
+  <string name="onboarding_accessibility_point_two">长辈不用反复切换应用</string>
   <string name="onboarding_previous">上一步</string>
   <string name="onboarding_next">下一步</string>
   <string name="onboarding_finish">完成设置</string>
@@ -151,6 +163,8 @@
   <string name="is_default_launcher">当前是默认桌面</string>
   <string name="not_default_launcher">当前不是默认桌面</string>
   <string name="set_as_default_launcher">设为默认桌面</string>
+  <string name="enable_app_launcher">是否开启应用桌面</string>
+  <string name="permission_guide">权限指引</string>
   <string name="exit_launcher_mode">退出桌面启动器</string>
   <string name="exit_launcher_mode_desc">退出后将恢复系统默认桌面</string>
   <string name="exit_launcher_confirmation">退出确认</string>
@@ -163,6 +177,12 @@
   <string name="open_launcher_settings">打开桌面设置</string>
   <string name="launcher_utils_error">无法执行操作</string>
   <string name="no_system_launcher_found">未找到系统默认桌面</string>
+  <string name="launcher_enable_dialog_title">设为默认桌面</string>
+  <string name="launcher_enable_dialog_message">开启后，请在弹出的选择器中选择“一键通桌面”为默认桌面，这样按返回/Home/上滑都将停留在应用中。</string>
+  <string name="launcher_enable_dialog_confirm">去设置默认</string>
+  <string name="launcher_disable_dialog_title">恢复系统桌面</string>
+  <string name="launcher_disable_dialog_message">关闭后，将恢复为普通应用，可通过返回/Home/上滑退出到系统桌面。</string>
+  <string name="launcher_disable_dialog_confirm">恢复</string>
 
   <string name="wx_make_call_service_helper">开启该服务后，可一键拨打微信视频、微信语音。</string>
   <string name="contact_avatar_description">联系人 %1$s 的头像</string>

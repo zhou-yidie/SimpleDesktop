@@ -135,7 +135,8 @@ class ContactRepository(
      * @return 操作是否成功启动
      */
     fun startWeChatVideoCall(wechatNickname: String?): Boolean {
-        if (wechatNickname.isNullOrEmpty()) {
+        val targetNickname = wechatNickname?.trim()
+        if (targetNickname.isNullOrEmpty()) {
             return false
         }
 
@@ -154,7 +155,7 @@ class ContactRepository(
         }
 
         // 设置微信视频通话参数
-        WeChatData.updateValue(wechatNickname)
+        WeChatData.updateValue(targetNickname)
         WeChatData.updateVideo(true)
         WeChatData.updateIndex(1)
 
@@ -167,7 +168,8 @@ class ContactRepository(
      * @return 操作是否成功启动
      */
     fun startWeChatVoiceCall(wechatNickname: String?): Boolean {
-        if (wechatNickname.isNullOrEmpty()) {
+        val targetNickname = wechatNickname?.trim()
+        if (targetNickname.isNullOrEmpty()) {
             return false
         }
 
@@ -186,7 +188,7 @@ class ContactRepository(
         }
 
         // 设置微信语音通话参数
-        WeChatData.updateValue(wechatNickname)
+        WeChatData.updateValue(targetNickname)
         WeChatData.updateVideo(false)
         WeChatData.updateIndex(1)
 

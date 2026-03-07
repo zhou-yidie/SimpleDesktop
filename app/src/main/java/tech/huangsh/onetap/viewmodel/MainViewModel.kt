@@ -129,15 +129,17 @@ class MainViewModel @Inject constructor(
     /**
      * 发起微信视频通话
      */
-    fun startWeChatVideoCall(wechatNickname: String?) {
-        contactRepository.startWeChatVideoCall(wechatNickname)
+    fun startWeChatVideoCall(contact: Contact) {
+        val nickname = contact.wechatNickname?.takeIf { it.isNotBlank() } ?: contact.name
+        contactRepository.startWeChatVideoCall(nickname)
     }
     
     /**
      * 发起微信语音通话
      */
-    fun startWeChatVoiceCall(wechatNickname: String?) {
-        contactRepository.startWeChatVoiceCall(wechatNickname)
+    fun startWeChatVoiceCall(contact: Contact) {
+        val nickname = contact.wechatNickname?.takeIf { it.isNotBlank() } ?: contact.name
+        contactRepository.startWeChatVoiceCall(nickname)
     }
     
     /**

@@ -171,22 +171,38 @@ object LauncherUtils {
      */
     fun exitLauncherMode(context: Context) {
         try {
-            // 方法1：尝试启动系统桌面选择器
-            if (tryLaunchSystemChooser(context)) {
-                return
+            // 优先：清除本应用的首选活动记录，让系统忘记 OneTap 为默认桌面
+            try {
+                val pm = context.packageManager
+                pm.clearPackagePreferredActivities(context.packageName)
+            } catch (e: Exception) {
+                // 忽略清除失败，继续后续流程
             }
-            
-            // 方法2：尝试直接启动系统默认桌面
+
+            // 直接发起 Home Intent（不要使用 createChooser），系统会在没有首选项时弹出选择器
+            try {
+                val homeIntent = Intent(Intent.ACTION_MAIN).apply {
+                    addCategory(Intent.CATEGORY_HOME)
+                    flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                }
+                context.startActivity(homeIntent)
+                Toast.makeText(context, "已尝试切换到系统桌面，请选择并可设置为默认。", Toast.LENGTH_LONG).show()
+                return
+            } catch (e: Exception) {
+                // 如果直接启动 Home 失败，回退到原有策略
+            }
+
+            // 退回：尝试直接启动系统默认桌面
             if (tryLaunchSystemLauncher(context)) {
                 return
             }
-            
-            // 方法3：尝试清除默认设置并触发选择器
+
+            // 再退回：尝试清除默认设置并触发选择器（兼容某些厂商）
             if (tryClearDefaultAndChoose(context)) {
                 return
             }
-            
-            // 方法4：引导用户到设置页面
+
+            // 最后：引导用户到设置页面
             openDefaultAppSettings(context)
             Toast.makeText(context, "请在设置中选择其他桌面应用", Toast.LENGTH_LONG).show()
         } catch (e: Exception) {
