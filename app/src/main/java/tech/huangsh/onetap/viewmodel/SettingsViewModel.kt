@@ -230,6 +230,20 @@ class SettingsViewModel @Inject constructor(
     }
     
     /**
+     * 更新WiFi监控开关
+     */
+    fun updateWifiMonitorEnabled(enabled: Boolean) {
+        viewModelScope.launch {
+            settingsRepository.updateWifiMonitorEnabled(enabled)
+            if (enabled) {
+                tech.huangsh.onetap.service.WifiMonitorService.start(context)
+            } else {
+                tech.huangsh.onetap.service.WifiMonitorService.stop(context)
+            }
+        }
+    }
+    
+    /**
      * 刷新默认启动器状态
      */
     fun refreshDefaultLauncherStatus() {

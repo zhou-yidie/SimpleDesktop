@@ -33,7 +33,7 @@ class ContactPlugin @Inject constructor(
     override val name: String = "联系人管理"
     override val version: String = "1.0.0"
     override val description: String = "提供联系人管理功能，包括添加、编辑、删除联系人，以及拨打电话和微信通话"
-    override val author: String = "OneTap Team"
+    override val author: String = "SimpleDesktop Team"
     
     override suspend fun onInitializing() {
         super.onInitializing()

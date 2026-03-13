@@ -145,7 +145,7 @@ adb install app/build/outputs/apk/debug/app-debug.apk
 adb shell pm clear tech.huangsh.onetap
 
 # 查看日志
-adb logcat | grep OneTap
+adb logcat | grep SimpleDesktop
 ```
 
 ## 📝 使用流程
@@ -230,4 +230,4 @@ adb logcat | grep OneTap
 **编译结果**: BUILD SUCCESSFUL in 736ms  
 **APK大小**: 24MB  
 **开发者**: Claude AI Assistant  
-**项目**: OneTap (一键通) - 老年人简洁桌面  
+**项目**: SimpleDesktop (简易桌面) - 老年人简洁桌面  

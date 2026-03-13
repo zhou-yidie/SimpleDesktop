@@ -12,7 +12,7 @@ import tech.huangsh.onetap.plugin.impl.AppPlugin
 import tech.huangsh.onetap.plugin.impl.ContactPlugin
 import tech.huangsh.onetap.plugin.impl.WeatherPlugin
 import tech.huangsh.onetap.ui.screens.plugin.PluginConfigScreen
-import tech.huangsh.onetap.ui.theme.OneTapTheme
+import tech.huangsh.onetap.ui.theme.SimpleDesktopTheme
 import javax.inject.Inject
 
 /**
@@ -37,7 +37,7 @@ class PluginConfigActivity : ComponentActivity() {
         val pluginName = intent.getStringExtra("plugin_name") ?: "插件配置"
         
         setContent {
-            OneTapTheme {
+            SimpleDesktopTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background

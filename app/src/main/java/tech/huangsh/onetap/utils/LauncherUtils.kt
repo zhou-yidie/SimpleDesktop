@@ -87,46 +87,29 @@ object LauncherUtils {
     }
     
     /**
-     * 触发默认桌面选择器 - 最简单可靠的方法
+     * 触发默认桌面选择器 - 兼容 Android 10+ (RoleManager) 的方法
      */
     fun triggerDefaultLauncherChooser(context: Context) {
+        forceShowLauncherChooser(context)
+    }
+    
+    /**
+     * 强制清除默认桌面设置，触发选择器 / 使用 RoleManager 申请权限
+     */
+    fun forceShowLauncherChooser(context: Context) {
         try {
-            // 最直接的方法：创建Home Intent并启动
-            val homeIntent = Intent(Intent.ACTION_MAIN).apply {
-                addCategory(Intent.CATEGORY_HOME)
-                flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            // 最可靠且兼容性最好的方案：委托给专门处理系统弹窗/Intent 的透明 Activity
+            val chooserIntent = Intent(context, LauncherChooserActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
             }
-            
-            // 直接启动，让系统决定是否显示选择器
-            context.startActivity(homeIntent)
-            
-            // 给用户一个提示
-            Toast.makeText(context, "按Home键或重新打开应用来选择默认桌面", Toast.LENGTH_LONG).show()
-            
+            context.startActivity(chooserIntent)
         } catch (e: Exception) {
-            // 如果上面的方法失败，尝试打开设置页面
+            // 如果上述方案严重失败，尝试最后兜底打开设置页面
             try {
                 openDefaultAppSettings(context)
             } catch (e2: Exception) {
                 Toast.makeText(context, "请手动设置默认桌面：设置 > 应用 > 默认应用 > 桌面", Toast.LENGTH_LONG).show()
             }
-        }
-    }
-    
-    /**
-     * 强制清除默认桌面设置，触发选择器
-     */
-    fun forceShowLauncherChooser(context: Context) {
-        try {
-            // 方法1：使用专门的Activity
-            val chooserIntent = Intent(context, LauncherChooserActivity::class.java).apply {
-                flags = Intent.FLAG_ACTIVITY_NEW_TASK
-            }
-            context.startActivity(chooserIntent)
-            
-        } catch (e: Exception) {
-            // 方法2：直接启动Home Intent
-            triggerDefaultLauncherChooser(context)
         }
     }
     

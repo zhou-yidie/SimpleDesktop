@@ -1,8 +1,8 @@
-# OneTap 插件架构
+# SimpleDesktop 插件架构
 
 ## 概述
 
-OneTap插件架构是一个灵活、可扩展的插件系统，允许将应用功能模块化为独立的插件，降低功能模块间的耦合度，并支持动态加载和卸载插件。
+SimpleDesktop插件架构是一个灵活、可扩展的插件系统，允许将应用功能模块化为独立的插件，降低功能模块间的耦合度，并支持动态加载和卸载插件。
 
 ## 架构组成
 
@@ -94,7 +94,7 @@ class MyPlugin @Inject constructor(
     override val name: String = "我的插件"
     override val version: String = "1.0.0"
     override val description: String = "这是一个示例插件"
-    override val author: String = "OneTap Team"
+    override val author: String = "SimpleDesktop Team"
     
     override suspend fun onStarted() {
         super.onStarted()
@@ -129,7 +129,7 @@ fun provideMyPlugin(
 
 // 在应用启动时注册插件
 @HiltAndroidApp
-class OneTapApp : Application() {
+class SimpleDesktopApp : Application() {
     @Inject
     lateinit var pluginRegistry: PluginRegistry
     
@@ -138,7 +138,7 @@ class OneTapApp : Application() {
         
         // 注册插件
         lifecycleScope.launch {
-            val myPlugin = MyPlugin(this@OneTapApp)
+            val myPlugin = MyPlugin(this@SimpleDesktopApp)
             pluginRegistry.registerPlugin(myPlugin)
         }
     }

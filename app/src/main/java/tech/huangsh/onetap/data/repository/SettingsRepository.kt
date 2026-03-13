@@ -43,6 +43,7 @@ class SettingsRepository(private val context: Context) {
         val SHOW_EXIT_LAUNCHER = booleanPreferencesKey("show_exit_launcher")
         val LAUNCHER_EXIT_CONFIRMATION = booleanPreferencesKey("launcher_exit_confirmation")
         val IS_FIRST_LAUNCH = booleanPreferencesKey("is_first_launch")
+        val WIFI_MONITOR_ENABLED = booleanPreferencesKey("wifi_monitor_enabled")
     }
 
     // 语音设置
@@ -72,6 +73,7 @@ class SettingsRepository(private val context: Context) {
     val showExitLauncher: Flow<Boolean> = dataStore.data.map { it[SHOW_EXIT_LAUNCHER] ?: true }
     val launcherExitConfirmation: Flow<Boolean> = dataStore.data.map { it[LAUNCHER_EXIT_CONFIRMATION] ?: true }
     val isFirstLaunch: Flow<Boolean> = dataStore.data.map { it[IS_FIRST_LAUNCH] ?: true }
+    val wifiMonitorEnabled: Flow<Boolean> = dataStore.data.map { it[WIFI_MONITOR_ENABLED] ?: false }
 
     // 获取所有设置
     val settings: Flow<Settings> = dataStore.data.map { preferences ->
@@ -89,7 +91,8 @@ class SettingsRepository(private val context: Context) {
             isDefaultLauncher = preferences[IS_DEFAULT_LAUNCHER] ?: false,
             showExitLauncher = preferences[SHOW_EXIT_LAUNCHER] ?: true,
             launcherExitConfirmation = preferences[LAUNCHER_EXIT_CONFIRMATION] ?: true,
-            isFirstLaunch = preferences[IS_FIRST_LAUNCH] ?: true
+            isFirstLaunch = preferences[IS_FIRST_LAUNCH] ?: true,
+            isWifiMonitorEnabled = preferences[WIFI_MONITOR_ENABLED] ?: false
         )
     }
 
@@ -148,6 +151,10 @@ class SettingsRepository(private val context: Context) {
 
     suspend fun updateIsFirstLaunch(isFirst: Boolean) {
         dataStore.edit { it[IS_FIRST_LAUNCH] = isFirst }
+    }
+
+    suspend fun updateWifiMonitorEnabled(enabled: Boolean) {
+        dataStore.edit { it[WIFI_MONITOR_ENABLED] = enabled }
     }
 
     /**

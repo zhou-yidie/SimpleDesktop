@@ -8,7 +8,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import tech.huangsh.onetap.ui.screens.settings.SettingsScreen
 import dagger.hilt.android.AndroidEntryPoint
-import tech.huangsh.onetap.ui.theme.OneTapTheme
+import tech.huangsh.onetap.ui.theme.SimpleDesktopTheme
 import tech.huangsh.onetap.viewmodel.SettingsViewModel
 import tech.huangsh.onetap.data.model.Settings
 
@@ -22,7 +22,7 @@ class SettingsActivity : ComponentActivity() {
         
         setContent {
             val settings by viewModel.settings.collectAsState(initial = Settings())
-            OneTapTheme(
+            SimpleDesktopTheme(
                 darkTheme = false,
                 highContrast = settings.highContrast,
                 fontSize = settings.fontSize,

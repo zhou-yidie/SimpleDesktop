@@ -150,6 +150,24 @@ class AppRepository(
     }
 
     /**
+     * 按名称查找并启动应用 (模糊匹配)
+     */
+    suspend fun findAppByName(name: String): AppInfo? {
+        val apps = getCachedApps()
+        // 1. 精确匹配
+        apps.find { it.appName.equals(name, ignoreCase = true) }?.let { return it }
+        
+        // 2. 包含匹配
+        apps.find { it.appName.contains(name, ignoreCase = true) }?.let { return it }
+        
+        // 3. 关键词匹配 (针对常见应用)
+        if (name.contains("微信")) return apps.find { it.packageName == "com.tencent.mm" }
+        if (name.contains("搜索") || name.contains("浏览器")) return apps.find { it.packageName == "com.android.browser" || it.packageName == "com.google.android.chrome" }
+        
+        return null
+    }
+
+    /**
      * Drawable转ByteArray（优化版本）
      */
     private fun drawableToByteArray(drawable: Drawable): ByteArray {

@@ -18,7 +18,7 @@ import tech.huangsh.onetap.data.model.Settings
 import tech.huangsh.onetap.data.repository.AppRepository
 import tech.huangsh.onetap.ui.screens.onboarding.OnboardingScreen
 import tech.huangsh.onetap.ui.screens.settings.PermissionManagementScreen
-import tech.huangsh.onetap.ui.theme.OneTapTheme
+import tech.huangsh.onetap.ui.theme.SimpleDesktopTheme
 import tech.huangsh.onetap.utils.LauncherUtils
 import tech.huangsh.onetap.viewmodel.SettingsViewModel
 import javax.inject.Inject
@@ -34,7 +34,7 @@ class OnboardingActivity : ComponentActivity() {
         
         setContent {
             val settings by settingsViewModel.settings.collectAsState(initial = Settings())
-            OneTapTheme(
+            SimpleDesktopTheme(
                 darkTheme = false,
                 highContrast = settings.highContrast,
                 fontSize = settings.fontSize,
@@ -79,7 +79,7 @@ class PermissionSetupActivity : ComponentActivity() {
         
         setContent {
             val settings by settingsViewModel.settings.collectAsState(initial = Settings())
-            OneTapTheme(
+            SimpleDesktopTheme(
                 darkTheme = false,
                 highContrast = settings.highContrast,
                 fontSize = settings.fontSize,

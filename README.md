@@ -1,7 +1,7 @@
-# OneTap 一键通
+# SimpleDesktop 简易桌面
 
 <div align="center">
-  <img src="app/src/main/ic_launcher-playstore.png" width="120" height="120" alt="OneTap Logo">
+  <img src="app/src/main/ic_launcher-playstore.png" width="120" height="120" alt="SimpleDesktop Logo">
   <br>
   <h3>为老年人量身定制的简化版Android桌面应用</h3>
   <p>让科技更贴心，让操作更简单</p>
@@ -9,7 +9,7 @@
 
 ## 📱 项目简介
 
-OneTap（一键通）是一款专为老年人设计的Android桌面启动器应用。它简化了智能手机的操作界面，提供大字体、高对比度的显示效果，让老年人能够轻松使用智能手机的基本功能。
+SimpleDesktop（简易桌面）是一款专为老年人设计的Android桌面启动器应用。它简化了智能手机的操作界面，提供大字体、高对比度的显示效果，让老年人能够轻松使用智能手机的基本功能。
 
 ### ✨ 主要特性
 
@@ -31,7 +31,7 @@ OneTap（一键通）是一款专为老年人设计的Android桌面启动器应�
 
 ### 核心技术栈
 - **UI框架**：Jetpack Compose + Material3
-- **架构模式**：MVVM + Repository Pattern
+- **架构模式**：MVVM + Repository Pattern + 动态插件化架构 (Plugin Architecture)
 - **依赖注入**：Dagger Hilt
 - **数据库**：Room Database
 - **数据存储**：DataStore Preferences
@@ -80,7 +80,10 @@ app/src/main/java/tech/huangsh/onetap/
 - 应用分类显示
 - 拖拽排序
 
-### 4. 设置功能
+### 4. 引导与设置功能 (Onboarding & Settings)
+- 首次进入的4页滑动交互式图文引导
+- 集中式的权限管理页面与可视化状态面板
+- 智能的无障碍服务图文引导对话框与检测机制
 - 语音设置（语音反馈、语速、音量）
 - 显示设置（字体大小、对比度）
 - 主题设置（蓝色/橙色主题）
@@ -116,8 +119,8 @@ app/src/main/java/tech/huangsh/onetap/
 ### 构建项目
 1. 克隆项目到本地
 ```bash
-git clone https://github.com/yourusername/OneTap.git
-cd OneTap
+git clone https://github.com/zhou-yidie/SimpleDesktop.git
+cd SimpleDesktop
 ```
 
 2. 使用Android Studio打开项目
@@ -157,7 +160,7 @@ cd OneTap
 
 ## 🤝 贡献指南
 
-欢迎为OneTap项目贡献代码！
+欢迎为SimpleDesktop项目贡献代码！
 
 ### 贡献流程
 1. Fork本项目

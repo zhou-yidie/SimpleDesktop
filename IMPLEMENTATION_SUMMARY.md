@@ -138,4 +138,4 @@ adb shell am start -n tech.huangsh.onetap/.ui.activity.MainActivity
 
 **完成时间**: 2025-12-27
 **开发者**: Claude AI Assistant
-**项目**: OneTap (一键通) - 老年人简洁桌面
+**项目**: SimpleDesktop (简易桌面) - 老年人简洁桌面

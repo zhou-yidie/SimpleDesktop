@@ -135,7 +135,7 @@
   <string name="wx_make_call_service_helper">开启该服务后，可一键拨打微信视频、微信语音。</string>
   
   <!-- 引导页 -->
-  <string name="onboarding_welcome_title">欢迎使用一键通</string>
+  <string name="onboarding_welcome_title">欢迎使用简易桌面</string>
   <string name="onboarding_welcome_subtitle">为老年人设计的简洁桌面</string>
   <string name="onboarding_features_title">核心功能</string>
   <string name="onboarding_features_subtitle">一键直达，简单易用</string>
@@ -168,7 +168,7 @@
   <string name="permission_accessibility_title">无障碍服务</string>
   <string name="permission_accessibility_desc">用于微信自动拨打视频/语音通话</string>
   <string name="permission_launcher_title">默认桌面</string>
-  <string name="permission_launcher_desc">设为默认桌面后，按Home键直接回到一键通</string>
+  <string name="permission_launcher_desc">设为默认桌面后，按Home键直接回到简易桌面</string>
   <string name="permission_request">授权</string>
   <string name="permission_go_settings">去设置</string>
   <string name="permission_all_granted">所有权限已授予</string>
@@ -178,10 +178,10 @@
   <string name="accessibility_guide_title">开启无障碍服务</string>
   <string name="accessibility_guide_subtitle">用于微信自动拨打通话</string>
   <string name="accessibility_guide_why_title">为什么需要？</string>
-  <string name="accessibility_guide_why_desc">无障碍服务可以帮助一键通自动完成以下操作：\n\n• 打开微信应用\n• 搜索联系人\n• 发起视频/语音通话\n\n这样您只需点击一次，就能直接拨打微信电话</string>
+  <string name="accessibility_guide_why_desc">无障碍服务可以帮助简易桌面自动完成以下操作：\n\n• 打开微信应用\n• 搜索联系人\n• 发起视频/语音通话\n\n这样您只需点击一次，就能直接拨打微信电话</string>
   <string name="accessibility_guide_how_title">如何开启？</string>
   <string name="accessibility_guide_step1">1. 点击下方按钮打开设置</string>
-  <string name="accessibility_guide_step2">2. 找到"一键通"或"SelectToSpeakService"</string>
+  <string name="accessibility_guide_step2">2. 找到"简易桌面"或"SelectToSpeakService"</string>
   <string name="accessibility_guide_step3">3. 开启服务开关</string>
   <string name="accessibility_guide_step4">4. 在弹出的对话框中点击"允许"</string>
   <string name="accessibility_guide_open_settings">打开无障碍设置</string>
@@ -190,4 +190,17 @@
   <string name="accessibility_service_disabled">无障碍服务未开启</string>
   <string name="accessibility_guide_success">太棒了！无障碍服务已成功开启\n\n现在您可以使用微信通话功能了</string>
   <string name="accessibility_guide_later">稍后设置</string>
+  
+  <!-- WiFi网络监控 -->
+  <string name="wifi_monitor_title">WiFi网络监控</string>
+  <string name="wifi_monitor_channel_name">WiFi网络监控</string>
+  <string name="wifi_monitor_channel_desc">持续监控WiFi连接状态</string>
+  <string name="wifi_monitor_notification_title">WiFi监控运行中</string>
+  <string name="wifi_monitor_notification_text">正在持续检测WiFi连接状态</string>
+  <string name="wifi_no_network_title">没有WiFi网络</string>
+  <string name="wifi_no_network_message">当前没有可用WiFi网络\n请寻找合适的网络</string>
+  <string name="wifi_dialog_dismiss">我知道了</string>
+  
+  <!-- 自动开启WiFi的无障碍服务 -->
+  <string name="accessibility_service_wifi_desc">用于在Android 10及以上系统自动跳转并开启WiFi功能。</string>
 </resources>

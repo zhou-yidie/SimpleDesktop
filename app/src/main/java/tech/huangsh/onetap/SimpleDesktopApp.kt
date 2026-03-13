@@ -20,7 +20,7 @@ import javax.inject.Inject
  * 简易桌面应用类
  */
 @HiltAndroidApp
-class OneTapApp : Application(), ImageLoaderFactory {
+class SimpleDesktopApp : Application(), ImageLoaderFactory {
     
     @Inject
     lateinit var pluginRegistry: PluginRegistry
@@ -60,21 +60,21 @@ class OneTapApp : Application(), ImageLoaderFactory {
                 // 步骤1: 注册所有内置插件
                 val registerSuccess = pluginRegistry.registerAllBuiltinPlugins()
                 if (!registerSuccess) {
-                    android.util.Log.e("OneTapApp", "注册内置插件失败")
+                    android.util.Log.e("SimpleDesktopApp", "注册内置插件失败")
                     return@launch
                 }
-                android.util.Log.d("OneTapApp", "内置插件注册成功")
+                android.util.Log.d("SimpleDesktopApp", "内置插件注册成功")
                 
                 // 步骤2: 加载上次保存的插件启用状态
                 // 如果是首次启动，会自动启用所有插件
                 pluginManager.loadEnabledPlugins()
-                android.util.Log.d("OneTapApp", "插件启用状态加载完成")
+                android.util.Log.d("SimpleDesktopApp", "插件启用状态加载完成")
                 
                 // 步骤3: 通知应用已启动
                 pluginManager.notifyPluginEvent(PluginEvent.AppStarted)
-                android.util.Log.d("OneTapApp", "插件系统初始化完成")
+                android.util.Log.d("SimpleDesktopApp", "插件系统初始化完成")
             } catch (e: Exception) {
-                android.util.Log.e("OneTapApp", "初始化插件系统失败", e)
+                android.util.Log.e("SimpleDesktopApp", "初始化插件系统失败", e)
                 e.printStackTrace()
             }
         }

@@ -20,6 +20,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Android
 import androidx.compose.material.icons.filled.FlashlightOn
 import androidx.compose.material.icons.filled.FlashlightOff
+import androidx.compose.material.icons.filled.Mic
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -39,7 +40,8 @@ import tech.huangsh.onetap.ui.activity.PluginManagementActivity
 import tech.huangsh.onetap.ui.activity.SettingsActivity
 import tech.huangsh.onetap.ui.screens.components.ContactActionBottomSheet
 import tech.huangsh.onetap.ui.screens.components.ContactItem
-import tech.huangsh.onetap.ui.theme.OneTapTheme
+import tech.huangsh.onetap.ui.screens.components.VoiceAssistantDialog
+import tech.huangsh.onetap.ui.theme.SimpleDesktopTheme
 import tech.huangsh.onetap.utils.ImageUtils
 import tech.huangsh.onetap.viewmodel.MainViewModel
 
@@ -57,41 +59,26 @@ fun HomeScreen(viewModel: MainViewModel) {
     val showBottomSheet by viewModel.showBottomSheet.collectAsState()
     val selectedContact by viewModel.selectedContact.collectAsState()
     
+    // 语音助手对话框状态
+    var showVoiceAssistantDialog by remember { mutableStateOf(false) }
+    
     // 手电筒状态
-    var isFlashlightOn by remember { mutableStateOf(false) }
+    var isFlashlightOn by remember { mutableStateOf(tech.huangsh.onetap.utils.FlashlightHelper.isOn()) }
     
     // 手电筒开关函数
     fun toggleFlashlight() {
-        try {
-            val cameraManager = context.getSystemService(Context.CAMERA_SERVICE) as CameraManager
-            val cameraId = cameraManager.cameraIdList.firstOrNull { id ->
-                cameraManager.getCameraCharacteristics(id)
-                    .get(CameraCharacteristics.FLASH_INFO_AVAILABLE) == true
-            }
-            if (cameraId != null) {
-                isFlashlightOn = !isFlashlightOn
-                cameraManager.setTorchMode(cameraId, isFlashlightOn)
-            } else {
-                Toast.makeText(context, "您的设备不支持手电筒", Toast.LENGTH_SHORT).show()
-            }
-        } catch (e: Exception) {
+        if (tech.huangsh.onetap.utils.FlashlightHelper.toggle(context)) {
+            isFlashlightOn = tech.huangsh.onetap.utils.FlashlightHelper.isOn()
+        } else {
             Toast.makeText(context, "手电筒操作失败", Toast.LENGTH_SHORT).show()
-            isFlashlightOn = false
         }
     }
     
     // 页面销毁时关闭手电筒
     DisposableEffect(Unit) {
         onDispose {
-            if (isFlashlightOn) {
-                try {
-                    val cameraManager = context.getSystemService(Context.CAMERA_SERVICE) as CameraManager
-                    val cameraId = cameraManager.cameraIdList.firstOrNull { id ->
-                        cameraManager.getCameraCharacteristics(id)
-                            .get(CameraCharacteristics.FLASH_INFO_AVAILABLE) == true
-                    }
-                    cameraId?.let { cameraManager.setTorchMode(it, false) }
-                } catch (_: Exception) {}
+            if (tech.huangsh.onetap.utils.FlashlightHelper.isOn()) {
+                tech.huangsh.onetap.utils.FlashlightHelper.turnOff(context)
             }
         }
     }
@@ -199,39 +186,7 @@ fun HomeScreen(viewModel: MainViewModel) {
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                // 常用APP（一行2个）
-                Card(
-                    shape = RoundedCornerShape(16.dp),
-                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Row(
-                        modifier = Modifier.fillMaxWidth().padding(20.dp),
-                        horizontalArrangement = Arrangement.SpaceEvenly
-                    ) {
-                        apps.take(2).forEach {
-                            AppCard(
-                                app = it,
-                                modifier = Modifier.weight(1f),
-                                onClick = { packageName ->
-                                    val intent = viewModel.launchApp(packageName)
-                                    intent?.let { app -> context.startActivity(app) }
-                                }
-                            )
-                        }
-                    }
-
-                }
-            }
-
-            Spacer(modifier = Modifier.height(24.dp))
-
-            // 联系人网格 + 手电筒卡片 (每行2个)
+            // 统一网格：外设 + 联系人 + 应用程序
             LazyVerticalGrid(
                 columns = GridCells.Fixed(2),
                 modifier = Modifier.fillMaxSize(),
@@ -239,6 +194,22 @@ fun HomeScreen(viewModel: MainViewModel) {
                 horizontalArrangement = Arrangement.spacedBy(16.dp),
                 contentPadding = PaddingValues(bottom = 100.dp)
             ) {
+                // 1. 第一行左边：手电筒大卡片
+                item {
+                    FlashlightCard(
+                        isOn = isFlashlightOn,
+                        onClick = { toggleFlashlight() }
+                    )
+                }
+                
+                // 2. 第一行右边：语音助手
+                item {
+                    VoiceAssistantPlaceholderCard(
+                        onClick = { showVoiceAssistantDialog = true }
+                    )
+                }
+                
+                // 3. 第二行及以后：优先排列系统联系人
                 items(contacts) { contact ->
                     ContactItem(
                         contact = contact,
@@ -247,11 +218,14 @@ fun HomeScreen(viewModel: MainViewModel) {
                     )
                 }
                 
-                // 手电筒大卡片
-                item {
-                    FlashlightCard(
-                        isOn = isFlashlightOn,
-                        onClick = { toggleFlashlight() }
+                // 4. 联系人之后：排列用户安装的应用程序
+                items(apps) { app ->
+                    AppGridCard(
+                        app = app,
+                        onClick = { packageName ->
+                            val intent = viewModel.launchApp(packageName)
+                            intent?.let { appIntent -> context.startActivity(appIntent) }
+                        }
                     )
                 }
             }
@@ -280,29 +254,58 @@ fun HomeScreen(viewModel: MainViewModel) {
                 }
             )
         }
+        
+        // 语音助手对话框
+        if (showVoiceAssistantDialog) {
+            val scope = rememberCoroutineScope()
+            VoiceAssistantDialog(
+                contacts = contacts,
+                onDismiss = { showVoiceAssistantDialog = false },
+                onMakePhoneCall = { contact ->
+                    contact.phone?.let { phone ->
+                        requestPhonePermissionAndCall(phone)
+                    }
+                },
+                onMakeWeChatCall = { contact ->
+                    viewModel.startWeChatVideoCall(contact.wechatNickname)
+                },
+                onLaunchApp = { app ->
+                    val intent = viewModel.launchApp(app.packageName)
+                    intent?.let { context.startActivity(it) }
+                },
+                onSearchApp = { name ->
+                    viewModel.findAppByName(name)
+                },
+                voiceAssistant = null // 如果有全局 VoiceAssistant 实例可以传入
+            )
+        }
     }
 }
 
 @Composable
-fun AppCard(
+fun AppGridCard(
     app: AppInfo,
-    modifier: Modifier = Modifier,
     onClick: (String) -> Unit
 ) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = modifier
-            .clickable { onClick(app.packageName) }
+    Card(
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surface
+        ),
+        modifier = Modifier
             .fillMaxWidth()
+            .aspectRatio(1f)
+            .clickable { onClick(app.packageName) }
     ) {
-        Card(
-            shape = RoundedCornerShape(25.dp),
-            modifier = Modifier.size(100.dp),
-            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
         ) {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier.fillMaxSize()
+            // 图标渲染部分复用原有逻辑，限制大小以适应卡片
+            Box(
+                modifier = Modifier.size(80.dp),
+                contentAlignment = Alignment.Center
             ) {
                 when {
                     app.iconBytes != null -> {
@@ -326,13 +329,52 @@ fun AppCard(
                     }
                 }
             }
+            Spacer(Modifier.height(12.dp))
+            Text(
+                text = app.appName,
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Medium,
+                color = MaterialTheme.colorScheme.onSurface,
+                maxLines = 1,
+                overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis
+            )
         }
-        Spacer(Modifier.height(8.dp))
-        Text(
-            text = app.appName,
-            color = MaterialTheme.colorScheme.onSurface,
-            fontSize = 16.sp
-        )
+    }
+}
+
+@Composable
+fun VoiceAssistantPlaceholderCard(
+    onClick: () -> Unit
+) {
+    Card(
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surface
+        ),
+        modifier = Modifier
+            .fillMaxWidth()
+            .aspectRatio(1f)
+            .clickable { onClick() }
+    ) {
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            Icon(
+                imageVector = Icons.Default.Mic,
+                contentDescription = "语音助手",
+                modifier = Modifier.size(80.dp),
+                tint = MaterialTheme.colorScheme.primary
+            )
+            Spacer(Modifier.height(12.dp))
+            Text(
+                text = "语音助手",
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Medium,
+                color = MaterialTheme.colorScheme.onSurface
+            )
+        }
     }
 }
 
@@ -379,7 +421,7 @@ fun FlashlightCard(
 @Preview
 @Composable
 fun contactCardPreview() {
-    OneTapTheme {
+    SimpleDesktopTheme {
         val apps = listOf(
             AppInfo(
                 packageName = "tech.huangsh.assistant",
@@ -396,10 +438,8 @@ fun contactCardPreview() {
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
             apps.forEach { app ->
-                AppCard(
-                    app = app,
-                    modifier = Modifier.weight(1f)
-                ) {
+                Box(modifier = Modifier.weight(1f)) {
+                    AppGridCard(app = app) { }
                 }
             }
         }

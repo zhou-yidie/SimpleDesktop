@@ -24,7 +24,7 @@ class AppPlugin @Inject constructor(
     override val name: String = "应用管理"
     override val version: String = "1.0.0"
     override val description: String = "提供应用管理功能，包括已安装应用扫描、常用应用管理和启动"
-    override val author: String = "OneTap Team"
+    override val author: String = "SimpleDesktop Team"
     
     override suspend fun onInitializing() {
         super.onInitializing()

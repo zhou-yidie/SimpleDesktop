@@ -142,6 +142,13 @@ class MainViewModel @Inject constructor(
     fun startWeChatVoiceCall(wechatNickname: String?) {
         contactRepository.startWeChatVoiceCall(wechatNickname)
     }
+
+    /**
+     * 按名称查找应用
+     */
+    suspend fun findAppByName(name: String): tech.huangsh.onetap.data.model.AppInfo? {
+        return appRepository.findAppByName(name)
+    }
     
     /**
      * 更新天气信息

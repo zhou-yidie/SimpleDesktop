@@ -10,7 +10,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import dagger.hilt.android.AndroidEntryPoint
 import tech.huangsh.onetap.ui.screens.plugin.PluginManagementScreen
-import tech.huangsh.onetap.ui.theme.OneTapTheme
+import tech.huangsh.onetap.ui.theme.SimpleDesktopTheme
 
 /**
  * 插件管理Activity
@@ -23,7 +23,7 @@ class PluginManagementActivity : ComponentActivity() {
         enableEdgeToEdge()
         
         setContent {
-            OneTapTheme {
+            SimpleDesktopTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background

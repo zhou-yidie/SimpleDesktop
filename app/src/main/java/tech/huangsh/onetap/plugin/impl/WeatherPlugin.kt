@@ -28,7 +28,7 @@ class WeatherPlugin @Inject constructor(
     override val name: String = "天气服务"
     override val version: String = "1.0.0"
     override val description: String = "提供天气信息显示和预警功能"
-    override val author: String = "OneTap Team"
+    override val author: String = "SimpleDesktop Team"
     
     override suspend fun onInitializing() {
         super.onInitializing()

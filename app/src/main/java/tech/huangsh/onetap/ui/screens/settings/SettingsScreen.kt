@@ -14,6 +14,7 @@ import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.People
 import androidx.compose.material.icons.filled.Security
+import androidx.compose.material.icons.filled.Wifi
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -98,6 +99,20 @@ fun SettingsScreen(
                 onClick = {
                     val intent = Intent(context, DisplaySettingsActivity::class.java)
                     context.startActivity(intent)
+                }
+            )
+            
+            // WiFi网络监控开关
+            SettingsItem(
+                icon = Icons.Default.Wifi,
+                title = stringResource(R.string.wifi_monitor_title),
+                trailing = {
+                    Switch(
+                        checked = settings.isWifiMonitorEnabled,
+                        onCheckedChange = { enabled ->
+                            settingsViewModel.updateWifiMonitorEnabled(enabled)
+                        }
+                    )
                 }
             )
             
