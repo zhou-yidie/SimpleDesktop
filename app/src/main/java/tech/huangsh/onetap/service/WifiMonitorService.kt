@@ -20,6 +20,7 @@ import android.util.Log
 import androidx.core.app.NotificationCompat
 import tech.huangsh.onetap.R
 import tech.huangsh.onetap.ui.activity.MainActivity
+import tech.huangsh.onetap.config.AppConfig
 
 /**
  * WiFi网络监控前台服务
@@ -33,16 +34,16 @@ import tech.huangsh.onetap.ui.activity.MainActivity
 class WifiMonitorService : Service() {
 
     companion object {
-        private const val TAG = "WifiMonitorService"
-        private const val CHANNEL_ID = "wifi_monitor_channel"
-        private const val NOTIFICATION_ID = 1001
-        private const val WIFI_TIMEOUT_MS = 20_000L // 20秒超时
-        private const val WIFI_CHECK_INTERVAL_MS = 1_000L // 倒计时每秒更新一次
+        private const val TAG = AppConfig.Debug.APP_TAG + "_WifiMonitor"
+        private val CHANNEL_ID = AppConfig.WifiMonitor.CHANNEL_ID
+        private val NOTIFICATION_ID = AppConfig.WifiMonitor.NOTIFICATION_ID
+        private val WIFI_TIMEOUT_MS = AppConfig.WifiMonitor.DISCONNECT_TIMEOUT_MS
+        private val WIFI_CHECK_INTERVAL_MS = AppConfig.WifiMonitor.CHECK_INTERVAL_MS
 
         // 广播Action
-        const val ACTION_WIFI_DISCONNECTED = "tech.huangsh.onetap.WIFI_DISCONNECTED"
-        const val ACTION_WIFI_CONNECTED = "tech.huangsh.onetap.WIFI_CONNECTED"
-        const val ACTION_WIFI_DISABLED = "tech.huangsh.onetap.WIFI_DISABLED"
+        const val ACTION_WIFI_DISCONNECTED = AppConfig.WifiMonitor.ACTION_WIFI_DISCONNECTED
+        const val ACTION_WIFI_CONNECTED = AppConfig.WifiMonitor.ACTION_WIFI_CONNECTED
+        const val ACTION_WIFI_DISABLED = AppConfig.WifiMonitor.ACTION_WIFI_DISABLED
 
         fun start(context: Context) {
             val intent = Intent(context, WifiMonitorService::class.java)

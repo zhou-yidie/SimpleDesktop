@@ -16,10 +16,12 @@ import tech.huangsh.onetap.data.model.ThemeMode
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
+import tech.huangsh.onetap.config.AppConfig
+
 /**
  * 扩展DataStore
  */
-private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
+private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = AppConfig.Storage.SETTINGS_DATASTORE_NAME)
 
 /**
  * 设置数据仓库
@@ -66,7 +68,7 @@ class SettingsRepository(private val context: Context) {
     val launcherMode: Flow<Boolean> = dataStore.data.map { it[LAUNCHER_MODE] ?: true }
     val floatingBallEnabled: Flow<Boolean> = dataStore.data.map { it[FLOATING_BALL_ENABLED] ?: true }
     val autoStartEnabled: Flow<Boolean> = dataStore.data.map { it[AUTO_START_ENABLED] ?: true }
-    val password: Flow<String> = dataStore.data.map { it[PASSWORD] ?: "123456" }
+    val password: Flow<String> = dataStore.data.map { it[PASSWORD] ?: AppConfig.Storage.DEFAULT_PASSWORD }
     
     // 桌面启动器设置
     val isDefaultLauncher: Flow<Boolean> = dataStore.data.map { it[IS_DEFAULT_LAUNCHER] ?: false }
@@ -87,7 +89,7 @@ class SettingsRepository(private val context: Context) {
             launcherMode = preferences[LAUNCHER_MODE] ?: true,
             floatingBallEnabled = preferences[FLOATING_BALL_ENABLED] ?: true,
             autoStartEnabled = preferences[AUTO_START_ENABLED] ?: true,
-            password = preferences[PASSWORD] ?: "123456",
+            password = preferences[PASSWORD] ?: AppConfig.Storage.DEFAULT_PASSWORD,
             isDefaultLauncher = preferences[IS_DEFAULT_LAUNCHER] ?: false,
             showExitLauncher = preferences[SHOW_EXIT_LAUNCHER] ?: true,
             launcherExitConfirmation = preferences[LAUNCHER_EXIT_CONFIRMATION] ?: true,

@@ -106,7 +106,7 @@ dependencies {
     implementation(libs.accompanist.systemuicontroller)
     
     // XXPermissions - Android权限框架
-    implementation("com.github.getActivity:XXPermissions:20.0")
+    implementation(libs.xxpermissions)
 
     // Gson
     implementation(libs.gson)
