@@ -29,23 +29,39 @@ class SelectToSpeakService : AccessibilityService() {
         Log.d(tag, "Event: ${event?.eventType}, Class: $currentActivity, Index: ${WeChatData.index}")
 
         if (WeChatData.index == 1) {
-            if (currentActivity == WeChatActivity.INDEX.id) {
-                var tables =
-                    rootInActiveWindow.findAccessibilityNodeInfosByViewId(WeChatId.TABLES.id)
-                Log.d(tag, "发现底部 Tab: ${tables?.size ?: 0} 个")
-                if (!tables.isNullOrEmpty()) {
-                    val clicked = tables[0].click()
-                    Log.d(tag, "点击第一个 Tab 结果: $clicked")
-                    WeChatData.updateIndex(2)
+            // 强力检测一：如果当前屏幕存在聊天对话框的“更多（加号）”按钮，说明我们正处于某个聊天窗口内。
+            // 采取超高鲁棒性方案：直接执行 BACK 操作安全返回微信主界面，重置为 Clean Slate 纯净初始状态。
+            val moreButton = rootInActiveWindow?.findAccessibilityNodeInfosByViewId(WeChatId.MORE.id)
+            if (!moreButton.isNullOrEmpty()) {
+                Log.d(tag, "检测到当前处于聊天界面，执行安全返回主页操作（重置到主页纯净初始状态）")
+                performGlobalAction(GLOBAL_ACTION_BACK)
+                Thread.sleep(500)
+                return
+            }
+
+            // 强力检测二：如果主界面底部的 Tab 按钮已经可见，不管当前事件类型是什么，立刻执行点击并推进到下一状态！
+            val tables = rootInActiveWindow?.findAccessibilityNodeInfosByViewId(WeChatId.TABLES.id)
+            if (!tables.isNullOrEmpty()) {
+                Log.d(tag, "发现主页底部 Tab: ${tables.size} 个，点击第一个 Tab 进入搜索")
+                val clicked = tables[0].click()
+                Log.d(tag, "点击第一个 Tab 结果: $clicked")
+                WeChatData.updateIndex(2)
+            }
+
+            // 强力检测三：如果处于非主界面 Activity（仅在窗口状态改变时判定，防止内容改变事件误判为未知Activity而狂点返回），执行安全退回
+            if (event?.eventType == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) {
+                val activityName = currentActivity.toString()
+                if (activityName.contains("dialog")) {
+                    Log.d(tag, "检测到弹窗: $activityName，执行返回关闭")
+                    performGlobalAction(GLOBAL_ACTION_BACK)
+                    Thread.sleep(500)
+                    performGlobalAction(GLOBAL_ACTION_BACK)
+                    Thread.sleep(500)
+                } else if (activityName != WeChatActivity.INDEX.id) {
+                    Log.d(tag, "检测到处于非主界面 Activity: $activityName，执行安全返回")
+                    performGlobalAction(GLOBAL_ACTION_BACK)
+                    Thread.sleep(500)
                 }
-            } else if (currentActivity.contains("dialog")) {
-                performGlobalAction(GLOBAL_ACTION_BACK)
-                Thread.sleep(500)
-                performGlobalAction(GLOBAL_ACTION_BACK)
-                Thread.sleep(500)
-            } else {
-                performGlobalAction(GLOBAL_ACTION_BACK)
-                Thread.sleep(500)
             }
         }
 
