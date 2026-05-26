@@ -1,0 +1,35 @@
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[
+    layer/.style={draw, rectangle, minimum width=8cm, minimum height=1.2cm, text centered, font=\sffamily\bfseries},
+    module/.style={draw, rectangle, rounded corners, fill=white, minimum width=2.2cm, minimum height=0.8cm, text centered, font=\sffamily\small}
+]
+
+% 基础守护层
+\node[layer, fill=gray!10] (layer1) {};
+\node[above left, xshift=0.2cm, yshift=-0.4cm] at (layer1.north east) {底层守护层};
+\node[module, xshift=-2.5cm] at (layer1.center) {网络自愈卫士};
+\node[module, xshift=0cm] at (layer1.center) {微内核插件引擎};
+\node[module, xshift=2.5cm] at (layer1.center) {无障碍事件调度};
+
+% 业务逻辑层
+\node[layer, fill=blue!10, above of=layer1, yshift=0.5cm] (layer2) {};
+\node[above left, xshift=0.2cm, yshift=-0.4cm] at (layer2.north east) {业务核心层};
+\node[module, xshift=-2.5cm] at (layer2.center) {联系人解析(Room)};
+\node[module, xshift=0cm] at (layer2.center) {微信7态状态机};
+\node[module, xshift=2.5cm] at (layer2.center) {语音语义解析(NLP)};
+
+% 交互展示层
+\node[layer, fill=orange!10, above of=layer2, yshift=0.5cm] (layer3) {};
+\node[above left, xshift=0.2cm, yshift=-0.4cm] at (layer3.north east) {表现交互层};
+\node[module, xshift=-2cm] at (layer3.center) {Compose 极简UI};
+\node[module, xshift=2cm] at (layer3.center) {动态高对比度引擎};
+
+% 连接线
+\draw[->, thick, dashed] (layer1.north) -- (layer2.south);
+\draw[->, thick, dashed] (layer2.north) -- (layer3.south);
+
+\end{tikzpicture}
+\caption{SimpleDesktop 系统技术全景架构图}
+\label{fig:system_overview}
+\end{figure}

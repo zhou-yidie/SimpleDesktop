@@ -50,9 +50,10 @@ SimpleDesktop/
 │   ├── NEW_FEATURES.md      # 新增特性详细说明
 │   ├── PLUGIN_ARCHITECTURE.md # 插件化架构设计文档
 │   └── ...                 # 毕业设计进度及路线图
+├── scripts/                # 图像处理、图表生成等工程化实用工具脚本
+├── scratch/                # 绘图探索与思路整理的草稿脚本
 ├── skills/                 # 智能体扩展技能包 (Skillhub)
 ├── .learnings/             # 自我改进记录与错误库
-├── AGENTS.md               # 全局 AI 开发准则 (核心规范)
 └── README.md               # 项目主页
 ```
 

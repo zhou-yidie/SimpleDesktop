@@ -1,0 +1,148 @@
+import matplotlib.pyplot as plt
+import matplotlib.patches as patches
+import os
+
+out_dir = r"d:\Graduation_Project\SimpleDesktop\latexpdf\figures"
+os.makedirs(out_dir, exist_ok=True)
+
+plt.rcParams['font.sans-serif'] = ['Microsoft YaHei', 'SimHei', 'Arial Unicode MS', 'sans-serif']
+plt.rcParams['axes.unicode_minus'] = False
+
+def draw_active_detect():
+    # Set canvas to massive size to fit giant fonts comfortably
+    fig, ax = plt.subplots(figsize=(28, 14), dpi=300)
+    ax.axis('off')
+    
+    # Set explicit coordinate system (0 to 1)
+    ax.set_xlim(0, 1)
+    ax.set_ylim(0, 1)
+    
+    # Colors matching original layout
+    grey_fill = "#f5f5f5"
+    grey_border = "#9e9e9e"
+    orange_fill = "#fff3e0"
+    orange_border = "#fb8c00"
+    green_fill = "#e8f5e9"
+    green_border = "#43a047"
+    yellow_fill = "#fffde7"
+    yellow_border = "#c0ca33"
+    
+    # Top Titles
+    ax.text(0.03, 0.94, "步骤一：混淆隔离态 (Ghost Nodes)", ha='left', va='center', fontsize=39, fontweight='bold', color="#212121")
+    ax.text(0.97, 0.94, "步骤二：真实树挂载与特征定位", ha='right', va='center', fontsize=39, fontweight='bold', color="#212121")
+    
+    # Row Y ranges
+    row_height = 0.18
+    r1_y = 0.68
+    r2_y = 0.44
+    r3_y = 0.20
+    
+    # --- 1. Left Column (Grey Dashed Boxes) ---
+    left_boxes = [
+        {"y": r1_y, "text": "透明占位节点"},
+        {"y": r2_y, "text": "混淆资源 ID"},
+        {"y": r3_y, "text": "隐藏真实控件"}
+    ]
+    for item in left_boxes:
+        box = patches.FancyBboxPatch(
+            (0.03, item["y"]), 0.29, row_height,
+            boxstyle="round,pad=0.005",
+            fc=grey_fill, ec=grey_border, lw=3, ls="--",
+            zorder=2
+        )
+        ax.add_patch(box)
+        ax.text(
+            0.175, item["y"] + row_height/2.0, item["text"],
+            ha='center', va='center', fontsize=36, fontweight='bold', color="#424242"
+        )
+        
+    # --- 2. Center Column (Orange Box) ---
+    center_y = 0.39
+    center_height = 0.28
+    center_box = patches.FancyBboxPatch(
+        (0.33, center_y), 0.34, center_height,
+        boxstyle="round,pad=0.015",
+        fc=orange_fill, ec=orange_border, lw=4,
+        zorder=2
+    )
+    ax.add_patch(center_box)
+    ax.text(
+        0.50, center_y + center_height/2.0, "窗口内容震荡\n(微位移滑动 1-2px)",
+        ha='center', va='center', fontsize=36, fontweight='bold', color="#e65100",
+        multialignment='center'
+    )
+    
+    # --- 3. Right Column (Green Boxes) ---
+    right_boxes = [
+        {"y": r1_y, "text": "真实控件子树暴露"},
+        {"y": r2_y, "text": "拓扑深度提取"},
+        {"y": r3_y, "text": "计算包围盒重心"}
+    ]
+    for item in right_boxes:
+        box = patches.FancyBboxPatch(
+            (0.68, item["y"]), 0.29, row_height,
+            boxstyle="round,pad=0.005",
+            fc=green_fill, ec=green_border, lw=3,
+            zorder=2
+        )
+        ax.add_patch(box)
+        ax.text(
+            0.825, item["y"] + row_height/2.0, item["text"],
+            ha='center', va='center', fontsize=36, fontweight='bold', color="#1b5e20"
+        )
+        
+    # --- 4. Red Dashed Arrow (Left to Center) ---
+    # Draw arrow line slightly longer to give room
+    ax.annotate(
+        "", xy=(0.33, 0.53), xytext=(0.25, 0.53),
+        arrowprops=dict(arrowstyle="-|>", color="#d32f2f", lw=4.5, ls="--", mutation_scale=25),
+        zorder=3
+    )
+    # Red label centered over the arrow, shifted slightly left to be perfectly clean
+    ax.text(
+        0.28, 0.56, "触发更新",
+        ha='center', va='bottom', fontsize=30, fontweight='bold', color="#d32f2f"
+    )
+    
+    # --- 5. Blue Arrow (Center to Right) ---
+    # Draw arrow line starting slightly more inside the orange box
+    ax.annotate(
+        "", xy=(0.68, 0.53), xytext=(0.60, 0.53),
+        arrowprops=dict(arrowstyle="-|>", color="#1976d2", lw=4.5, mutation_scale=25),
+        zorder=3
+    )
+    # Blue label shifted left to 0.615 so it sits perfectly inside the orange box without touching the border
+    ax.text(
+        0.615, 0.56, "强制重绘\n(Remount)",
+        ha='center', va='bottom', fontsize=27, fontweight='bold', color="#1976d2",
+        multialignment='center'
+    )
+    
+    # --- 6. Bottom Column (Yellow Box) ---
+    bottom_y = 0.04
+    bottom_height = 0.11
+    bottom_box = patches.FancyBboxPatch(
+        (0.03, bottom_y), 0.94, bottom_height,
+        boxstyle="round,pad=0.005",
+        fc=yellow_fill, ec=yellow_border, lw=3.5,
+        zorder=2
+    )
+    ax.add_patch(bottom_box)
+    ax.text(
+        0.50, bottom_y + bottom_height/2.0,
+        "UI 特征归一化模型 (Feature Normalization)\n匹配度 P = w1 × (相对拓扑关系) + w2 × (视觉重心偏移量) > 98%  ->  锁定目标",
+        ha='center', va='center', fontsize=34, fontweight='bold', color="#827717",
+        multialignment='center'
+    )
+    
+    # --- 7. Connector Line (Right Column to Yellow Box) ---
+    # Draw a line from right column bottom (approx x=0.825, y=0.20) to yellow box top (approx x=0.50, y=0.15)
+    ax.plot([0.825, 0.50], [0.20, 0.15], color="#212121", lw=3.5, zorder=1)
+    
+    output_path = os.path.join(out_dir, 'fig2_3_shake_match.png')
+    plt.savefig(output_path, dpi=300, bbox_inches='tight', transparent=True)
+    plt.close()
+    print("Successfully generated active detection mechanism diagram!")
+
+if __name__ == '__main__':
+    draw_active_detect()

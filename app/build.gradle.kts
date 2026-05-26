@@ -26,8 +26,10 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            // 使用 Debug 密钥签名发行版，用于本地发布测试与毕业设计演示
+            signingConfig = signingConfigs.getByName("debug")
         }
     }
     compileOptions {
