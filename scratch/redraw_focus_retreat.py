@@ -5,7 +5,7 @@ import os
 out_dir = r"d:\Graduation_Project\SimpleDesktop\latexpdf\figures"
 os.makedirs(out_dir, exist_ok=True)
 
-plt.rcParams['font.sans-serif'] = ['Microsoft YaHei', 'SimHei', 'Arial Unicode MS', 'sans-serif']
+plt.rcParams['font.sans-serif'] = ['SimSun', 'Songti SC', 'STSong', 'Microsoft YaHei', 'SimHei', 'sans-serif']
 plt.rcParams['axes.unicode_minus'] = False
 
 def draw_focus_retreat():
@@ -16,6 +16,20 @@ def draw_focus_retreat():
     # Explicit coordinate system
     ax.set_xlim(0, 1)
     ax.set_ylim(0, 1)
+    
+    # === 学术图表字体缩放数学模型 (方案一) ===
+    # 目标：使 PDF 中最终呈现的字体大小与 LaTeX 正文 (12pt 小四) 完美一致！
+    latex_scale = 0.85           # LaTeX 中的 width=0.85\textwidth 缩放因子
+    latex_textwidth_inch = 6.3   # xuptThesis 中的 A4 页面排版宽度 16cm 约合 6.3 英寸
+    canvas_width_inch = 22.0     # Matplotlib 画布宽度
+    scale_factor = (latex_textwidth_inch * latex_scale) / canvas_width_inch  # 物理缩放比例
+    
+    X_pdf = 12.0 * 0.8                 # 大层级和步骤文字：与正文一致的 12pt (小四)
+    Y_pdf = 11.0 * 0.8                 # 内部具体模块与小标题文字：11pt
+    
+    font_header_size = X_pdf / scale_factor
+    font_step_size = X_pdf / scale_factor
+    font_box_size = Y_pdf / scale_factor
     
     # 3 Lifelines x-coordinates
     x_left = 0.17
@@ -32,11 +46,6 @@ def draw_focus_retreat():
         {"x_center": x_mid, "text": "桌面主程序"},
         {"x_center": x_right, "text": "无障碍服务引擎"}
     ]
-    
-    # 1.2x Font sizes of original (Original: Header 24, Steps 22, Self-call 20)
-    font_header_size = 29
-    font_step_size = 26
-    font_box_size = 24
     
     for h in headers:
         box_width = 0.23

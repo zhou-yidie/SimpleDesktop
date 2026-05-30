@@ -4,16 +4,30 @@ import os
 
 out_dir = r"d:\Graduation_Project\SimpleDesktop\latexpdf\figures"
 os.makedirs(out_dir, exist_ok=True)
-plt.rcParams['font.sans-serif'] = ['SimHei', 'Microsoft YaHei', 'SimSun']
+plt.rcParams['font.sans-serif'] = ['SimSun', 'Songti SC', 'STSong', 'Microsoft YaHei', 'SimHei', 'sans-serif']
 plt.rcParams['axes.unicode_minus'] = False
 
 # 扩大 figsize 容纳超大号文字
 fig, ax = plt.subplots(figsize=(28, 18))
 ax.axis('off')
 
+# === 学术图表字体缩放数学模型 (方案一) ===
+# 目标：使 PDF 中最终呈现的字体大小与 LaTeX 正文 (12pt 小四) 完美一致！
+latex_scale = 1.0            # LaTeX 中的 width=\textwidth 缩放因子
+latex_textwidth_inch = 6.3   # xuptThesis 中的 A4 页面排版宽度 16cm 约合 6.3 英寸
+canvas_width_inch = 28.0     # Matplotlib 画布宽度
+scale_factor = (latex_textwidth_inch * latex_scale) / canvas_width_inch  # 物理缩放比例
+
+X_pdf = 12.0 * 0.8                 # 系统标题与模块标题：与正文一致的 12pt (小四)
+Y_pdf = 11.0 * 0.8                 # 模块内部子列表文字：11pt
+
+font_title_size = X_pdf / scale_factor
+font_box_title_size = X_pdf / scale_factor
+font_item_size = Y_pdf / scale_factor
+
 # SimpleDesktop 系统标题
 ax.add_patch(patches.FancyBboxPatch((0.25, 0.85), 0.5, 0.08, boxstyle="round,pad=0.02", fc="#0055aa", ec="#004488", lw=5.5))
-ax.text(0.5, 0.89, "SimpleDesktop 系统核心功能模块", ha='center', va='center', fontsize=48, fontweight='bold', color='white')
+ax.text(0.5, 0.89, "SimpleDesktop 系统核心功能模块", ha='center', va='center', fontsize=font_title_size, fontweight='bold', color='white')
 
 # 模块定义
 # 微调 x 坐标为 0.03, 0.355, 0.68 和 0.20, 0.52 以在宽度为 0.29 的情况下完美对齐连线
@@ -51,7 +65,7 @@ for m in modules:
     # 模块大框
     ax.add_patch(patches.FancyBboxPatch((x, y), w, h, boxstyle="round,pad=0.02", fc=m["color"], ec=m["edge"], lw=4.5))
     # 模块标题字号大 50%
-    ax.text(x + w/2, y + h - 0.04, m["title"], ha='center', va='center', fontsize=38, fontweight='bold', color=m["edge"])
+    ax.text(x + w/2, y + h - 0.04, m["title"], ha='center', va='center', fontsize=font_box_title_size, fontweight='bold', color=m["edge"])
     
     # 内部划线
     ax.plot([x + 0.02, x + w - 0.02], [y + h - 0.07, y + h - 0.07], lw=2.5, color=m["edge"], alpha=0.5)
@@ -60,7 +74,7 @@ for m in modules:
     for i, item in enumerate(m["items"]):
         item_y = y + h - 0.12 - i * 0.05
         ax.plot([x + 0.025], [item_y], marker='o', markersize=9, color=m["edge"])
-        ax.text(x + 0.05, item_y, item, ha='left', va='center', fontsize=29, color="#333333")
+        ax.text(x + 0.05, item_y, item, ha='left', va='center', fontsize=font_item_size, color="#333333")
 
 # 绘制连线
 # 中心线段

@@ -6,7 +6,7 @@ out_dir = r"d:\Graduation_Project\SimpleDesktop\thesis_figures"
 os.makedirs(out_dir, exist_ok=True)
 
 # 设置 Windows 下的兼容中文字体，优先黑体，其次微软雅黑、宋体
-plt.rcParams['font.sans-serif'] = ['SimHei', 'Microsoft YaHei', 'SimSun', 'sans-serif']
+plt.rcParams['font.sans-serif'] = ['SimSun', 'Songti SC', 'STSong', 'Microsoft YaHei', 'SimHei', 'sans-serif']
 plt.rcParams['axes.unicode_minus'] = False
 
 print("开始生成图1.1: 中国60岁及以上老年人口数量与占比趋势图...")
@@ -17,29 +17,43 @@ pct = [13.26, 16.15, 18.70, 19.80, 22.00, 23.00]
 
 fig, ax1 = plt.subplots(figsize=(12, 7.5))
 
+# === 学术图表字体缩放数学模型 (方案一) ===
+# 目标：使 PDF 中最终呈现的字体大小与 LaTeX 正文 (12pt 小四) 完美一致！
+latex_scale = 0.85           # LaTeX 中的 width=0.85\textwidth 缩放因子
+latex_textwidth_inch = 6.3   # xuptThesis 中的 A4 页面排版宽度 16cm 约合 6.3 英寸
+canvas_width_inch = 12.0     # Matplotlib 画布宽度
+scale_factor = (latex_textwidth_inch * latex_scale) / canvas_width_inch  # 物理缩放比例
+
+X_pdf = 12.0 * 0.8                 # 主要轴标签与图例文字：12pt (小四)
+Y_pdf = 11.0 * 0.8                 # 轴刻度与数据标签文字：11pt
+
+font_label_size = X_pdf / scale_factor
+font_tick_size = Y_pdf / scale_factor
+font_value_size = Y_pdf / scale_factor
+
 color1 = '#4C72B0' # 稳重的学术蓝
-ax1.set_xlabel('年份', fontsize=24, fontweight='bold', labelpad=15)
-ax1.set_ylabel('60岁及以上人口数量 (亿人)', color=color1, fontsize=24, fontweight='bold', labelpad=15)
+ax1.set_xlabel('年份', fontsize=font_label_size, fontweight='bold', labelpad=15)
+ax1.set_ylabel('60岁及以上人口数量 (亿人)', color=color1, fontsize=font_label_size, fontweight='bold', labelpad=15)
 bars = ax1.bar(years, pop, color=color1, alpha=0.8, width=0.45, label='人口数量 (亿)')
-ax1.tick_params(axis='y', labelcolor=color1, labelsize=20)
-ax1.tick_params(axis='x', labelsize=20)
+ax1.tick_params(axis='y', labelcolor=color1, labelsize=font_tick_size)
+ax1.tick_params(axis='x', labelsize=font_tick_size)
 ax1.set_ylim(0, 4.0)
 
 # 在柱状图上方添加数值标签
 for bar in bars:
     yval = bar.get_height()
-    ax1.text(bar.get_x() + bar.get_width()/2, yval + 0.08, f'{yval}', ha='center', va='bottom', color=color1, fontsize=18, fontweight='bold')
+    ax1.text(bar.get_x() + bar.get_width()/2, yval + 0.08, f'{yval}', ha='center', va='bottom', color=color1, fontsize=font_value_size, fontweight='bold')
 
 ax2 = ax1.twinx()
 color2 = '#C44E52' # 学术红
-ax2.set_ylabel('占全国总人口比例 (%)', color=color2, fontsize=24, fontweight='bold', labelpad=15)
+ax2.set_ylabel('占全国总人口比例 (%)', color=color2, fontsize=font_label_size, fontweight='bold', labelpad=15)
 line = ax2.plot(years, pct, color=color2, marker='o', linewidth=3.5, markersize=10, label='人口占比 (%)')
-ax2.tick_params(axis='y', labelcolor=color2, labelsize=20)
+ax2.tick_params(axis='y', labelcolor=color2, labelsize=font_tick_size)
 ax2.set_ylim(10, 26)
 
 # 在折线图上方添加数值标签
 for i, txt in enumerate(pct):
-    ax2.text(years[i], pct[i] + 0.8, f'{txt}%', ha='center', va='bottom', color=color2, fontsize=18, fontweight='bold')
+    ax2.text(years[i], pct[i] + 0.8, f'{txt}%', ha='center', va='bottom', color=color2, fontsize=font_value_size, fontweight='bold')
 
 # 已删除图片内部多余的顶部标题，以符合 LaTeX 学术规范
 ax1.grid(axis='y', linestyle='--', alpha=0.4)
@@ -48,7 +62,7 @@ fig.tight_layout()
 # 合并图例
 lines, labels = ax1.get_legend_handles_labels()
 lines2, labels2 = ax2.get_legend_handles_labels()
-ax2.legend(lines + lines2, labels + labels2, loc='upper left', fontsize=18)
+ax2.legend(lines + lines2, labels + labels2, loc='upper left', fontsize=font_tick_size)
 
 # 保存为 PDF 和 PNG (输出到原目录与 thesis/figures 目录)
 thesis_fig_dir = r"d:\Graduation_Project\SimpleDesktop\latexpdf\figures"
@@ -75,6 +89,20 @@ percentages = [77.0, 68.8, 67.5, 63.3, 47.0]
 fig, ax = plt.subplots(figsize=(14, 8))
 y_pos = np.arange(len(pain_points))
 
+# === 学术图表字体缩放数学模型 (方案一) ===
+# 目标：使 PDF 中最终呈现的字体大小与 LaTeX 正文 (12pt 小四) 完美一致！
+latex_scale = 0.85           # LaTeX 中的 width=0.85\textwidth 缩放因子
+latex_textwidth_inch = 6.3   # xuptThesis 中的 A4 页面排版宽度 16cm 约合 6.3 英寸
+canvas_width_inch = 14.0     # Matplotlib 画布宽度
+scale_factor = (latex_textwidth_inch * latex_scale) / canvas_width_inch  # 物理缩放比例
+
+X_pdf = 12.0 * 0.8                 # 主要轴标签文字：12pt (小四)
+Y_pdf = 11.0 * 0.8                 # 轴刻度与数值标签文字：11pt
+
+font_label_size = X_pdf / scale_factor
+font_tick_size = Y_pdf / scale_factor
+font_value_size = Y_pdf / scale_factor
+
 # 翻转数组使得比例最高的在最上方
 pain_points = pain_points[::-1]
 percentages = percentages[::-1]
@@ -83,17 +111,17 @@ percentages = percentages[::-1]
 colors = ['#55A868', '#EAE509', '#DD8452', '#C44E52', '#8172B3']
 bars = ax.barh(y_pos, percentages, color='#DD8452', alpha=0.85, height=0.5)
 ax.set_yticks(y_pos)
-ax.set_yticklabels(pain_points, fontsize=24, fontweight='bold')
-ax.set_xlabel('占受访老年群体比例 (%)', fontsize=30, fontweight='bold', labelpad=15)
+ax.set_yticklabels(pain_points, fontsize=font_tick_size, fontweight='bold')
+ax.set_xlabel('占受访老年群体比例 (%)', fontsize=font_label_size, fontweight='bold', labelpad=15)
 # 已删除图片内部多余的顶部标题，以符合 LaTeX 学术规范
 ax.set_xlim(0, 100)
-ax.tick_params(axis='x', labelsize=24)
+ax.tick_params(axis='x', labelsize=font_tick_size)
 ax.xaxis.grid(True, linestyle='--', alpha=0.5)
 
 # 添加数值标签
 for bar in bars:
     width = bar.get_width()
-    ax.text(width + 1.5, bar.get_y() + bar.get_height()/2, f'{width}%', ha='left', va='center', fontsize=24, fontweight='bold')
+    ax.text(width + 1.5, bar.get_y() + bar.get_height()/2, f'{width}%', ha='left', va='center', fontsize=font_value_size, fontweight='bold')
 
 # 去除右侧和上侧的边框线
 ax.spines['right'].set_visible(False)

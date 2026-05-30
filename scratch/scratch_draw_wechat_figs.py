@@ -6,7 +6,7 @@ import os
 out_dir = r"d:\Graduation_Project\SimpleDesktop\latexpdf\figures"
 os.makedirs(out_dir, exist_ok=True)
 
-plt.rcParams['font.sans-serif'] = ['SimHei', 'Microsoft YaHei', 'SimSun']
+plt.rcParams['font.sans-serif'] = ['SimSun', 'Songti SC', 'STSong', 'Microsoft YaHei', 'SimHei', 'sans-serif']
 plt.rcParams['axes.unicode_minus'] = False
 
 def draw_shake_match():

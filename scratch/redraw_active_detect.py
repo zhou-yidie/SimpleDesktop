@@ -5,7 +5,7 @@ import os
 out_dir = r"d:\Graduation_Project\SimpleDesktop\latexpdf\figures"
 os.makedirs(out_dir, exist_ok=True)
 
-plt.rcParams['font.sans-serif'] = ['Microsoft YaHei', 'SimHei', 'Arial Unicode MS', 'sans-serif']
+plt.rcParams['font.sans-serif'] = ['SimSun', 'Songti SC', 'STSong', 'Microsoft YaHei', 'SimHei', 'sans-serif']
 plt.rcParams['axes.unicode_minus'] = False
 
 def draw_active_detect():
@@ -16,6 +16,21 @@ def draw_active_detect():
     # Set explicit coordinate system (0 to 1)
     ax.set_xlim(0, 1)
     ax.set_ylim(0, 1)
+    
+    # === 学术图表字体缩放数学模型 (方案一) ===
+    # 目标：使 PDF 中最终呈现的字体大小与 LaTeX 正文 (12pt 小四) 完美一致！
+    latex_scale = 0.9            # LaTeX 中的 width=0.9\textwidth 缩放因子
+    latex_textwidth_inch = 6.3   # xuptThesis 中的 A4 页面排版宽度 16cm 约合 6.3 英寸
+    canvas_width_inch = 28.0     # Matplotlib 画布宽度
+    scale_factor = (latex_textwidth_inch * latex_scale) / canvas_width_inch  # 物理缩放比例
+    
+    X_pdf = 12.0 * 0.8                 # 大层级标题：与正文一致的 12pt (小四)
+    Y_pdf = 11.0 * 0.8                 # 内部具体模块文字：11pt
+    Z_pdf = 10.0 * 0.8                 # 较小标注文字：10pt
+    
+    font_large_size = X_pdf / scale_factor
+    font_mid_size = Y_pdf / scale_factor
+    font_small_size = Z_pdf / scale_factor
     
     # Colors matching original layout
     grey_fill = "#f5f5f5"
@@ -28,8 +43,8 @@ def draw_active_detect():
     yellow_border = "#c0ca33"
     
     # Top Titles
-    ax.text(0.03, 0.94, "步骤一：混淆隔离态 (Ghost Nodes)", ha='left', va='center', fontsize=39, fontweight='bold', color="#212121")
-    ax.text(0.97, 0.94, "步骤二：真实树挂载与特征定位", ha='right', va='center', fontsize=39, fontweight='bold', color="#212121")
+    ax.text(0.03, 0.94, "步骤一：混淆隔离态 (Ghost Nodes)", ha='left', va='center', fontsize=font_large_size, fontweight='bold', color="#212121")
+    ax.text(0.97, 0.94, "步骤二：真实树挂载与特征定位", ha='right', va='center', fontsize=font_large_size, fontweight='bold', color="#212121")
     
     # Row Y ranges
     row_height = 0.18
@@ -53,7 +68,7 @@ def draw_active_detect():
         ax.add_patch(box)
         ax.text(
             0.175, item["y"] + row_height/2.0, item["text"],
-            ha='center', va='center', fontsize=36, fontweight='bold', color="#424242"
+            ha='center', va='center', fontsize=font_mid_size, fontweight='bold', color="#424242"
         )
         
     # --- 2. Center Column (Orange Box) ---
@@ -68,7 +83,7 @@ def draw_active_detect():
     ax.add_patch(center_box)
     ax.text(
         0.50, center_y + center_height/2.0, "窗口内容震荡\n(微位移滑动 1-2px)",
-        ha='center', va='center', fontsize=36, fontweight='bold', color="#e65100",
+        ha='center', va='center', fontsize=font_mid_size, fontweight='bold', color="#e65100",
         multialignment='center'
     )
     
@@ -88,7 +103,7 @@ def draw_active_detect():
         ax.add_patch(box)
         ax.text(
             0.825, item["y"] + row_height/2.0, item["text"],
-            ha='center', va='center', fontsize=36, fontweight='bold', color="#1b5e20"
+            ha='center', va='center', fontsize=font_mid_size, fontweight='bold', color="#1b5e20"
         )
         
     # --- 4. Red Dashed Arrow (Left to Center) ---
@@ -101,7 +116,7 @@ def draw_active_detect():
     # Red label centered over the arrow, shifted slightly left to be perfectly clean
     ax.text(
         0.28, 0.56, "触发更新",
-        ha='center', va='bottom', fontsize=30, fontweight='bold', color="#d32f2f"
+        ha='center', va='bottom', fontsize=font_small_size, fontweight='bold', color="#d32f2f"
     )
     
     # --- 5. Blue Arrow (Center to Right) ---
@@ -114,7 +129,7 @@ def draw_active_detect():
     # Blue label shifted left to 0.615 so it sits perfectly inside the orange box without touching the border
     ax.text(
         0.615, 0.56, "强制重绘\n(Remount)",
-        ha='center', va='bottom', fontsize=27, fontweight='bold', color="#1976d2",
+        ha='center', va='bottom', fontsize=font_small_size, fontweight='bold', color="#1976d2",
         multialignment='center'
     )
     
@@ -131,7 +146,7 @@ def draw_active_detect():
     ax.text(
         0.50, bottom_y + bottom_height/2.0,
         "UI 特征归一化模型 (Feature Normalization)\n匹配度 P = w1 × (相对拓扑关系) + w2 × (视觉重心偏移量) > 98%  ->  锁定目标",
-        ha='center', va='center', fontsize=34, fontweight='bold', color="#827717",
+        ha='center', va='center', fontsize=font_mid_size, fontweight='bold', color="#827717",
         multialignment='center'
     )
     

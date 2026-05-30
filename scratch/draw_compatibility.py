@@ -6,7 +6,7 @@ import os
 out_dir = r"d:\Graduation_Project\SimpleDesktop\latexpdf\figures"
 os.makedirs(out_dir, exist_ok=True)
 
-plt.rcParams['font.sans-serif'] = ['Microsoft YaHei', 'SimHei', 'Arial Unicode MS', 'sans-serif']
+plt.rcParams['font.sans-serif'] = ['SimSun', 'Songti SC', 'STSong', 'Microsoft YaHei', 'SimHei', 'sans-serif']
 plt.rcParams['axes.unicode_minus'] = False
 
 def draw_pill(ax, x, y, w, h, text, style):

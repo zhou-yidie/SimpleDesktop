@@ -1,4 +1,4 @@
-﻿\NeedsTeXFormat{LaTeX2e}
+\NeedsTeXFormat{LaTeX2e}
 
 % 目录样式设置
 \RequirePackage{setspace}
@@ -94,7 +94,9 @@
   labelsep=quad,
   skip=1em
 }
-\setmainfont{Times New Roman}[BoldFont=Times New Roman Bold] % 设置英文使用Times New Roman
+\setmainfont{Times New Roman}[BoldFont=Times New Roman Bold] % 设置英文主字体使用Times New Roman
+\setsansfont{Times New Roman}[BoldFont=Times New Roman Bold] % 强制无衬线字体也使用Times New Roman
+\setmonofont{Times New Roman}[BoldFont=Times New Roman Bold] % 强制等宽代码字体(texttt)也使用Times New Roman
 
 
 % 设置三线表单元格间距 - 使用booktabs自带间距，不再使用cellspace包
@@ -263,8 +265,9 @@
     \end{tabular}
     \vspace{3cm}
     
-    % 日期
-    \centering{{\fontspec{Times New Roman}\fontsize{14pt}{17pt}\selectfont\number\year}{\songti\fontsize{14pt}{17pt}\selectfont 年}{\fontspec{Times New Roman}\fontsize{14pt}{17pt}\selectfont\number\month}{\songti\fontsize{14pt}{17pt}\selectfont 月}{\fontspec{Times New Roman}\fontsize{14pt}{17pt}\selectfont\number\day}{\songti\fontsize{14pt}{17pt}\selectfont 日}}
+    % 日期 中文
+    \centering{\songti\fontsize{14pt}{17pt}\selectfont 二〇二六~年~六~月~二十~日}
+    % \centering{{\fontspec{Times New Roman}\fontsize{14pt}{17pt}\selectfont\number\year}{\songti\fontsize{14pt}{17pt}\selectfont 年}{\fontspec{Times New Roman}\fontsize{14pt}{17pt}\selectfont\number\month}{\songti\fontsize{14pt}{17pt}\selectfont 月}{\fontspec{Times New Roman}\fontsize{14pt}{17pt}\selectfont\number\day}{\songti\fontsize{14pt}{17pt}\selectfont 日}}
   \end{titlepage}
 }
 
@@ -292,12 +295,19 @@
 
 
 % 关键字环境
+% \newenvironment{keywords}
+%   {\vspace{20pt}% 段前20pt
+%   \noindent\fontsize{12}{20pt}\heiti\selectfont\textbf{关键词：}
+%   \noindent\fontsize{12}{20pt}\songti\selectfont{
+%   }
+%   {}}
 \newenvironment{keywords}
-  {\vspace{20pt}% 段前20pt
-  \noindent\fontsize{12}{20pt}\heiti\selectfont\textbf{关键词：}
-  \noindent\fontsize{12}{20pt}\songti\selectfont{
+  {\vspace{20pt}%
+   \noindent\fontsize{12}{20pt}\heiti\selectfont 关键词：%
+   \fontsize{12}{20pt}\songti\selectfont
+   \hspace{-0.5em}% 可改为 \hspace{0pt} 或 \hspace{-0.5em} 等
   }
-  {}}
+  {}
 
 % 英文摘要环境定义
 \newenvironment{abstracten}

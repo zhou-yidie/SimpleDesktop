@@ -3,7 +3,7 @@ import matplotlib.patches as patches
 from matplotlib.patches import FancyBboxPatch
 
 # Set up Chinese font support
-plt.rcParams['font.sans-serif'] = ['Microsoft YaHei', 'SimHei', 'Arial Unicode MS', 'sans-serif']
+plt.rcParams['font.sans-serif'] = ['SimSun', 'Songti SC', 'STSong', 'Microsoft YaHei', 'SimHei', 'sans-serif']
 plt.rcParams['axes.unicode_minus'] = False
 
 # Create figure - slightly taller canvas (11.5x9.0) to give titles complete vertical breathing room
@@ -12,10 +12,19 @@ ax.set_xlim(-1.0, 12.6)
 ax.set_ylim(-0.2, 10.6)
 ax.axis('off')
 
-# Font size settings optimised for high-readability matching standard body text size
-font_title_size = 28
-font_box_size = 25
-font_arrow_size = 21
+# === 学术图表字体缩放数学模型 (方案一) ===
+# 目标：使 PDF 中最终呈现的字体大小与 LaTeX 正文 (12pt 小四) 完美一致！
+latex_scale = 0.85           # LaTeX 中的 width=0.85\textwidth 缩放因子
+latex_textwidth_inch = 6.3   # xuptThesis 中的 A4 页面排版宽度 16cm 约合 6.3 英寸
+canvas_width_inch = 11.5     # Matplotlib 画布宽度
+scale_factor = (latex_textwidth_inch * latex_scale) / canvas_width_inch  # 物理缩放比例
+
+X_pdf = 12.0 * 0.8                 # 大字体：与正文一致的 12pt (小四)
+Y_pdf = 11.0 * 0.8                 # 小字体：X - 1 pt = 11pt
+
+font_title_size = X_pdf / scale_factor
+font_box_size = X_pdf / scale_factor
+font_arrow_size = Y_pdf / scale_factor
 
 col_width = 3.2
 col_height = 9.8
@@ -76,13 +85,13 @@ add_inner_box(9.0, 1.25, 1.15, "Retrofit\n网络请求")
 # 3. Add Intermediate Connectors (Arrows between Col 1 and Col 2)
 # User Actions Downward Arrow
 ax.annotate("", xy=(3.95, 4.6), xytext=(3.95, 7.9),
-            arrowprops=dict(facecolor='#0288d1', edgecolor='#01579b', width=14, headwidth=28, shrink=0.05))
+            arrowprops=dict(facecolor='#0288d1', edgecolor='#01579b', width=8, headwidth=18, shrink=0.05))
 ax.text(3.95, 6.25, "用户操作事件\nUser Actions", fontsize=font_arrow_size, fontweight='bold',
         ha='center', va='center', color='#01579b', rotation=270, linespacing=1.2)
 
 # UI State Upward Arrow
 ax.annotate("", xy=(3.95, 4.2), xytext=(3.95, 0.9),
-            arrowprops=dict(facecolor='#e53935', edgecolor='#b71c1c', width=14, headwidth=28, shrink=0.05))
+            arrowprops=dict(facecolor='#e53935', edgecolor='#b71c1c', width=8, headwidth=18, shrink=0.05))
 ax.text(3.95, 2.55, "UI 状态更新\nUI State", fontsize=font_arrow_size, fontweight='bold',
         ha='center', va='center', color='#b71c1c', rotation=90, linespacing=1.2)
 
@@ -90,19 +99,19 @@ ax.text(3.95, 2.55, "UI 状态更新\nUI State", fontsize=font_arrow_size, fontw
 # 4. Add Intermediate Connectors (Arrows between Col 2 and Col 3)
 # Data Request Downward Arrow
 ax.annotate("", xy=(8.25, 4.6), xytext=(8.25, 7.9),
-            arrowprops=dict(facecolor='#43a047', edgecolor='#1b5e20', width=14, headwidth=28, shrink=0.05))
+            arrowprops=dict(facecolor='#43a047', edgecolor='#1b5e20', width=8, headwidth=18, shrink=0.05))
 ax.text(8.25, 6.25, "数据请求\nData Request", fontsize=font_arrow_size, fontweight='bold',
         ha='center', va='center', color='#1b5e20', rotation=270, linespacing=1.2)
 
 # Flow/LiveData Upward Arrow
 ax.annotate("", xy=(8.25, 4.2), xytext=(8.25, 0.9),
-            arrowprops=dict(facecolor='#fb8c00', edgecolor='#e65100', width=14, headwidth=28, shrink=0.05))
+            arrowprops=dict(facecolor='#fb8c00', edgecolor='#e65100', width=8, headwidth=18, shrink=0.05))
 ax.text(8.25, 2.55, "Flow / LiveData\n数据流", fontsize=font_arrow_size, fontweight='bold',
         ha='center', va='center', color='#e65100', rotation=90, linespacing=1.2)
 
 
 # 5. Add Left Unidirectional Data Flow Curved Arrow
-style = "Simple, tail_width=14, head_width=28, head_length=22"
+style = "Simple, tail_width=8, head_width=18, head_length=15"
 kw = dict(arrowstyle=style, color="#546e7a", ec="#37474f", shrinkA=5, shrinkB=5)
 arrow = patches.FancyArrowPatch((0.0, 1.6), (0.0, 7.9), connectionstyle="arc3,rad=-0.38", **kw)
 ax.add_patch(arrow)
