@@ -1,7 +1,7 @@
-# OneTap 一键通
+# SimpleDesktop 简易桌面
 
 <div align="center">
-  <img src="app/src/main/ic_launcher-playstore.png" width="120" height="120" alt="OneTap Logo">
+  <img src="app/src/main/ic_launcher-playstore.png" width="120" height="120" alt="SimpleDesktop Logo">
   <br>
   <h3>为老年人量身定制的简化版Android桌面应用</h3>
   <p>让科技更贴心，让操作更简单</p>
@@ -9,17 +9,17 @@
 
 ## 📱 项目简介
 
-OneTap（一键通）是一款专为老年人设计的Android桌面启动器应用。它简化了智能手机的操作界面，提供大字体、高对比度的显示效果，让老年人能够轻松使用智能手机的基本功能。
+SimpleDesktop（简易桌面）是一款专为老年人设计的Android桌面启动器应用。它简化了智能手机的操作界面，提供大字体、高对比度的显示效果，让老年人能够轻松使用智能手机的基本功能。
 
 ### ✨ 主要特性
 
-- 🏠 **简化桌面**：替代系统桌面，提供简洁明了的主界面
-- 👥 **联系人管理**：大头像显示，一键打微信视频、微信语音、拨打电话
-- 📱 **常用应用**：快速访问常用APP，支持自定义排序
-- 🌤️ **天气显示**：实时显示当前天气和农历日期
-- 🔊 **语音辅助**：支持语音反馈，帮助视力不佳的用户
-- 🎨 **主题设置**：支持蓝色/橙色主题，高对比度模式
-- ♿ **无障碍设计**：大字体、高对比度、简化操作
+- 🏠 **简化桌面**：系统级桌面接管，提供极致简洁的交互体验
+- 👥 **通讯增强**：支持一键快速拨打普通电话、微信语音及微信视频通话
+- 🎙️ **智能语音**：内置语音助手，支持“打电话给某某”等自然语言指令
+- ♿ **高鲁棒性无障碍**：针对微信自动化进行了深度优化（Activity模糊匹配、节点/文本双重定位）
+- 🌤️ **实时信息板**：首页集成时间、农历、节气与实时天气聚合
+- 🛡️ **网络守护**：WiFi 异常自动检测与自愈引导系统
+- 🎨 **主题定制**：支持蓝色/橙色高对比度主题，全局字体动态缩放
 
 ## 🏗️ 技术架构
 
@@ -31,7 +31,7 @@ OneTap（一键通）是一款专为老年人设计的Android桌面启动器应�
 
 ### 核心技术栈
 - **UI框架**：Jetpack Compose + Material3
-- **架构模式**：MVVM + Repository Pattern
+- **架构模式**：MVVM + Repository Pattern + 动态插件化架构 (Plugin Architecture)
 - **依赖注入**：Dagger Hilt
 - **数据库**：Room Database
 - **数据存储**：DataStore Preferences
@@ -40,22 +40,21 @@ OneTap（一键通）是一款专为老年人设计的Android桌面启动器应�
 - **异步处理**：Kotlin Coroutines
 - **导航**：Navigation Compose
 
-### 项目结构
-```
-app/src/main/java/tech/huangsh/onetap/
-├── data/                    # 数据层
-│   ├── local/              # 本地数据存储
-│   ├── model/              # 数据模型
-│   ├── remote/             # 网络API
-│   └── repository/         # 数据仓库
-├── di/                     # 依赖注入模块
-├── service/                # 系统服务
-├── ui/                     # UI层
-│   ├── activity/           # Activity
-│   ├── screens/            # Compose屏幕
-│   └── theme/              # 主题配置
-├── utils/                  # 工具类
-└── viewmodel/              # ViewModel
+### 📂 项目目录结构
+
+```text
+SimpleDesktop/
+├── app/                    # Android 应用主工程
+├── docs/                   # 项目说明文档、进度表与架构设计
+│   ├── BUILD_SUCCESS.md    # 最近一次构建成功报告
+│   ├── NEW_FEATURES.md      # 新增特性详细说明
+│   ├── PLUGIN_ARCHITECTURE.md # 插件化架构设计文档
+│   └── ...                 # 毕业设计进度及路线图
+├── scripts/                # 图像处理、图表生成等工程化实用工具脚本
+├── scratch/                # 绘图探索与思路整理的草稿脚本
+├── skills/                 # 智能体扩展技能包 (Skillhub)
+├── .learnings/             # 自我改进记录与错误库
+└── README.md               # 项目主页
 ```
 
 ## 🚀 功能模块
@@ -80,16 +79,20 @@ app/src/main/java/tech/huangsh/onetap/
 - 应用分类显示
 - 拖拽排序
 
-### 4. 设置功能
+### 4. 引导与设置功能 (Onboarding & Settings)
+- 首次进入的4页滑动交互式图文引导
+- 集中式的权限管理页面与可视化状态面板
+- 智能的无障碍服务图文引导对话框与检测机制
 - 语音设置（语音反馈、语速、音量）
 - 显示设置（字体大小、对比度）
 - 主题设置（蓝色/橙色主题）
 - 开机自启动设置
 
-### 5. 微信集成
-- 微信视频通话
-- 微信语音通话
-- 无障碍服务支持
+### 5. 微信集成与自动化优化
+- **全自动拨号**：一键/语音触发微信视频、语音通话流程。
+- **焦点冲突解决**：同步 UI 关闭与 Intent 启动，确保微信获取首屏焦点。
+- **高兼容性方案**：深度使用 `AccessibilityService`，支持 Activity 模糊类名匹配与“ID+文本”双重节点查找。
+- **执行状态追踪**：全链路 Index (1-7) 状态追踪日志，方便调试与维护。
 
 ## 📋 权限说明
 
@@ -116,8 +119,8 @@ app/src/main/java/tech/huangsh/onetap/
 ### 构建项目
 1. 克隆项目到本地
 ```bash
-git clone https://github.com/yourusername/OneTap.git
-cd OneTap
+git clone https://github.com/zhou-yidie/SimpleDesktop.git
+cd SimpleDesktop
 ```
 
 2. 使用Android Studio打开项目
@@ -155,22 +158,17 @@ cd OneTap
 2. 建议设置为默认桌面应用
 3. 根据使用习惯配置联系人和常用应用
 
-## 🤝 贡献指南
+## 🤝 协作与规范
 
-欢迎为OneTap项目贡献代码！
+### 全局准则
+本仓库已配置智能体协作规范，**所有 AI 开发助手在开始工作前必须阅读并遵循 [AGENTS.md](AGENTS.md)**。
 
-### 贡献流程
-1. Fork本项目
-2. 创建特性分支 (`git checkout -b feature/AmazingFeature`)
-3. 提交更改 (`git commit -m 'Add some AmazingFeature'`)
-4. 推送到分支 (`git push origin feature/AmazingFeature`)
-5. 创建Pull Request
-
-### 代码规范
-- 遵循Kotlin编码规范
-- 使用有意义的变量和函数命名
-- 添加适当的注释
-- 确保代码通过所有测试
+### 开发规范
+- **语言原则**：
+  - **代码标识符**：必须使用**英文**（变量、函数、类名严禁拼音）。
+  - **文档与注释**：包括 `task.md`、代码注释、及所有生成文档，必须使用**中文**。
+- **Git 规范**：使用标准类型头，如 `feat: 新增...` 或 `fix: 修复...`。
+- **自我改进**：遇到错误或修正时，使用 `self-improvement` 技能更新 `.learnings/`。
 
 ## 📄 开源协议
 

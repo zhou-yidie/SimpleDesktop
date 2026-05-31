@@ -1,0 +1,54 @@
+\clearpage
+\newgeometry{left=1.75cm}
+\thispagestyle{empty}
+\vspace*{-2cm}
+{\fangsong\fontsize{18pt}{20pt}\centering 西安邮电大学本科毕业设计(论文)选题审批表\par}
+\renewcommand{\arraystretch}{1.8} % 增大表格行高
+\fangsong\fontsize{12pt}{12pt}\selectfont % 仿宋12pt字体
+\makeatletter
+\begin{longtable}{|m{4em}<{\centering}|m{1em}<{\centering}|m{5em}<{\centering}|m{4em}<{\centering}|m{4em}<{\centering}|m{4em}<{\centering}|m{10em}<{\raggedright}|}
+\hline
+\makebox[4em][s]{申报人} & \multicolumn{2}{m{5em}<{\centering}|}{\makebox[4em][s]{\@approvalauthor}} & \makebox[3em][s]{职称} & \makebox[4em][s]{\@approvaljobtitle} & \makebox[3em][s]{学院} & \@approvalcollege \\
+\hline
+题目名称 & \multicolumn{6}{m{36em}<{\raggedright}|}{\@approvaltitle} \\
+\hline
+题目来源&\multicolumn{6}{l|}{\(\Box\) 教师科研课题 \(\Box\) 教师专业实践 \(\Box\) 其他} \\
+\hline
+题目类型&\multicolumn{6}{l|}{\(\Box\) 艺术作品 \(\Box\) 硬件设计 \(\Box\) 软件设计 \(\Box\) 论文} \\
+\hline
+题目分类&\multicolumn{6}{l|}{\(\Box\) 工程实践 \(\Box\) 社会调查 \(\Box\) 实习 \(\Box\) 实验 \(\Box\) 其他} \\
+\hline
+{\makecell[c]{\fangsong\fontsize{12pt}{12pt}\selectfont \parbox[t][4em][c]{2em}{{\vspace*{3em}题目简述}}}}&
+  \multicolumn{6}{m{36em}<{\raggedright}|}{\vspace*{-1em}\parbox[t][10em][t]{36em}{\@approvaltitlebrief}}\\
+\hline
+{\makecell[c]{\fangsong\fontsize{12pt}{12pt}\selectfont \parbox[t][10em][c]{2em}{\vspace*{1em}对学生知识与能力要求}}} &
+\multicolumn{6}{m{36em}<{\raggedright}|}{\vspace*{-1em}\parbox[t][10em][t]{36em}{\@approvalrequirements}}\\
+\hline
+{\makecell[c]{\fangsong\fontsize{12pt}{12pt}\selectfont \parbox[t][10em][c]{2em}{\vspace*{1em}具体任务以及预期目标}}} &
+\multicolumn{6}{m{36em}<{\raggedright}|}{\vspace*{-1em}\parbox[t][10em][t]{36em}{\@approvaltasks}}\\
+\hline
+\end{longtable}
+\restoregeometry
+
+\clearpage
+\newgeometry{right=1.75cm}
+\thispagestyle{empty}
+\vspace*{-1cm}
+\begin{longtable}{|m{4em}<{\centering}|m{1em}<{\centering}|m{5em}<{\centering}|m{4em}<{\centering}|m{4em}<{\centering}|m{4em}<{\centering}|m{10em}<{\raggedright}|}
+\hline
+{\makecell[c]{\fangsong\fontsize{12pt}{12pt}\selectfont \parbox[t][4em][c]{2em}{{\vspace*{1em}时间进度}}}}&
+\multicolumn{6}{m{36em}<{\raggedright}|}{\vspace*{-1em}\parbox[t][6.5em][t]{36em}{\@approvalprogress}}\\
+\hline
+{\makecell[c]{\fangsong\fontsize{12pt}{12pt}\selectfont \parbox[t][6em][c]{3em}{{\vspace*{-1em}专业负责人审核意见}}}}&
+\multicolumn{6}{m{36em}<{\raggedright}|}{\vspace*{-1em}\parbox[t][6em][t]{36em}{\@approvalchaircomment}}\\
+&\multicolumn{6}{m{36em}<{\raggedright}|}{\makecell[r]{签字:\fangsong\fontsize{12pt}{12pt}\selectfont\@approvalchairname \hspace*{2em}\@approvalchairdate}}\\
+\hline
+\end{longtable}
+\vspace*{-2em}
+\begin{longtable}{|m{9em}<{\centering}|m{12em}<{\raggedright}|m{5em}<{\centering}|m{12em}<{\raggedright}|}
+    \parbox[t][3em][t]{9em}{\centering 系（教研室）主任}&\@approvaldeptchairname&    \parbox[t][3em][t]{5em}{\centering 主管院长}&\@approvaldeanname\\\
+   签字&\makecell[r]{\fangsong\fontsize{12pt}{12pt}\selectfont\@approvaldeptchairdate}&   签字&\makecell[r]{\fangsong\fontsize{12pt}{12pt}\selectfont\@approvaldeanydate}\\
+    \hline
+\end{longtable}
+\makeatother
+\restoregeometry

@@ -135,12 +135,15 @@ class ContactRepository(
      * @return 操作是否成功启动
      */
     fun startWeChatVideoCall(wechatNickname: String?): Boolean {
+        android.util.Log.d("ContactRepository", "startWeChatVideoCall: nickname=$wechatNickname")
         if (wechatNickname.isNullOrEmpty()) {
             return false
         }
 
         // 检查无障碍服务是否启用
-        if (!isAccessibilityServiceEnabled()) {
+        val accessibilityEnabled = isAccessibilityServiceEnabled()
+        android.util.Log.d("ContactRepository", "isAccessibilityServiceEnabled: $accessibilityEnabled")
+        if (!accessibilityEnabled) {
             // 跳转到无障碍服务设置页面
             val intent = Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)
             intent.flags = FLAG_ACTIVITY_NEW_TASK
@@ -148,8 +151,10 @@ class ContactRepository(
             return false
         }
 
-        // 检查微信应用是否安装弄璋之喜
-        if (!isWeChatInstalled()) {
+        // 检查微信应用是否安装
+        val wechatInstalled = isWeChatInstalled()
+        android.util.Log.d("ContactRepository", "isWeChatInstalled: $wechatInstalled")
+        if (!wechatInstalled) {
             return false
         }
 
@@ -204,12 +209,15 @@ class ContactRepository(
             if (launchIntent != null) {
                 launchIntent.flags = FLAG_ACTIVITY_NEW_TASK
                 launchIntent.setClassName("com.tencent.mm", "com.tencent.mm.ui.LauncherUI")
+                android.util.Log.d("ContactRepository", "正在启动微信 LauncherUI")
                 context.startActivity(launchIntent)
                 true
             } else {
+                android.util.Log.e("ContactRepository", "无法获取微信LaunchIntent")
                 false
             }
         } catch (e: Exception) {
+            android.util.Log.e("ContactRepository", "启动微信异常: ${e.message}")
             false
         }
     }
@@ -232,32 +240,37 @@ class ContactRepository(
      * 检查无障碍服务是否启用
      */
     private fun isAccessibilityServiceEnabled(): Boolean {
-        var accessibilityEnabled: Int
-        val serviceId = context.packageName + "/" + SelectToSpeakService::class.java.canonicalName
+        var accessibilityEnabled = 0
+        // 使用更标准的服务标识符构造方式
+        val serviceName = SelectToSpeakService::class.java.canonicalName ?: ""
+        val serviceId = "${context.packageName}/$serviceName"
+        
         try {
             accessibilityEnabled = Settings.Secure.getInt(
                 context.applicationContext.contentResolver,
                 Settings.Secure.ACCESSIBILITY_ENABLED
             )
         } catch (e: Settings.SettingNotFoundException) {
-            return false
+            android.util.Log.w("ContactRepository", "未找到 ACCESSIBILITY_ENABLED 设置")
         }
-        val colonSplitter: TextUtils.SimpleStringSplitter = TextUtils.SimpleStringSplitter(':')
+        
         if (accessibilityEnabled == 1) {
             val settingValue: String? = Settings.Secure.getString(
                 context.applicationContext.contentResolver,
                 Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES
             )
             if (settingValue != null) {
+                val colonSplitter = TextUtils.SimpleStringSplitter(':')
                 colonSplitter.setString(settingValue)
                 while (colonSplitter.hasNext()) {
-                    val accessibilityService: String = colonSplitter.next()
-                    if (accessibilityService.equals(serviceId, true)) {
+                    val accessibilityService = colonSplitter.next()
+                    if (accessibilityService.equals(serviceId, ignoreCase = true)) {
                         return true
                     }
                 }
             }
         }
+        android.util.Log.w("ContactRepository", "无障碍服务未启用: 期望 $serviceId")
         return false
     }
 

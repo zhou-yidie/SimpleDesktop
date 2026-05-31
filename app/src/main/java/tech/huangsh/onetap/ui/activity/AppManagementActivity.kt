@@ -7,7 +7,7 @@ import androidx.activity.viewModels
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import dagger.hilt.android.AndroidEntryPoint
-import tech.huangsh.onetap.ui.theme.OneTapTheme
+import tech.huangsh.onetap.ui.theme.SimpleDesktopTheme
 import tech.huangsh.onetap.ui.screens.app.AppManagementScreen
 import tech.huangsh.onetap.viewmodel.AppViewModel
 import tech.huangsh.onetap.viewmodel.SettingsViewModel
@@ -26,7 +26,7 @@ class AppManagementActivity : ComponentActivity() {
             // 确保从一开始就使用正确的设置，避免闪烁
             val settings by settingsViewModel.settings.collectAsState(initial = Settings())
             
-            OneTapTheme(
+            SimpleDesktopTheme(
                 darkTheme = false,
                 highContrast = settings.highContrast,
                 fontSize = settings.fontSize,

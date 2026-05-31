@@ -11,6 +11,7 @@ import androidx.core.content.ContextCompat
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import tech.huangsh.onetap.data.model.WeatherInfo
+import tech.huangsh.onetap.config.AppConfig
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -28,7 +29,7 @@ class WeatherService @Inject constructor(
     
     private val openMeteoApiService: OpenMeteoApiService by lazy {
         val retrofit = Retrofit.Builder()
-            .baseUrl("https://api.open-meteo.com/")
+            .baseUrl(AppConfig.Network.WEATHER_BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         

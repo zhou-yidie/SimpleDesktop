@@ -1,0 +1,84 @@
+% 图 2-Z : 窗口内容震荡与节点指纹匹配原理图
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[
+    node distance=2cm,
+    block/.style={draw, rectangle, rounded corners, minimum width=2.5cm, minimum height=1cm, text centered, font=\sffamily\small, fill=blue!5},
+    ghost/.style={draw, rectangle, dashed, minimum width=2.5cm, minimum height=1cm, text centered, font=\sffamily\small, fill=gray!20, text=gray},
+    arrow/.style={thick,->,>=stealth},
+    label/.style={font=\sffamily\scriptsize, text=red!70!black}
+]
+
+% 左侧：黑盒化混淆状态
+\node[font=\sffamily\bfseries, text=black] (title1) {步骤一：混淆隔离态 (Ghost Nodes)};
+\node[ghost, below of=title1, yshift=1cm] (g1) {透明占位节点};
+\node[ghost, below of=g1, yshift=0.5cm] (g2) {混淆资源 ID};
+\node[ghost, below of=g2, yshift=0.5cm] (g3) {隐藏真实控件};
+
+% 中间：主动震荡探测
+\node[block, fill=orange!20, right of=g2, xshift=2.5cm] (shake) {窗口内容震荡\\(微位移滑动 1-2px)};
+\draw[arrow, red, ultra thick, dashed] (g2.east) -- node[above, font=\sffamily\scriptsize, text=red] {触发更新} (shake.west);
+
+% 右侧：真实树挂载与匹配
+\node[font=\sffamily\bfseries, text=black, right of=title1, xshift=7cm] (title2) {步骤二：真实树挂载与特征定位};
+\node[block, fill=green!10, below of=title2, yshift=1cm] (r1) {真实控件子树暴露};
+\node[block, fill=green!10, below of=r1, yshift=0.5cm] (r2) {拓扑深度提取};
+\node[block, fill=green!10, below of=r2, yshift=0.5cm] (r3) {计算视觉包围盒重心};
+
+\draw[arrow, blue, thick] (shake.east) -- node[above, font=\sffamily\scriptsize, text=blue] {强制重绘 (Remount)} (r2.west);
+
+% 下方：特征指纹匹配模型
+\node[draw, rectangle, minimum width=10cm, minimum height=1.5cm, fill=yellow!10, below of=r3, yshift=-0.5cm, xshift=-2.5cm] (fingerprint) {};
+\node[font=\sffamily\bfseries, text=black, xshift=-2cm, yshift=0.4cm] at (fingerprint.center) {UI 特征归一化模型 (Feature Normalization)};
+\node[font=\sffamily\scriptsize, text=black, yshift=-0.2cm] at (fingerprint.center) {匹配度 $P = w_1 \times (相对拓扑关系) + w_2 \times (视觉重心偏移量) > 98\% \Rightarrow$ \textbf{锁定目标}};
+
+\draw[arrow, thick] (r3.south) -- (fingerprint.north -| r3.south);
+
+\end{tikzpicture}
+\caption{基于窗口内容震荡与层级拓扑指纹的主动探测匹配机制}
+\label{fig:wechat_shake_match}
+\end{figure}
+
+% -------------------------------------------------------------
+
+% 图 2-W : 焦点退避与心跳防死锁机制时序图
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[
+    node distance=2cm,
+    actor/.style={draw, rectangle, minimum width=2.5cm, minimum height=0.8cm, text centered, font=\sffamily\bfseries, fill=blue!10},
+    timeline/.style={thick, dashed},
+    arrow/.style={thick,->,>=stealth},
+    message/.style={font=\sffamily\scriptsize, text=black}
+]
+
+% 角色定义
+\node[actor] (user) {老年用户 (干扰源)};
+\node[actor, right of=user, xshift=2cm] (desktop) {桌面主程序};
+\node[actor, right of=desktop, xshift=3cm] (accessibility) {无障碍服务引擎};
+
+% 时间线
+\draw[timeline] (user.south) -- +(0,-5.5);
+\draw[timeline] (desktop.south) -- +(0,-5.5);
+\draw[timeline] (accessibility.south) -- +(0,-5.5);
+
+% 步骤 1: 触发与焦点退避
+\draw[arrow] ([yshift=-1cm]desktop.south) -- node[above, message] {1. 自动化任务发起} ([yshift=-1cm]accessibility.south);
+\node[draw, fill=orange!20, font=\sffamily\tiny, right of=desktop, xshift=1cm, yshift=-1.5cm] {2. 释放焦点，隐藏悬浮窗};
+\draw[arrow, ->, bend right] ([yshift=-1cm]desktop.south) to ([yshift=-2cm]desktop.south);
+
+% 步骤 2: 用户误触干扰
+\draw[arrow, red, thick] ([yshift=-2.5cm]user.south) -- node[above, message, text=red] {3. 误触屏幕 / 权限弹窗} ([yshift=-2.5cm]accessibility.south);
+
+% 步骤 3: 防死锁心跳检测
+\node[draw, fill=red!10, font=\sffamily\tiny, right of=accessibility, xshift=1.5cm, yshift=-3.5cm] {4. 状态机停滞 > 5秒};
+\draw[arrow, ->, bend left, thick, dashed] ([yshift=-3cm]accessibility.south) to ([yshift=-4cm]accessibility.south);
+\node[message, right of=accessibility, xshift=1.5cm, yshift=-4.2cm] {触发死锁判定};
+
+% 步骤 4: 自回归与恢复
+\draw[arrow, blue, thick] ([yshift=-5cm]accessibility.south) -- node[above, message, text=blue] {5. 强制模拟返回 (Self-regression)} ([yshift=-5cm]desktop.south);
+
+\end{tikzpicture}
+\caption{面临用户误触与弹窗干扰时的焦点退避与心跳防死锁时序图}
+\label{fig:focus_retreat}
+\end{figure}

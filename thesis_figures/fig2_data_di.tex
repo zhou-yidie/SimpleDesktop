@@ -1,0 +1,86 @@
+% 图 2-X : Room 数据库核心实体关系 (ER) 图
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[
+    node distance=3.5cm,
+    entity/.style={draw, rectangle, rounded corners, minimum width=2.5cm, minimum height=1cm, text centered, font=\sffamily\bfseries, fill=blue!10},
+    attribute/.style={draw, ellipse, minimum width=2cm, minimum height=0.8cm, text centered, font=\sffamily\small, fill=gray!10},
+    primary/.style={attribute, font=\sffamily\small\bfseries, text=black},
+    relation/.style={draw, diamond, aspect=2, minimum width=2.5cm, text centered, font=\sffamily\small, fill=green!10},
+    line/.style={thick}
+]
+
+% 实体
+\node[entity] (contact) {ContactEntity (联系人)};
+\node[entity, right of=contact, xshift=5cm] (app) {AppEntity (应用)};
+
+% 联系人属性
+\node[primary, above left of=contact, yshift=-1cm, xshift=1cm] (c_id) {\underline{id}};
+\node[attribute, left of=contact] (c_name) {姓名 (name)};
+\node[attribute, below left of=contact, yshift=1cm, xshift=1cm] (c_phone) {电话 (phone)};
+\node[attribute, below of=contact, yshift=1cm] (c_wechat) {微信昵称 (wechat)};
+
+\draw[line] (contact) -- (c_id);
+\draw[line] (contact) -- (c_name);
+\draw[line] (contact) -- (c_phone);
+\draw[line] (contact) -- (c_wechat);
+
+% 应用属性
+\node[primary, above right of=app, yshift=-1cm, xshift=-1cm] (a_pkg) {\underline{packageName}};
+\node[attribute, right of=app] (a_name) {应用名 (label)};
+\node[attribute, below right of=app, yshift=1cm, xshift=-1cm] (a_enable) {启用状态 (enabled)};
+
+\draw[line] (app) -- (a_pkg);
+\draw[line] (app) -- (a_name);
+\draw[line] (app) -- (a_enable);
+
+% 持久化存储库
+\node[relation] (repo) at ($(contact)!0.5!(app)$) {持久化仓库 (Repository)};
+
+\draw[line, ->, >=stealth] (repo) -- node[above, font=\sffamily\scriptsize] {1:N 管理} (contact);
+\draw[line, ->, >=stealth] (repo) -- node[above, font=\sffamily\scriptsize] {1:N 管理} (app);
+
+\end{tikzpicture}
+\caption{基于 Room 框架的核心持久化实体关系 (ER) 示意图}
+\label{fig:room_er}
+\end{figure}
+
+% -------------------------------------------------------------
+
+% 图 2-Y : Dagger-Hilt 依赖注入数据流向图
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[
+    node distance=2cm,
+    module/.style={draw, rectangle, rounded corners, minimum width=3cm, minimum height=1cm, text centered, font=\sffamily\small, fill=orange!10},
+    container/.style={draw, rectangle, minimum width=10cm, minimum height=4.5cm, dashed, thick, fill=gray!5},
+    arrow/.style={thick,->,>=stealth, color=blue!70!black}
+]
+
+% 容器背景
+\node[container] (hilt) {};
+\node[font=\sffamily\bfseries, text=black!70, yshift=1.8cm, xshift=-3cm] at (hilt.center) {Dagger-Hilt 依赖注入容器};
+
+% 内部模块 (提供者)
+\node[module, fill=green!10, yshift=0.5cm, xshift=-2.5cm] at (hilt.center) (dbModule) {@Module DatabaseModule};
+\node[module, fill=green!10, yshift=0.5cm, xshift=2.5cm] at (hilt.center) (dsModule) {@Module DataStoreModule};
+
+% 组件
+\node[module, fill=yellow!20, yshift=-1cm] at (hilt.center) (singleton) {@SingletonComponent (单例组件)};
+
+% 依赖流向
+\draw[arrow] (dbModule) -- node[right, font=\sffamily\scriptsize] {提供 Room 实例} (singleton);
+\draw[arrow] (dsModule) -- node[left, font=\sffamily\scriptsize] {提供偏好实例} (singleton);
+
+% 外部消费者
+\node[module, fill=blue!10, below of=singleton, yshift=-1cm, xshift=-3cm] (vm1) {DesktopViewModel\\(@HiltViewModel)};
+\node[module, fill=blue!10, below of=singleton, yshift=-1cm, xshift=3cm] (service) {AccessibilityService\\(@AndroidEntryPoint)};
+
+% 注入箭头
+\draw[arrow, dashed, red!70!black] (singleton.south) -- +(0,-0.5) -| node[above, pos=0.25, font=\sffamily\scriptsize, text=red] {@Inject 自动注入} (vm1.north);
+\draw[arrow, dashed, red!70!black] (singleton.south) -- +(0,-0.5) -| node[above, pos=0.25, font=\sffamily\scriptsize, text=red] {@Inject 自动注入} (service.north);
+
+\end{tikzpicture}
+\caption{Dagger-Hilt 全局依赖注入架构与数据流向图}
+\label{fig:hilt_di}
+\end{figure}

@@ -1,5 +1,5 @@
 <resources>
-  <string name="app_name">"一键通</string>
+  <string name="app_name">简易桌面</string>
 
   <!-- 主界面 -->
   <string name="home_time_format">HH:mm</string>
@@ -133,4 +133,74 @@
   <string name="no_system_launcher_found">未找到系统默认桌面</string>
 
   <string name="wx_make_call_service_helper">开启该服务后，可一键拨打微信视频、微信语音。</string>
+  
+  <!-- 引导页 -->
+  <string name="onboarding_welcome_title">欢迎使用简易桌面</string>
+  <string name="onboarding_welcome_subtitle">为老年人设计的简洁桌面</string>
+  <string name="onboarding_features_title">核心功能</string>
+  <string name="onboarding_features_subtitle">一键直达，简单易用</string>
+  <string name="onboarding_features_contact">快速联系人\n大图标，大字体</string>
+  <string name="onboarding_features_wechat">微信通话\n一键视频/语音</string>
+  <string name="onboarding_features_app">常用应用\n快速启动</string>
+  <string name="onboarding_permissions_title">需要您的授权</string>
+  <string name="onboarding_permissions_subtitle">为了提供完整功能</string>
+  <string name="onboarding_setup_title">开始设置</string>
+  <string name="onboarding_setup_subtitle">让我们完成最后的配置</string>
+  <string name="onboarding_next">下一步</string>
+  <string name="onboarding_skip">跳过</string>
+  <string name="onboarding_start">开始使用</string>
+  <string name="onboarding_setup_now">立即设置</string>
+  
+  <!-- 权限管理 -->
+  <string name="permission_management">权限管理</string>
+  <string name="permission_status_granted">已授权</string>
+  <string name="permission_status_denied">未授权</string>
+  <string name="permission_essential">必需权限</string>
+  <string name="permission_optional">可选权限</string>
+  <string name="permission_phone_title">拨打电话</string>
+  <string name="permission_phone_desc">用于快速拨打联系人电话</string>
+  <string name="permission_contacts_title">读取联系人</string>
+  <string name="permission_contacts_desc">用于从系统导入联系人</string>
+  <string name="permission_camera_title">相机</string>
+  <string name="permission_camera_desc">用于拍摄联系人头像</string>
+  <string name="permission_location_title">位置信息</string>
+  <string name="permission_location_desc">用于获取当前位置的天气</string>
+  <string name="permission_accessibility_title">无障碍服务</string>
+  <string name="permission_accessibility_desc">用于微信自动拨打视频/语音通话</string>
+  <string name="permission_launcher_title">默认桌面</string>
+  <string name="permission_launcher_desc">设为默认桌面后，按Home键直接回到简易桌面</string>
+  <string name="permission_request">授权</string>
+  <string name="permission_go_settings">去设置</string>
+  <string name="permission_all_granted">所有权限已授予</string>
+  <string name="permission_some_denied">部分权限未授予，某些功能可能受限</string>
+  
+  <!-- 无障碍服务引导 -->
+  <string name="accessibility_guide_title">开启无障碍服务</string>
+  <string name="accessibility_guide_subtitle">用于微信自动拨打通话</string>
+  <string name="accessibility_guide_why_title">为什么需要？</string>
+  <string name="accessibility_guide_why_desc">无障碍服务可以帮助简易桌面自动完成以下操作：\n\n• 打开微信应用\n• 搜索联系人\n• 发起视频/语音通话\n\n这样您只需点击一次，就能直接拨打微信电话</string>
+  <string name="accessibility_guide_how_title">如何开启？</string>
+  <string name="accessibility_guide_step1">1. 点击下方按钮打开设置</string>
+  <string name="accessibility_guide_step2">2. 找到"简易桌面"或"SelectToSpeakService"</string>
+  <string name="accessibility_guide_step3">3. 开启服务开关</string>
+  <string name="accessibility_guide_step4">4. 在弹出的对话框中点击"允许"</string>
+  <string name="accessibility_guide_open_settings">打开无障碍设置</string>
+  <string name="accessibility_guide_check_status">检查状态</string>
+  <string name="accessibility_service_enabled">无障碍服务已开启</string>
+  <string name="accessibility_service_disabled">无障碍服务未开启</string>
+  <string name="accessibility_guide_success">太棒了！无障碍服务已成功开启\n\n现在您可以使用微信通话功能了</string>
+  <string name="accessibility_guide_later">稍后设置</string>
+  
+  <!-- WiFi网络监控 -->
+  <string name="wifi_monitor_title">WiFi网络监控</string>
+  <string name="wifi_monitor_channel_name">WiFi网络监控</string>
+  <string name="wifi_monitor_channel_desc">持续监控WiFi连接状态</string>
+  <string name="wifi_monitor_notification_title">WiFi监控运行中</string>
+  <string name="wifi_monitor_notification_text">正在持续检测WiFi连接状态</string>
+  <string name="wifi_no_network_title">没有WiFi网络</string>
+  <string name="wifi_no_network_message">当前没有可用WiFi网络\n请寻找合适的网络</string>
+  <string name="wifi_dialog_dismiss">我知道了</string>
+  
+  <!-- 自动开启WiFi的无障碍服务 -->
+  <string name="accessibility_service_wifi_desc">用于在Android 10及以上系统自动跳转并开启WiFi功能。</string>
 </resources>

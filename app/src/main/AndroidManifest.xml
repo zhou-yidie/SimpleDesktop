@@ -32,6 +32,12 @@
   <!-- 网络权限 -->
   <uses-permission android:name="android.permission.INTERNET" />
   <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+  <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+  <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+
+  <!-- 前台服务权限 -->
+  <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+  <uses-permission android:name="android.permission.FOREGROUND_SERVICE_CONNECTED_DEVICE" />
 
   <!-- 震动权限 -->
   <uses-permission android:name="android.permission.VIBRATE" />
@@ -45,6 +51,9 @@
   <!-- 通知权限（Android 13+） -->
   <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
 
+  <!-- 录音权限 -->
+  <uses-permission android:name="android.permission.RECORD_AUDIO" />
+
   <!-- 应用列表权限 -->
   <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES"
                    tools:ignore="QueryAllPackagesPermission" />
@@ -52,8 +61,15 @@
   <!-- 小米系统获取应用列表权限 -->
   <uses-permission android:name="com.android.permission.GET_INSTALLED_APPS" />
 
+  <!-- 对语音识别服务的查询声明 (Android 11+) -->
+  <queries>
+    <intent>
+      <action android:name="android.intent.action.RECOGNIZE_SPEECH" />
+    </intent>
+  </queries>
+
   <application
-    android:name=".OneTapApp"
+    android:name=".SimpleDesktopApp"
     android:allowBackup="true"
     android:dataExtractionRules="@xml/data_extraction_rules"
     android:fullBackupContent="@xml/backup_rules"
@@ -61,25 +77,28 @@
     android:label="@string/app_name"
     android:roundIcon="@mipmap/ic_launcher_round"
     android:supportsRtl="true"
-    android:theme="@style/Theme.OneTap"
+    android:theme="@style/Theme.SimpleDesktop"
     tools:targetApi="31">
 
-    <!-- 主Activity - 作为Launcher -->
-    <activity
+    <!-- 主Activity - 作为Launcher -->\n    <activity
             android:name=".ui.activity.MainActivity"
             android:exported="true"
             android:launchMode="singleTask"
             android:screenOrientation="user"
             android:stateNotNeeded="true"
             android:clearTaskOnLaunch="true"
-            android:theme="@style/Theme.OneTap" tools:ignore="DiscouragedApi">
+            android:theme="@style/Theme.SimpleDesktop" tools:ignore="DiscouragedApi">
 
-      <!-- Launcher Intent Filter -->
+      <!-- 应用启动器（从应用列表打开） -->\n      <intent-filter>
+        <action android:name="android.intent.action.MAIN" />
+        <category android:name="android.intent.category.LAUNCHER" />
+      </intent-filter>
+      
+      <!-- 桌面启动器（按Home键启动） -->
       <intent-filter android:priority="1000">
         <action android:name="android.intent.action.MAIN" />
         <category android:name="android.intent.category.HOME" />
         <category android:name="android.intent.category.DEFAULT" />
-        <category android:name="android.intent.category.LAUNCHER" />
       </intent-filter>
     </activity>
 
@@ -88,35 +107,63 @@
             android:name=".ui.activity.SettingsActivity"
             android:exported="false"
             android:screenOrientation="user"
-            android:theme="@style/Theme.OneTap" tools:ignore="DiscouragedApi"/>
+            android:theme="@style/Theme.SimpleDesktop" tools:ignore="DiscouragedApi"/>
+    
+    <!-- 引导页Activity -->
+    <activity
+            android:name=".ui.activity.OnboardingActivity"
+            android:exported="false"
+            android:screenOrientation="user"
+            android:theme="@style/Theme.SimpleDesktop" tools:ignore="DiscouragedApi"/>
+    
+    <!-- 权限设置Activity -->
+    <activity
+            android:name=".ui.activity.PermissionSetupActivity"
+            android:exported="false"
+            android:screenOrientation="user"
+            android:theme="@style/Theme.SimpleDesktop" tools:ignore="DiscouragedApi"/>
+            
+    <!-- 插件管理Activity -->
+    <activity
+            android:name=".ui.activity.PluginManagementActivity"
+            android:exported="false"
+            android:screenOrientation="user"
+            android:theme="@style/Theme.SimpleDesktop" tools:ignore="DiscouragedApi"/>
+    
+    <!-- 插件配置Activity -->
+    <activity
+            android:name=".ui.activity.PluginConfigActivity"
+            android:exported="false"
+            android:screenOrientation="user"
+            android:theme="@style/Theme.SimpleDesktop" tools:ignore="DiscouragedApi"/>
 
     <!-- 联系人管理Activity -->
     <activity
             android:name=".ui.activity.ContactManagementActivity"
             android:exported="false"
             android:screenOrientation="user"
-            android:theme="@style/Theme.OneTap" tools:ignore="DiscouragedApi"/>
+            android:theme="@style/Theme.SimpleDesktop" tools:ignore="DiscouragedApi"/>
 
     <!-- 联系人详情Activity -->
     <activity
             android:name=".ui.activity.ContactDetailActivity"
             android:exported="false"
             android:screenOrientation="user"
-            android:theme="@style/Theme.OneTap" tools:ignore="DiscouragedApi"/>
+            android:theme="@style/Theme.SimpleDesktop" tools:ignore="DiscouragedApi"/>
 
     <!-- 应用管理Activity -->
     <activity
             android:name=".ui.activity.AppManagementActivity"
             android:exported="false"
             android:screenOrientation="user"
-            android:theme="@style/Theme.OneTap" tools:ignore="DiscouragedApi"/>
+            android:theme="@style/Theme.SimpleDesktop" tools:ignore="DiscouragedApi"/>
 
     <!-- 显示设置Activity -->
     <activity
             android:name=".ui.activity.DisplaySettingsActivity"
             android:exported="false"
             android:screenOrientation="user"
-            android:theme="@style/Theme.OneTap" tools:ignore="DiscouragedApi"/>
+            android:theme="@style/Theme.SimpleDesktop" tools:ignore="DiscouragedApi"/>
 
     <!-- 桌面选择器Activity -->
     <activity
@@ -144,6 +191,25 @@
       </intent-filter>
       <meta-data android:name="android.accessibilityservice" android:resource="@xml/accessibility_service_wechat" />
     </service>
+
+    <!-- 自动开启WiFi的无障碍服务 -->
+    <service
+      android:name=".service.WifiAutoEnableService"
+      android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE"
+      android:exported="false">
+      <intent-filter>
+        <action android:name="android.accessibilityservice.AccessibilityService" />
+      </intent-filter>
+      <meta-data
+        android:name="android.accessibilityservice"
+        android:resource="@xml/accessibility_service_wifi" />
+    </service>
+
+    <!-- WiFi监控前台服务 -->
+    <service
+            android:name=".service.WifiMonitorService"
+            android:exported="false"
+            android:foregroundServiceType="connectedDevice" />
   </application>
 
 </manifest>

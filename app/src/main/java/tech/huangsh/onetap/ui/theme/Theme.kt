@@ -17,7 +17,7 @@ import tech.huangsh.onetap.data.model.FontSize
  */
 
 @Composable
-fun OneTapTheme(
+fun SimpleDesktopTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     highContrast: Boolean = false,
     largeText: Boolean = false,

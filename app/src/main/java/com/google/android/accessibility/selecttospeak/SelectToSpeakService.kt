@@ -22,100 +22,119 @@ class SelectToSpeakService : AccessibilityService() {
     }
 
     override fun onAccessibilityEvent(event: AccessibilityEvent?) {
-        val currentActivity = event?.className ?: return
-        Log.d(tag, event.toString())
-        Log.d(tag, String.format("%d", WeChatData.index))
+        val packageName = event?.packageName?.toString() ?: ""
+        if (packageName != "com.tencent.mm") return
+
+        val currentActivity = event?.className ?: ""
+        Log.d(tag, "Event: ${event?.eventType}, Class: $currentActivity, Index: ${WeChatData.index}")
+
         if (WeChatData.index == 1) {
-            if (currentActivity == WeChatActivity.INDEX.id) {
-                // 底部导航栏有4个，到首页微信页面
-                var tables =
-                    rootInActiveWindow.findAccessibilityNodeInfosByViewId(WeChatId.TABLES.id)
-                Log.d(tag, tables.toString())
-                while (tables.isEmpty()) {
+            // 强力检测一：如果当前屏幕存在聊天对话框的“更多（加号）”按钮，说明我们正处于某个聊天窗口内。
+            // 采取超高鲁棒性方案：直接执行 BACK 操作安全返回微信主界面，重置为 Clean Slate 纯净初始状态。
+            val moreButton = rootInActiveWindow?.findAccessibilityNodeInfosByViewId(WeChatId.MORE.id)
+            if (!moreButton.isNullOrEmpty()) {
+                Log.d(tag, "检测到当前处于聊天界面，执行安全返回主页操作（重置到主页纯净初始状态）")
+                performGlobalAction(GLOBAL_ACTION_BACK)
+                Thread.sleep(500)
+                return
+            }
+
+            // 强力检测二：如果主界面底部的 Tab 按钮已经可见，不管当前事件类型是什么，立刻执行点击并推进到下一状态！
+            val tables = rootInActiveWindow?.findAccessibilityNodeInfosByViewId(WeChatId.TABLES.id)
+            if (!tables.isNullOrEmpty()) {
+                Log.d(tag, "发现主页底部 Tab: ${tables.size} 个，点击第一个 Tab 进入搜索")
+                val clicked = tables[0].click()
+                Log.d(tag, "点击第一个 Tab 结果: $clicked")
+                WeChatData.updateIndex(2)
+            }
+
+            // 强力检测三：如果处于非主界面 Activity（仅在窗口状态改变时判定，防止内容改变事件误判为未知Activity而狂点返回），执行安全退回
+            if (event?.eventType == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) {
+                val activityName = currentActivity.toString()
+                if (activityName.contains("dialog")) {
+                    Log.d(tag, "检测到弹窗: $activityName，执行返回关闭")
                     performGlobalAction(GLOBAL_ACTION_BACK)
                     Thread.sleep(500)
-                    tables =
-                        rootInActiveWindow.findAccessibilityNodeInfosByViewId(WeChatId.TABLES.id)
+                    performGlobalAction(GLOBAL_ACTION_BACK)
+                    Thread.sleep(500)
+                } else if (activityName != WeChatActivity.INDEX.id) {
+                    Log.d(tag, "检测到处于非主界面 Activity: $activityName，执行安全返回")
+                    performGlobalAction(GLOBAL_ACTION_BACK)
+                    Thread.sleep(500)
                 }
-                Thread.sleep(100)
-                tables[0].click()
-                WeChatData.updateIndex(2)
-            } else if (currentActivity.contains("dialog")) {
-                // 有弹窗，返回2次
-                performGlobalAction(GLOBAL_ACTION_BACK)
-                Thread.sleep(500)
-                performGlobalAction(GLOBAL_ACTION_BACK)
-                Thread.sleep(500)
-            } else {
-                // 不在页面，全局返回
-                performGlobalAction(GLOBAL_ACTION_BACK)
-                Thread.sleep(500)
             }
         }
+
         if (WeChatData.index == 2) {
-            // 点击搜索
-            val searchIcon =
-                rootInActiveWindow.findAccessibilityNodeInfosByViewId(WeChatId.SEARCH.id)
+            Log.d(tag, "执行 Index 2: 点击搜索图标")
+            val searchIcon = rootInActiveWindow.findAccessibilityNodeInfosByViewId(WeChatId.SEARCH.id)
             if (searchIcon.isNotEmpty()) {
-                searchIcon.first().click()
+                val clicked = searchIcon.first().click()
+                Log.d(tag, "点击搜索图标结果: $clicked")
                 Thread.sleep(500)
                 WeChatData.updateIndex(3)
             }
         }
+
         if (WeChatData.index == 3) {
-            // 输入文字
-            val input =
-                rootInActiveWindow.findAccessibilityNodeInfosByViewId(WeChatId.INPUT.id)
+            Log.d(tag, "执行 Index 3: 输入联系人姓名 ${WeChatData.value}")
+            val input = rootInActiveWindow.findAccessibilityNodeInfosByViewId(WeChatId.INPUT.id)
             if (input.isNotEmpty()) {
-                input.first().input(WeChatData.value)
+                val inputted = input.first().input(WeChatData.value)
+                Log.d(tag, "输入文字结果: $inputted")
                 Thread.sleep(1000)
                 WeChatData.updateIndex(4)
             }
         }
+
         if (WeChatData.index == 4) {
-            // 点击搜到的第一个联系人
-            if (currentActivity == WeChatActivity.SEARCH.id) {
-                val contact = rootInActiveWindow.findAccessibilityNodeInfosByViewId(WeChatId.LIST.id)
-                if (contact.isNotEmpty()) {
-                    contact.first().click()
-                    Thread.sleep(500)
-                    WeChatData.updateIndex(5)
-                }
+            Log.d(tag, "执行 Index 4: 点击列表第一个联系人, 文本: ${WeChatData.value}")
+            var contacts = rootInActiveWindow.findAccessibilityNodeInfosByViewId(WeChatId.LIST.id)
+            if (contacts.isNullOrEmpty()) {
+                Log.d(tag, "ID 找不到，尝试文本查找: ${WeChatData.value}")
+                contacts = rootInActiveWindow.findAccessibilityNodeInfosByText(WeChatData.value)
+            }
+
+            if (!contacts.isNullOrEmpty()) {
+                val clicked = contacts.first().click()
+                Log.d(tag, "点击联系人结果: $clicked")
+                Thread.sleep(500)
+                WeChatData.updateIndex(5)
             }
         }
+
         if (WeChatData.index == 5) {
-            // 聊天界面点击更多
+            Log.d(tag, "执行 Index 5: 聊天界面点击更多")
             val more = rootInActiveWindow.findAccessibilityNodeInfosByViewId(WeChatId.MORE.id)
             if (more.isNotEmpty()) {
-                more.first().click()
+                val clicked = more.first().click()
+                Log.d(tag, "点击更多结果: $clicked")
                 Thread.sleep(1000)
                 WeChatData.updateIndex(6)
             }
         }
+
         if (WeChatData.index == 6) {
-            // 点击视频通话菜单
-            if (currentActivity == WeChatActivity.CHAT.id) {
-                val menu = rootInActiveWindow.findAccessibilityNodeInfosByText(WeChatData.findText(false))
-                if (menu.isNotEmpty()) {
-                    val rect = Rect()
-                    menu.first().getBoundsInScreen(rect)
-                    performClick(rect.exactCenterX(), rect.exactCenterY())
-                    Thread.sleep(500)
-                    WeChatData.updateIndex(7)
-                }
+            Log.d(tag, "执行 Index 6: 点击视频通话菜单")
+            val menu = rootInActiveWindow.findAccessibilityNodeInfosByText(WeChatData.findText(false))
+            if (menu.isNotEmpty()) {
+                val rect = Rect()
+                menu.first().getBoundsInScreen(rect)
+                Log.d(tag, "执行坐标点击: ${rect.centerX()}, ${rect.centerY()}")
+                performClick(rect.exactCenterX(), rect.exactCenterY())
+                Thread.sleep(500)
+                WeChatData.updateIndex(7)
             }
         }
+
         if (WeChatData.index == 7) {
-            // 点击视频/语音通话选项
-            if (currentActivity.contains(WeChatActivity.DIALOG.id)
-                || currentActivity == WeChatActivity.DIALOG_OLD.id
-            ) {
-                val options = rootInActiveWindow.findAccessibilityNodeInfosByText(WeChatData.findText(true))
-                if (options.isNotEmpty()) {
-                    options.first().click()
-                    Thread.sleep(500)
-                    WeChatData.updateIndex(0)
-                }
+            Log.d(tag, "执行 Index 7: 选择视频/语音通话")
+            val options = rootInActiveWindow.findAccessibilityNodeInfosByText(WeChatData.findText(true))
+            if (options.isNotEmpty()) {
+                val clicked = options.first().click()
+                Log.d(tag, "点击确定结果: $clicked")
+                Thread.sleep(500)
+                WeChatData.updateIndex(0)
             }
         }
     }

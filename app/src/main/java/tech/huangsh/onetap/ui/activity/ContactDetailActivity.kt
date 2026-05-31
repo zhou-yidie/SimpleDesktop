@@ -14,7 +14,7 @@ import androidx.compose.runtime.getValue
 import dagger.hilt.android.AndroidEntryPoint
 import tech.huangsh.onetap.data.model.Contact
 import tech.huangsh.onetap.ui.screens.contact.ContactDetailScreen
-import tech.huangsh.onetap.ui.theme.OneTapTheme
+import tech.huangsh.onetap.ui.theme.SimpleDesktopTheme
 import tech.huangsh.onetap.utils.ImageUtils
 import tech.huangsh.onetap.viewmodel.ContactViewModel
 import tech.huangsh.onetap.viewmodel.SettingsViewModel
@@ -47,7 +47,7 @@ class ContactDetailActivity : ComponentActivity() {
         
         setContent {
             val settings by settingsViewModel.settings.collectAsState(initial = Settings())
-            OneTapTheme(
+            SimpleDesktopTheme(
                 darkTheme = false,
                 highContrast = settings.highContrast,
                 fontSize = settings.fontSize,

@@ -1,0 +1,22 @@
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[
+    node distance=2cm,
+    box/.style={draw, rectangle, rounded corners, minimum width=3cm, minimum height=1cm, text centered, font=\sffamily\small},
+    arrow/.style={thick,->,>=stealth}
+]
+
+% 传统方案
+\node[box, fill=gray!20] (trad_launcher) {传统极简桌面 (大字体)};
+\node[box, fill=red!20, right of=trad_launcher, xshift=3.5cm] (trad_wechat) {微信原生界面 (极其复杂)};
+\draw[arrow, dashed] (trad_launcher) -- node[above] {点击跳转} node[below] {\textcolor{red}{体验割裂}} (trad_wechat);
+
+% 本课题方案
+\node[box, fill=blue!20, below of=trad_launcher, yshift=-1cm] (our_launcher) {SimpleDesktop 适老桌面};
+\node[box, fill=green!20, right of=our_launcher, xshift=3.5cm] (our_wechat) {微信视频通话 (直达)};
+\draw[arrow, thick, blue] (our_launcher) -- node[above] {无障碍 FSM 引擎} node[below] {全自动跨应用流转} (our_wechat);
+
+\end{tikzpicture}
+\caption{传统适老化桌面与本系统自动化直达通道的体验对比}
+\label{fig:arch_compare}
+\end{figure}

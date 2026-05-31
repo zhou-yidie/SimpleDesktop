@@ -1,6 +1,7 @@
 package tech.huangsh.onetap.data.remote
 
 import tech.huangsh.onetap.data.model.WeatherInfo
+import tech.huangsh.onetap.config.AppConfig
 
 /**
  * Utility class to convert Open-Meteo API response to app's WeatherInfo model
@@ -10,7 +11,7 @@ object OpenMeteoWeatherMapper {
     /**
      * Convert Open-Meteo weather response to app's WeatherInfo model
      */
-    fun mapToWeatherInfo(response: OpenMeteoWeatherResponse, city: String = "北京"): WeatherInfo {
+    fun mapToWeatherInfo(response: OpenMeteoWeatherResponse, city: String = AppConfig.Network.DEFAULT_CITY): WeatherInfo {
         return WeatherInfo(
             temperature = response.current.temperature_2m.toInt(),
             weather = getWeatherDescription(response.current.weather_code),

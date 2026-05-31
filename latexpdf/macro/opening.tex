@@ -1,0 +1,35 @@
+\clearpage
+\newgeometry{left=1.75cm,top=1.75cm}
+\thispagestyle{empty}
+{ \fangsong\fontsize{18pt}{20pt}\selectfont\centering 西安邮电大学本科毕业设计（论文）开题报告\par}
+
+\begin{table}[!h]
+\centering
+\makeatletter
+\renewcommand{\arraystretch}{1.6} % 增大表格行高
+\fangsong\fontsize{12pt}{12pt}\selectfont % 仿宋12pt字体
+\begin{tabular}{|m{4em}<{\centering}|m{5em}<{\centering}|m{4em}<{\centering}|m{6em}<{\centering}|m{6em}<{\centering}|m{10em}<{\centering}|}
+\hline
+学生姓名 &\@openingstudent & 学号 &\@openingstudentid &专业班级 & \@openingclass \\
+\hline
+指导教师 &\@openingteacher & 题目 & \multicolumn{3}{l|}{\@openingtitle} \\
+\hline
+\multicolumn{6}{|l|}{选题目的（为什么选该课题）} \\
+\multicolumn{6}{|l|}{\parbox[t][8em][t]{40em}{\@openingpurpose}} \\
+\hline
+\multicolumn{6}{|l|}{前期基础（已学课程、掌握的工具，资料积累、软硬件条件等）} \\
+\multicolumn{6}{|l|}{\parbox[t][8em][t]{40em}{\@openingbackground}} \\
+\hline
+\multicolumn{6}{|l|}{要研究和解决的问题（做什么）} \\
+\multicolumn{6}{|l|}{\parbox[t][8em][t]{40em}{\@openingproblems}} \\
+\hline
+\multicolumn{6}{|l|}{工作思路和方案（怎么做）} \\
+\multicolumn{6}{|l|}{\parbox[t][8em][t]{40em}{\@openingplan}} \\
+\hline
+\multicolumn{6}{|l|}{指导教师意见} \\
+\multicolumn{6}{|l|}{\parbox[t][8em][t]{40em}{\@openingteachcomment}} \\
+\hline
+\end{tabular}
+\makeatother
+\end{table}
+\restoregeometry

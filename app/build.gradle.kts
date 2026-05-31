@@ -15,8 +15,8 @@ android {
         applicationId = "tech.huangsh.onetap"
         minSdk = 24
         targetSdk = 35
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = 3
+        versionName = "2.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -26,13 +26,20 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            // 使用 Debug 密钥签名发行版，用于本地发布测试与毕业设计演示
+            signingConfig = signingConfigs.getByName("debug")
         }
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
+    }
+    
+    // 关闭 Java 编译器的 Xlint 过时警告，防止控制台出现中文乱码
+    tasks.withType<JavaCompile> {
+        options.compilerArgs.addAll(listOf("-Xlint:-options"))
     }
     kotlinOptions {
         jvmTarget = "1.8"
@@ -42,7 +49,7 @@ android {
         viewBinding = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.3"
+        kotlinCompilerExtensionVersion = "1.5.15"
     }
 
     packaging {
@@ -101,7 +108,7 @@ dependencies {
     implementation(libs.accompanist.systemuicontroller)
     
     // XXPermissions - Android权限框架
-    implementation("com.github.getActivity:XXPermissions:20.0")
+    implementation(libs.xxpermissions)
 
     // Gson
     implementation(libs.gson)
