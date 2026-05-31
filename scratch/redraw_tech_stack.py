@@ -45,7 +45,7 @@ def draw_tech_stack():
         },
         {
             "title": "Android系统",
-            "details": "Android 7.0 (API 24) ~ Android 14 (API 35)\nKotlin 2.0.21  |  Gradle 8.6",
+            "details": "Android 7.0 (API 24) ~ Android 16 (API 36)\nKotlin 2.0.21  |  Gradle 8.6",
             "fc": "#eceff1", "ec": "#546e7a", "tc": "#263238"
         }
     ]

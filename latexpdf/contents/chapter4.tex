@@ -87,7 +87,7 @@
 \subsection{网络守护功能测试}
 （1）用例TC-WF-001：用户主动关闭WiFi开关
 
-前置条件：网络守护服务已启动，WiFi已连接；测试步骤：通过下拉状态栏关闭WiFi开关；预期结果：在Android 11至16的测试设备上，均在5秒内通过无障碍辅助开启完成WiFi状态自愈；实际结果：测试30次，所有设备及场景下均成功自愈；测试结论：通过。
+前置条件：网络守护服务已启动，WiFi已连接；测试步骤：通过下拉状态栏关闭WiFi开关；预期结果：在Android 14至16的测试设备上，均在5秒内通过无障碍辅助开启完成WiFi状态自愈；实际结果：测试30次，所有设备及场景下均成功自愈；测试结论：通过。
 
 （2）用例TC-WF-002：超出WiFi信号覆盖范围
 
@@ -161,33 +161,72 @@
     \tableheader{序号} & \tableheader{设备型号} & \tableheader{关键参数} \\
     \midrule
     \tablecell{1} & \tablecell{一加 13} & \tablecell{高通骁龙8至尊版/12GB RAM/1440×3168 QHD+/Android 16 (ColorOS 16)} \\
-    \tablecell{2} & \tablecell{荣耀 WinRT} & \tablecell{高通骁龙8至尊版/12GB RAM/1272×2800 1.5K/Android 15 (MagicOS 10.0)} \\
-    \tablecell{3} & \tablecell{一加 Ace} & \tablecell{联发科天玑8100-MAX/12GB RAM/1080×2412 FHD+/Android 12 (ColorOS 12.1)} \\
-    \tablecell{4} & \tablecell{iQOO 8} & \tablecell{高通骁龙888/12GB RAM/1080×2376 FHD+/Android 11 (OriginOS 1.0)} \\
-    \tablecell{5} & \tablecell{荣耀 70} & \tablecell{高通骁龙778G Plus/8GB RAM/1080×2400 FHD+/Android 12 (MagicUI 6.1)} \\
-    \tablecell{6} & \tablecell{华为 Pura 80 Pro} & \tablecell{麒麟9020/12GB RAM/1260×2844 1.5K/HarmonyOS 5.1 (HarmonyOS NEXT)} \\
+    \tablecell{2} & \tablecell{荣耀 WIN RT} & \tablecell{高通骁龙8至尊版/12GB RAM/1272×2800 1.5K/Android 15 (MagicOS 10.0)} \\
+    \tablecell{3} & \tablecell{一加 Ace 5} & \tablecell{高通第三代骁龙8/16GB RAM/1264×2780 1.5K/Android 16 (ColorOS 16)} \\
+    \tablecell{4} & \tablecell{iQOO 8} & \tablecell{高通骁龙888/12GB RAM/1080×2376 FHD+/Android 14 (OriginOS 4)} \\
+    \tablecell{5} & \tablecell{荣耀 70} & \tablecell{高通骁龙778G Plus/12GB RAM/1080×2400 FHD+/Android 14 (MagicOS 8.0)} \\
+    \tablecell{6} & \tablecell{华为 Pura 80 Pro} & \tablecell{麒麟9020/12GB RAM/1260×2844 1.5K/HarmonyOS 6.1 (HarmonyOS NEXT)} \\
     \bottomrule
   \end{tabularx}
   \end{threeparttable}
 \end{table}
 
-上述设备覆盖了高通、联发科、麒麟三大主流处理器平台，覆盖了 FHD+ 至 QHD+ 的常见分辨率档位，覆盖了 Android 11 至 Android 16 共 6 个系统主版本，覆盖了 ColorOS、MagicOS、OriginOS、HarmonyOS NEXT 等 4 种厂商定制系统，具备极强的代表性。
+上述设备覆盖了高通、麒麟两大主流处理器平台，覆盖了 FHD+ 至 QHD+ 的常见分辨率档位，覆盖了 Android 14 至 Android 16 共 3 个 Android 系统主版本及 HarmonyOS NEXT，覆盖了 ColorOS、MagicOS、OriginOS、HarmonyOS NEXT 等 4 种厂商定制系统，具备较强的代表性。各测试设备的系统配置与“关于本机”界面截图如下图所示：
+
+\begin{figure}[H]
+    \centering
+    \begin{minipage}{0.22\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/phone/oneplus_13.jpg}
+        \caption*{(a) 一加 13}
+    \end{minipage}\hfill
+    \begin{minipage}{0.22\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/phone/rongyao_WINrt.jpg}
+        \caption*{(b) 荣耀 WIN RT}
+    \end{minipage}\hfill
+    \begin{minipage}{0.22\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/phone/oneplusACE5.jpg}
+        \caption*{(c) 一加 Ace 5}
+    \end{minipage}
+
+    \vspace{0.3cm}
+
+    \begin{minipage}{0.22\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/phone/iqoo8.png}
+        \caption*{(d) iQOO 8}
+    \end{minipage}\hfill
+    \begin{minipage}{0.22\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/phone/rongyao70.jpg}
+        \caption*{(e) 荣耀 70}
+    \end{minipage}\hfill
+    \begin{minipage}{0.22\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/phone/huaweipura80pro.png}
+        \caption*{(f) 华为 Pura 80 Pro}
+    \end{minipage}
+    \caption{兼容性测试设备系统配置与“关于本机”界面截图}
+    \label{fig:compatibility_test_phones}
+\end{figure}
 
 \subsection{显示兼容性测试结果}
 在显示兼容性方面，重点验证系统在不同分辨率屏幕上的 UI 布局是否正常、字号是否清晰、卡片是否完整呈现、图标是否清晰。测试结果显示，在全部 6 款测试设备上，主屏聚合面板、联系人管理界面、应用管理界面、设置中心、引导页等核心界面均能正确呈现，未出现控件错位、文字截断、卡片溢出等异常情况。
 
-针对主流分辨率设备一加 Ace（1080×2412）或 iQOO 8（1080×2376），系统界面比例适中，联系人卡片排布整齐。
+针对主流 FHD+ 分辨率设备 iQOO 8（1080×2376）与荣耀 70（1080×2400），系统界面比例适中，联系人卡片排布整齐。
 
-针对超高分辨率设备一加 13（1440×3168）及华为 Pura 80 Pro（1260×2844），系统自动适配了更高精精度的矢量素材，界面元素按比例放大渲染，文字与图标清晰锐利，在大尺寸屏幕上提供了更佳的视觉体验。
+针对 1.5K 分辨率设备一加 Ace 5（1264×2780）、荣耀 WIN RT（1272×2800）、华为 Pura 80 Pro（1260×2844）以及 QHD+ 分辨率设备一加 13（1440×3168），系统自动适配了更高精度的矢量素材，界面元素按比例放大渲染，文字与图标清晰锐利，在大尺寸屏幕上提供了更佳的视觉体验。
 
 \subsection{系统版本兼容性测试结果}
 在系统版本兼容性方面，重点验证不同 Android 版本对前台服务、无障碍服务、网络回调、权限管理等关键能力的策略差异是否得到正确处理。测试结果汇总如下。
 
-在 Android 11 及以上设备上，由于系统安全性设计，WiFi 自动开启功能依赖无障碍服务辅助方案，自愈动作耗时约 4 至 5 秒，功能表现稳定\upcite{29}。
+在全部测试设备上，由于 Android 10 及以上版本的系统安全性设计，WiFi 自动开启功能均依赖无障碍服务辅助方案，自愈动作耗时约 4 至 5 秒，功能表现稳定\upcite{29}。
 
 Android 13 及以上设备上，前台服务通知的权限需要单独申请，本系统在引导页阶段统一申请并引导用户授权，未发现兼容性问题。
 
-在最新的 Android 16（一加 13）及 HarmonyOS NEXT（华为 Pura 80 Pro）环境下，无障碍服务的隐私限制进一步加强，系统通过增强型引导对话框提示用户在系统设置中显式确认“允许受限设置”，全部功能可正常运行\upcite{29}。
+在最新的 Android 16（一加 13、一加 Ace 5）及 HarmonyOS NEXT（华为 Pura 80 Pro）环境下，无障碍服务的隐私限制进一步加强，系统通过增强型引导对话框提示用户在系统设置中显式确认“允许受限设置”，全部功能可正常运行\upcite{29}。
 
 \subsection{厂商定制系统兼容性测试结果}
 厂商定制系统的差异主要体现在前台服务保活策略和无障碍服务权限管理两个方面。MagicOS 系统对后台进程保活策略较严，需要用户手动将本应用加入自启动白名单后，前台守护服务才能在系统重启后自动恢复运行；本系统在引导页阶段已加入相应的提示与一键跳转入口。HarmonyOS NEXT 对无障碍服务的授权流程与原生 Android 略有差异，且采用了全新的动态权限模型，本系统通过兼容适配层确保了核心功能的可用性。其余厂商系统未发现显著兼容性问题。

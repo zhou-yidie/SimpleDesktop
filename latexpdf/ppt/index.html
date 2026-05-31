@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>毕业答辩 - 面向老年群体的Android交互桌面设计与实现</title>
+<link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="presentation" id="presentation">
+
+<!-- Slide 1: Cover -->
+<section class="slide active" id="slide-1">
+  <div class="cover-bg">
+    <div class="grid-overlay"></div>
+    <div class="cover-content">
+      <div class="uni-badge">西安邮电大学 · 本科毕业设计答辩</div>
+      <h1 class="cover-title">面向老年群体的Android交互桌面<br>设计与实现</h1>
+      <p class="cover-subtitle">Design and Implementation of an Android Interactive Desktop for the Elderly</p>
+      <div class="cover-divider"></div>
+      <div class="cover-info">
+        <div class="info-row"><span class="label">答辩人</span><span class="value">周剑鑫</span></div>
+        <div class="info-row"><span class="label">学　号</span><span class="value">03221257</span></div>
+        <div class="info-row"><span class="label">专　业</span><span class="value">通信工程（通工2209）</span></div>
+        <div class="info-row"><span class="label">学　院</span><span class="value">通信与信息工程学院</span></div>
+        <div class="info-row"><span class="label">指导教师</span><span class="value">李娜 副教授 / 李林峰 工程师</span></div>
+      </div>
+      <div class="cover-date">2026年6月</div>
+    </div>
+  </div>
+</section>
+
+<!-- Slide 2: Background -->
+<section class="slide" id="slide-2">
+  <div class="slide-header"><span class="slide-num">02</span><h2>研究背景与意义</h2></div>
+  <div class="slide-body two-col">
+    <div class="col">
+      <div class="stat-card">
+        <div class="stat-number">3.21<span class="stat-unit">亿</span></div>
+        <div class="stat-desc">2025年60岁以上人口</div>
+        <div class="stat-sub">占总人口 <strong>22.86%</strong></div>
+      </div>
+      <div class="stat-card accent">
+        <div class="stat-number">14.3<span class="stat-unit">%</span></div>
+        <div class="stat-desc">60岁以上网民占比</div>
+        <div class="stat-sub">远低于其人口占比，数字鸿沟显著</div>
+      </div>
+    </div>
+    <div class="col">
+      <h3>老年用户五大痛点</h3>
+      <div class="pain-list">
+        <div class="pain-item"><span class="pain-icon">👁</span><div><strong>视觉痛点</strong><br>字号小、图标密集、对比度低</div></div>
+        <div class="pain-item"><span class="pain-icon">🧠</span><div><strong>认知痛点</strong><br>多级菜单、大量弹窗、术语陌生</div></div>
+        <div class="pain-item"><span class="pain-icon">📞</span><div><strong>通话痛点</strong><br>微信视频通话需 <strong>7步</strong> 操作</div></div>
+        <div class="pain-item"><span class="pain-icon">📶</span><div><strong>网络痛点</strong><br>误触WiFi后无法自行恢复</div></div>
+        <div class="pain-item"><span class="pain-icon">👆</span><div><strong>交互痛点</strong><br>误触、长按引发意外操作</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer">面向老年群体的Android交互桌面设计与实现</div>
+</section>
+
+<!-- Slide 3: Related Work -->
+<section class="slide" id="slide-3">
+  <div class="slide-header"><span class="slide-num">03</span><h2>国内外研究现状</h2></div>
+  <div class="slide-body">
+    <div class="compare-table">
+      <div class="compare-col">
+        <div class="compare-head red">现有方案</div>
+        <div class="compare-item"><strong>海外方案</strong><br>Big Launcher、Doro → 无法适配微信等国内超级应用</div>
+        <div class="compare-item"><strong>国内厂商</strong><br>华为简易模式、小米极简模式 → 止步于Launcher层</div>
+        <div class="compare-item"><strong>学术研究</strong><br>Fitts定律、WCAG标准 → 缺乏跨应用穿透方法论</div>
+        <div class="compare-verdict">❌ 系统层优化充分，应用层穿透不足</div>
+      </div>
+      <div class="compare-arrow">→</div>
+      <div class="compare-col">
+        <div class="compare-head green">本课题方案</div>
+        <div class="compare-item"><strong>微内核插件化架构</strong><br>业务解耦 + 故障隔离 + 弹性扩展</div>
+        <div class="compare-item"><strong>无障碍自动化穿透</strong><br>七阶段状态机 + 双通道检索 → 跨版本一键直拨</div>
+        <div class="compare-item"><strong>多层网络守护</strong><br>检测→等待→自愈→引导 完整闭环</div>
+        <div class="compare-verdict">✅ 填补应用层穿透的技术空白</div>
+      </div>
+    </div>
+    <div class="highlight-bar">核心定位：解决"第三方应用内操作门槛高"与"端侧自动化跨版本稳定性差"之间的技术鸿沟</div>
+  </div>
+  <div class="slide-footer">面向老年群体的Android交互桌面设计与实现</div>
+</section>
+
+<!-- Slide 4: Architecture -->
+<section class="slide" id="slide-4">
+  <div class="slide-header"><span class="slide-num">04</span><h2>系统总体架构</h2></div>
+  <div class="slide-body two-col">
+    <div class="col" style="flex:1.2">
+      <div class="arch-diagram">
+        <div class="arch-layer plugin"><div class="arch-label">插件层 Plugin Layer</div><div class="arch-items"><span>联系人插件</span><span>应用插件</span><span>天气插件</span><span>…扩展</span></div></div>
+        <div class="arch-arrow">▲ IPlugin 接口 · 独立生命周期 ▲</div>
+        <div class="arch-layer bus"><div class="arch-label">总线层 Bus Layer</div><div class="arch-items"><span>插件管理器</span><span>消息总线</span><span>配置存储</span><span>事件分发</span></div></div>
+        <div class="arch-arrow">▲ 依赖注入 · 响应式数据流 ▲</div>
+        <div class="arch-layer host"><div class="arch-label">宿主层 Host Layer</div><div class="arch-items"><span>应用入口</span><span>主界面容器</span><span>Hilt DI容器</span><span>无障碍服务</span></div></div>
+      </div>
+    </div>
+    <div class="col" style="flex:0.8">
+      <h3>核心技术栈</h3>
+      <div class="tech-list">
+        <div class="tech-item"><span class="tech-tag ui">UI</span>Jetpack Compose + Material3</div>
+        <div class="tech-item"><span class="tech-tag di">DI</span>Dagger-Hilt 2.56</div>
+        <div class="tech-item"><span class="tech-tag db">DB</span>Room + DataStore</div>
+        <div class="tech-item"><span class="tech-tag async">异步</span>Kotlin Coroutines + Flow</div>
+        <div class="tech-item"><span class="tech-tag net">网络</span>Retrofit + OkHttp</div>
+        <div class="tech-item"><span class="tech-tag lang">语言</span>Kotlin 2.0.21</div>
+      </div>
+      <div class="compat-badge">兼容 Android 7.0 ~ 16<br>实测覆盖 Android 11 ~ 16</div>
+    </div>
+  </div>
+  <div class="slide-footer">面向老年群体的Android交互桌面设计与实现</div>
+</section>
+
+<!-- Slide 5: UI Design -->
+<section class="slide" id="slide-5">
+  <div class="slide-header"><span class="slide-num">05</span><h2>核心功能一：适老化界面设计</h2></div>
+  <div class="slide-body two-col">
+    <div class="col">
+      <div class="feature-card">
+        <h4>🏠 主屏聚合面板</h4>
+        <p>大尺寸时钟天气卡 + 联系人卡片 + 应用卡片<br>手电筒 / 语音助手快捷入口</p>
+      </div>
+      <div class="feature-card">
+        <h4>🔤 字号三档切换</h4>
+        <p>小/中/大三档，覆盖 <strong>15种</strong> 字体角色<br>实时切换 <strong>82ms</strong> 响应，无需重启</p>
+      </div>
+      <div class="feature-card">
+        <h4>🎨 双色彩主题 + 高对比度</h4>
+        <p>经典蓝 / 暖心橙 + 黑底白字高对比度<br>CompositionLocal 全局主题传递</p>
+      </div>
+    </div>
+    <div class="col center-col">
+      <div class="mvvm-flow">
+        <h4>MVVM + 单向数据流</h4>
+        <div class="flow-diagram">
+          <div class="flow-node">用户操作</div>
+          <div class="flow-arrow">↓ Event</div>
+          <div class="flow-node">ViewModel</div>
+          <div class="flow-arrow">↓ Action</div>
+          <div class="flow-node">Repository</div>
+          <div class="flow-arrow">↓ Flow&lt;T&gt;</div>
+          <div class="flow-node accent">UI 自动刷新</div>
+        </div>
+      </div>
+      <div class="key-tech">
+        <strong>关键技术：</strong>声明式UI · LazyVerticalGrid 惰性渲染 · 状态派生优化重组
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer">面向老年群体的Android交互桌面设计与实现</div>
+</section>
+
+<!-- Slide 6: WeChat Auto-Dial -->
+<section class="slide" id="slide-6">
+  <div class="slide-header"><span class="slide-num">06</span><h2>核心功能二：微信一键直拨 <span class="badge">核心创新</span></h2></div>
+  <div class="slide-body">
+    <div class="fsm-container">
+      <div class="fsm-problem">问题：微信视频通话需 <strong>7步操作</strong>，老年人记不住、易中断</div>
+      <div class="fsm-flow">
+        <div class="fsm-node s1">①主界面<br>就位</div><div class="fsm-link">→</div>
+        <div class="fsm-node s2">②触发<br>搜索</div><div class="fsm-link">→</div>
+        <div class="fsm-node s3">③输入<br>昵称</div><div class="fsm-link">→</div>
+        <div class="fsm-node s4">④确认<br>结果</div><div class="fsm-link">→</div>
+        <div class="fsm-node s5">⑤展开<br>菜单</div><div class="fsm-link">→</div>
+        <div class="fsm-node s6">⑥选择<br>通话</div><div class="fsm-link">→</div>
+        <div class="fsm-node s7">⑦确认<br>类型</div>
+      </div>
+    </div>
+    <div class="three-col">
+      <div class="tech-card">
+        <div class="tc-icon">🔍</div>
+        <h4>双通道节点检索</h4>
+        <p>Resource-ID 主通道<br>+ 文本内容备通道<br><strong>高效 + 稳健</strong></p>
+      </div>
+      <div class="tech-card">
+        <div class="tc-icon">🛡️</div>
+        <h4>焦点退避机制</h4>
+        <p>主动释放UI焦点<br>压制悬浮窗干扰<br><strong>防止焦点争抢</strong></p>
+      </div>
+      <div class="tech-card">
+        <div class="tc-icon">💓</div>
+        <h4>心跳防死锁</h4>
+        <p>单状态停留 &gt;5s<br>强制终止 + 安全重置<br><strong>防止无限循环</strong></p>
+      </div>
+    </div>
+    <div class="result-bar">实测：跨微信 8.0.30 ~ 最新版，成功率 <strong>99.1%</strong>，平均耗时 <strong>5.4秒</strong></div>
+  </div>
+  <div class="slide-footer">面向老年群体的Android交互桌面设计与实现</div>
+</section>
+
+<!-- Slide 7: WiFi & Voice -->
+<section class="slide" id="slide-7">
+  <div class="slide-header"><span class="slide-num">07</span><h2>核心功能三：WiFi网络守护与语音辅助</h2></div>
+  <div class="slide-body two-col">
+    <div class="col">
+      <h3>📶 WiFi网络守护</h3>
+      <div class="wifi-flow">
+        <div class="wf-step"><span class="wf-num">1</span>前台守护服务持续监测</div>
+        <div class="wf-arrow">↓</div>
+        <div class="wf-step"><span class="wf-num">2</span>网络回调检测断连</div>
+        <div class="wf-arrow">↓</div>
+        <div class="wf-step"><span class="wf-num">3</span>无障碍服务自动开启WiFi</div>
+        <div class="wf-arrow">↓</div>
+        <div class="wf-step"><span class="wf-num">4</span>宽限等待 20s → 超时引导弹窗+语音</div>
+      </div>
+      <div class="result-badge green">自愈成功率 <strong>100%</strong></div>
+    </div>
+    <div class="col">
+      <h3>🎙️ 语音辅助</h3>
+      <div class="voice-section">
+        <div class="voice-item"><strong>语音播报</strong>：Android TTS · 语速0.9×适老优化</div>
+        <div class="voice-item"><strong>指令解析</strong>：双层策略<br>
+          <span class="indent">① 关键词精确匹配（10+关键词库）</span><br>
+          <span class="indent">② 编辑距离容错（允许1字符偏差）</span>
+        </div>
+        <div class="voice-item"><strong>联系人匹配</strong>：四层递进<br>
+          <span class="indent">完全相等 → 包含 → 拼音首字母 → 编辑距离</span>
+        </div>
+      </div>
+      <div class="result-badge blue">端侧轻量解析，无需云端大模型</div>
+    </div>
+  </div>
+  <div class="slide-footer">面向老年群体的Android交互桌面设计与实现</div>
+</section>
+
+<!-- Slide 8: Demo -->
+<section class="slide" id="slide-8">
+  <div class="slide-header"><span class="slide-num">08</span><h2>系统演示与界面展示</h2></div>
+  <div class="slide-body">
+    <div class="demo-grid">
+      <div class="demo-item"><div class="demo-img"><img src="../figures/wechat/desktop1.jpg" alt="首次启动"></div><p>首次启动</p></div>
+      <div class="demo-item"><div class="demo-img"><img src="../figures/wechat/desktop6.jpg" alt="主屏界面"></div><p>主屏界面</p></div>
+      <div class="demo-item"><div class="demo-img"><img src="../figures/demo1.png" alt="桌面触发"></div><p>桌面触发</p></div>
+      <div class="demo-item"><div class="demo-img"><img src="../figures/demo2.png" alt="呼叫选项"></div><p>呼叫选项</p></div>
+      <div class="demo-item"><div class="demo-img"><img src="../figures/demo3.png" alt="搜索匹配"></div><p>搜索匹配</p></div>
+      <div class="demo-item"><div class="demo-img"><img src="../figures/demo6.png" alt="通话建立"></div><p>通话建立</p></div>
+    </div>
+    <div class="demo-caption">▲ 从桌面一键触发到微信视频通话建立，全程约 <strong>5.4秒</strong>，老年用户仅需 <strong>1次点击</strong></div>
+  </div>
+  <div class="slide-footer">面向老年群体的Android交互桌面设计与实现</div>
+</section>
+
+<!-- Slide 9: Testing -->
+<section class="slide" id="slide-9">
+  <div class="slide-header"><span class="slide-num">09</span><h2>测试与分析</h2></div>
+  <div class="slide-body two-col">
+    <div class="col">
+      <h3>📋 测试覆盖</h3>
+      <div class="test-summary">
+        <div class="test-item pass">功能测试：<strong>7类26项</strong> 全部通过 ✓</div>
+        <div class="test-item pass">兼容性：<strong>6款真机</strong> · 3大处理器 · 6个Android版本</div>
+        <div class="test-item pass">厂商系统：ColorOS / MagicOS / OriginOS / HarmonyOS</div>
+      </div>
+      <h3 style="margin-top:1.2em">📊 性能关键指标</h3>
+      <table class="perf-table">
+        <tr><td>冷启动时间</td><td class="val">1.15s</td></tr>
+        <tr><td>字号切换响应</td><td class="val">82ms</td></tr>
+        <tr><td>主屏渲染帧率</td><td class="val highlight">60.1 fps</td></tr>
+        <tr><td>微信直拨成功率</td><td class="val highlight">99.1%</td></tr>
+        <tr><td>WiFi自愈成功率</td><td class="val highlight">100%</td></tr>
+      </table>
+    </div>
+    <div class="col">
+      <h3>🖥️ 资源占用（8h长测）</h3>
+      <div class="resource-bars">
+        <div class="rbar"><span class="rbar-label">内存占用</span><div class="rbar-track"><div class="rbar-fill" style="width:28%"></div></div><span class="rbar-val">95~115MB</span></div>
+        <div class="rbar"><span class="rbar-label">CPU（空闲）</span><div class="rbar-track"><div class="rbar-fill low" style="width:5%"></div></div><span class="rbar-val">&lt;1%</span></div>
+        <div class="rbar"><span class="rbar-label">CPU（密集）</span><div class="rbar-track"><div class="rbar-fill mid" style="width:30%"></div></div><span class="rbar-val">8~12%</span></div>
+        <div class="rbar"><span class="rbar-label">8h耗电占比</span><div class="rbar-track"><div class="rbar-fill low" style="width:12%"></div></div><span class="rbar-val">3~5%</span></div>
+      </div>
+      <h3 style="margin-top:1.5em">📱 测试设备矩阵</h3>
+      <div class="device-list">
+        <span class="device">一加 13 <small>A16</small></span>
+        <span class="device">荣耀 WinRT <small>A15</small></span>
+        <span class="device">一加 Ace <small>A12</small></span>
+        <span class="device">iQOO 8 <small>A11</small></span>
+        <span class="device">荣耀 70 <small>A12</small></span>
+        <span class="device">华为 Pura 80 <small>鸿蒙</small></span>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer">面向老年群体的Android交互桌面设计与实现</div>
+</section>
+
+<!-- Slide 10: Conclusion -->
+<section class="slide" id="slide-10">
+  <div class="slide-header"><span class="slide-num">10</span><h2>总结与创新点</h2></div>
+  <div class="slide-body two-col">
+    <div class="col">
+      <h3>🏆 四大创新点</h3>
+      <div class="innovation-list">
+        <div class="inno-item"><span class="inno-num">1</span><div><strong>适老化微内核三层架构</strong><br>宿主层+总线层+插件层，业务高度解耦与故障隔离</div></div>
+        <div class="inno-item"><span class="inno-num">2</span><div><strong>七阶段状态机 + 双通道检索</strong><br>穿透微信，跨大版本 <strong>99.1%</strong> 一键直拨</div></div>
+        <div class="inno-item"><span class="inno-num">3</span><div><strong>WiFi断网自愈闭环</strong><br>前台守护+无障碍跳转+引导面板，<strong>100%</strong> 自愈率</div></div>
+        <div class="inno-item"><span class="inno-num">4</span><div><strong>轻量级端侧语音交互</strong><br>关键词+编辑距离+四层模糊匹配，无需云端</div></div>
+      </div>
+    </div>
+    <div class="col">
+      <h3>🔮 未来展望</h3>
+      <div class="outlook-list">
+        <div class="outlook-item"><span class="outlook-icon">🤖</span><div><strong>端侧AI大模型</strong><br>更智能的语音对话与情感陪伴</div></div>
+        <div class="outlook-item"><span class="outlook-icon">❤️</span><div><strong>健康监测插件</strong><br>血压/血糖/心电自动记录与预警</div></div>
+        <div class="outlook-item"><span class="outlook-icon">🏠</span><div><strong>智能家居联动</strong><br>Matter协议接入，语音控制设备</div></div>
+        <div class="outlook-item"><span class="outlook-icon">🌐</span><div><strong>开放插件生态</strong><br>第三方开发者社区，智慧养老生态</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer">面向老年群体的Android交互桌面设计与实现</div>
+</section>
+
+<!-- Slide 11: Thanks -->
+<section class="slide" id="slide-11">
+  <div class="thanks-bg">
+    <div class="grid-overlay"></div>
+    <div class="thanks-content">
+      <div class="thanks-icon">🎓</div>
+      <h1 class="thanks-title">感谢聆听</h1>
+      <p class="thanks-sub">恳请各位老师批评指正</p>
+      <div class="thanks-divider"></div>
+      <div class="thanks-credits">
+        <p>感谢李娜老师、李林峰老师的悉心指导</p>
+        <p>感谢通信工程专业全体老师的培养与教导</p>
+        <p>感谢同窗好友的陪伴与家人的支持</p>
+        <p>感谢开源社区的无私贡献</p>
+      </div>
+      <div class="thanks-author">答辩人：周剑鑫 · 通信工程 · 2026年6月</div>
+    </div>
+  </div>
+</section>
+
+</div>
+
+<!-- Navigation -->
+<div class="nav-bar">
+  <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)">‹ 上一页</button>
+  <span class="nav-indicator" id="navIndicator">1 / 11</span>
+  <button class="nav-btn" id="nextBtn" onclick="changeSlide(1)">下一页 ›</button>
+</div>
+<div class="nav-hint">按 ← → 键或点击按钮翻页 · 按 F 全屏</div>
+
+<script src="script.js"></script>
+</body>
+</html>
