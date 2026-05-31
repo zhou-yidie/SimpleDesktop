@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999998 (MiKTeX 26.5) (preloaded format=xelatex 2026.5.22)  30 MAY 2026 22:46
+This is XeTeX, Version 3.141592653-2.6-0.999998 (MiKTeX 26.5) (preloaded format=xelatex 2026.5.22)  31 MAY 2026 13:02
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1405,18 +1405,8 @@ Underfull \hbox (badness 10000) detected at line 56
  []
 
 
-Overfull \hbox (21.57518pt too wide) in paragraph at lines 62--62
- [][]
- []
-
-
 Underfull \hbox (badness 10000) detected at line 63
 \TU/SimSun(0)/m/n/12 日 期：| 
- []
-
-
-Overfull \hbox (21.57518pt too wide) in paragraph at lines 63--64
- [][][]
  []
 
 )
@@ -1617,19 +1607,13 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 Chapter 2.
 File: figures/mvvm.png Graphic file (type bmp)
 <figures/mvvm.png>
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
 [9
 
-]
-Underfull \vbox (badness 3189) has occurred while \output is active []
-
- [10]
+] [10]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [11]
-Underfull \hbox (badness 1874) in paragraph at lines 104--105
+Underfull \hbox (badness 1874) in paragraph at lines 105--106
 []\TU/SimSun(1)/m/n/12 值 得 关 注 的 是 \TU/TimesNewRoman(1)/m/n/12 contacts \TU/Sim
 Sun(1)/m/n/12 表 中 的 三 个 布 尔 型 通 话 方 式 字 段  |（\TU/TimesNewRoman(1)/m/n/12 hasVid
 eoCall\TU/SimSun(1)/m/n/12 、|
@@ -1642,7 +1626,7 @@ File: figures/fig2_2_hilt_di.png Graphic file (type bmp)
 File: figures/tech_stack.png Graphic file (type bmp)
 <figures/tech_stack.png>
  [14]
-Underfull \hbox (badness 1484) in paragraph at lines 171--172
+Underfull \hbox (badness 1484) in paragraph at lines 172--173
 []\TU/SimSun(1)/m/n/12 研 究 发 现，|  微 信 在 \TU/TimesNewRoman(0)/m/n/12 8.0 \TU/Sim
 Sun(1)/m/n/12 之 后 的 版 本 中 深 度 重 写 了 \TU/TimesNewRoman(1)/m/n/12 onInitializeAcc
 essibility
@@ -1666,16 +1650,16 @@ Chapter 3.
 File: figures/architecture.png Graphic file (type bmp)
 <figures/architecture.png>
  [19]
-Underfull \vbox (badness 1308) has occurred while \output is active []
+Underfull \vbox (badness 1953) has occurred while \output is active []
 
  [20]
 File: figures/fig3_1_system_modules.png Graphic file (type bmp)
 <figures/fig3_1_system_modules.png>
 
 [21]
-LaTeX Font Info:    Calculating math sizes for size <11> on input line 96.
+LaTeX Font Info:    Calculating math sizes for size <11> on input line 94.
  [22]
-Underfull \vbox (badness 1953) has occurred while \output is active []
+Underfull \vbox (badness 1308) has occurred while \output is active []
 
  [23]
 File: figures/wechat_state.png Graphic file (type bmp)
@@ -1685,13 +1669,20 @@ File: figures/wechat_state.png Graphic file (type bmp)
 File: figures/wifi_daemon.png Graphic file (type bmp)
 <figures/wifi_daemon.png>
 
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+
 Underfull \vbox (badness 1308) has occurred while \output is active []
 
  [25]
 [26]
 File: figures/voice_flow.png Graphic file (type bmp)
 <figures/voice_flow.png>
- [27] [28]
+ [27]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [28]
 File: figures/wechat/desktop1.jpg Graphic file (type bmp)
 <figures/wechat/desktop1.jpg>
 File: figures/wechat/desktop2.jpg Graphic file (type bmp)
@@ -1704,7 +1695,8 @@ File: figures/wechat/desktop5.jpg Graphic file (type bmp)
 <figures/wechat/desktop5.jpg>
 File: figures/wechat/desktop6.jpg Graphic file (type bmp)
 <figures/wechat/desktop6.jpg>
- [29]
+
+[29]
 File: figures/demo1.png Graphic file (type bmp)
 <figures/demo1.png>
 File: figures/demo2.png Graphic file (type bmp)
@@ -1717,7 +1709,11 @@ File: figures/demo5.png Graphic file (type bmp)
 <figures/demo5.png>
 File: figures/demo6.png Graphic file (type bmp)
 <figures/demo6.png>
-) (contents/chapter4.tex [30] [31]
+
+Underfull \vbox (badness 2158) has occurred while \output is active []
+
+ [30])
+(contents/chapter4.tex [31]
 Chapter 4.
 File: figures/fig4_1_blackbox_testing.png Graphic file (type bmp)
 <figures/fig4_1_blackbox_testing.png>
@@ -1752,42 +1748,42 @@ Chapter 5.
 ) [42
 
 ]
-Underfull \hbox (badness 2088) in paragraph at lines 158--159
-[]\TU/TimesNewRoman(0)/m/n/11.5 Google LLC. Android Accessibility Service Devel
-oper Guide[EB/OL]. (2024-02-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 160--161
-[]\TU/TimesNewRoman(0)/m/n/11.5 Google LLC. Room Persistence Library[EB/OL]. (2
-024-01-20)[2024-04-20].
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 161--162
-[]\TU/TimesNewRoman(0)/m/n/11.5 Google LLC. DataStore Documentation[EB/OL]. (20
-24-02-15)[2024-04-20].
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 162--163
-[]\TU/TimesNewRoman(0)/m/n/11.5 Google LLC. Dagger Hilt Documentation[EB/OL]. (
-2024-03-05)[2024-04-20].
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 163--164
-[]\TU/TimesNewRoman(0)/m/n/11.5 JetBrains s.r.o. Kotlin Coroutines Guide[EB/OL]
-. (2024-02-28)[2024-04-20].
+Underfull \hbox (badness 1354) in paragraph at lines 147--148
+[]\TU/TimesNewRoman(0)/m/n/11.5 International Organization for Standardization.
+ ISO 9241-171:2008 Ergonomics of
  []
 
 [43
 
 
 ]
-Underfull \hbox (badness 1354) in paragraph at lines 166--167
-[]\TU/TimesNewRoman(0)/m/n/11.5 International Organization for Standardization.
- ISO 9241-171:2008 Ergonomics of
+Underfull \hbox (badness 10000) in paragraph at lines 165--166
+[]\TU/TimesNewRoman(0)/m/n/11.5 JetBrains s.r.o. Kotlin Coroutines Guide[EB/OL]
+. (2024-02-28)[2024-04-20].
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 166--167
+[]\TU/TimesNewRoman(0)/m/n/11.5 Google LLC. Room Persistence Library[EB/OL]. (2
+024-01-20)[2024-04-20].
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 167--168
+[]\TU/TimesNewRoman(0)/m/n/11.5 Google LLC. DataStore Documentation[EB/OL]. (20
+24-02-15)[2024-04-20].
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 168--169
+[]\TU/TimesNewRoman(0)/m/n/11.5 Google LLC. Dagger Hilt Documentation[EB/OL]. (
+2024-03-05)[2024-04-20].
+ []
+
+
+Underfull \hbox (badness 2088) in paragraph at lines 172--173
+[]\TU/TimesNewRoman(0)/m/n/11.5 Google LLC. Android Accessibility Service Devel
+oper Guide[EB/OL]. (2024-02-
  []
 
 (contents/acknowledgements.tex [44]) [45
@@ -1798,15 +1794,15 @@ LaTeX2e <2025-11-01>
 L3 programming layer <2022/07/14>
  ***********
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: 5CDA8CAB582A4EAF0A7A14E4B669EB60;10251.
+(rerunfilecheck)             Checksum: 35E2CEB9AF67271CAE8F8FFDF80C5F6A;10109.
  ) 
 Here is how much of TeX's memory you used:
- 23016 strings out of 402807
- 488422 string characters out of 5445135
- 913539 words of memory out of 5000000
- 51442 multiletter control sequences out of 15000+600000
- 649721 words of font info for 217 fonts, out of 8000000 for 9000
+ 23008 strings out of 402807
+ 487806 string characters out of 5445135
+ 913377 words of memory out of 5000000
+ 51433 multiletter control sequences out of 15000+600000
+ 650374 words of font info for 221 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 116i,17n,125p,873b,692s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 116i,17n,125p,873b,696s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
 Output written on main.pdf (56 pages).

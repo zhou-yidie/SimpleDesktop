@@ -48,7 +48,7 @@
 \contentsline {section}{\numberline {3.4}软件操作流程}{29}{section.3.4}%
 \contentsline {subsection}{\numberline {3.4.1}首次启动与初始化流程}{29}{subsection.3.4.1}%
 \contentsline {subsection}{\numberline {3.4.2}日常使用主流程}{30}{subsection.3.4.2}%
-\contentsline {subsection}{\numberline {3.4.3}异常处理流程}{30}{subsection.3.4.3}%
+\contentsline {subsection}{\numberline {3.4.3}异常处理流程}{31}{subsection.3.4.3}%
 \contentsline {chapter}{\numberline {4}软件测试与分析}{32}{chapter.4}%
 \contentsline {section}{\numberline {4.1}功能测试}{32}{section.4.1}%
 \contentsline {subsection}{\numberline {4.1.1}测试方法与原则}{32}{subsection.4.1.1}%
@@ -73,6 +73,4 @@
 \contentsline {subsection}{\numberline {4.3.6}性能优化措施}{40}{subsection.4.3.6}%
 \contentsline {subsection}{\numberline {4.3.7}性能测试结论}{41}{subsection.4.3.7}%
 \contentsline {chapter}{\numberline {5}结论}{42}{chapter.5}%
-\contentsline {section}{\numberline {5.1}总结}{42}{section.5.1}%
-\contentsline {section}{\numberline {5.2}展望}{42}{section.5.2}%
 \contentsline {chapter}{致\hspace {2em}谢}{45}{chapter*.32}%
