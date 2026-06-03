@@ -8,7 +8,7 @@ plt.rcParams['axes.unicode_minus'] = False
 
 # Create figure - slightly taller canvas (11.5x9.0) to give titles complete vertical breathing room
 fig, ax = plt.subplots(figsize=(11.5, 9.0), dpi=300)
-ax.set_xlim(-1.0, 12.6)
+ax.set_xlim(-1.8, 12.6)
 ax.set_ylim(-0.2, 10.6)
 ax.axis('off')
 
