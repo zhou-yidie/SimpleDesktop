@@ -171,21 +171,21 @@
   \end{threeparttable}
 \end{table}
 
-上述设备覆盖了高通、麒麟两大主流处理器平台，覆盖了 FHD+ 至 QHD+ 的常见分辨率档位，覆盖了 Android 14 至 Android 16 共 3 个 Android 系统主版本及 HarmonyOS NEXT，覆盖了 ColorOS、MagicOS、OriginOS、HarmonyOS NEXT 等 4 种厂商定制系统，具备较强的代表性。各测试设备的系统配置与“关于本机”界面截图如下图所示：
+上述设备覆盖了高通、麒麟两大主流处理器平台，覆盖了 FHD+ 至 QHD+ 的常见分辨率档位，覆盖了 Android 14 至 Android 16 共 3 个 Android 系统主版本及 HarmonyOS NEXT，覆盖了 ColorOS、MagicOS、OriginOS、HarmonyOS NEXT 等 4 种厂商定制系统，具备较强的代表性。各测试设备的系统配置如下图所示：
 
 \begin{figure}[H]
     \centering
-    \begin{minipage}{0.22\textwidth}
+    \begin{minipage}{0.21\textwidth}
         \centering
         \includegraphics[width=\linewidth]{figures/phone/oneplus_13.jpg}
         \caption*{(a) 一加 13}
     \end{minipage}\hfill
-    \begin{minipage}{0.22\textwidth}
+    \begin{minipage}{0.21\textwidth}
         \centering
         \includegraphics[width=\linewidth]{figures/phone/rongyao_WINrt.jpg}
         \caption*{(b) 荣耀 WIN RT}
     \end{minipage}\hfill
-    \begin{minipage}{0.22\textwidth}
+    \begin{minipage}{0.21\textwidth}
         \centering
         \includegraphics[width=\linewidth]{figures/phone/oneplusACE5.jpg}
         \caption*{(c) 一加 Ace 5}
@@ -193,22 +193,22 @@
 
     \vspace{0.3cm}
 
-    \begin{minipage}{0.22\textwidth}
+    \begin{minipage}{0.21\textwidth}
         \centering
         \includegraphics[width=\linewidth]{figures/phone/iqoo8.png}
         \caption*{(d) iQOO 8}
     \end{minipage}\hfill
-    \begin{minipage}{0.22\textwidth}
+    \begin{minipage}{0.21\textwidth}
         \centering
         \includegraphics[width=\linewidth]{figures/phone/rongyao70.jpg}
         \caption*{(e) 荣耀 70}
     \end{minipage}\hfill
-    \begin{minipage}{0.22\textwidth}
+    \begin{minipage}{0.21\textwidth}
         \centering
         \includegraphics[width=\linewidth]{figures/phone/huaweipura80pro.png}
         \caption*{(f) 华为 Pura 80 Pro}
     \end{minipage}
-    \caption{兼容性测试设备系统配置与“关于本机”界面截图}
+    \caption{兼容性测试设备系统配置截图}
     \label{fig:compatibility_test_phones}
 \end{figure}
 
@@ -330,5 +330,5 @@ Android 13 及以上设备上，前台服务通知的权限需要单独申请，
 （3）针对应用启动阶段的初始化操作，本系统将插件初始化等耗时操作移到后台协程中异步执行，避免阻塞主线程；同时对部分非关键资源采用懒加载策略，进一步缩短了启动耗时\upcite{22}。
 
 \subsection{性能测试结论}
-综合上述测试，本系统在测试设备上的各项性能指标均达到或超过设计目标：响应时间普遍在500毫秒以内，页面加载速度满足流畅交互的人因工程要求，并发场景下系统保持稳定，内存占用与电池消耗均控制在合理范围。性能测试结果表明本系统具备在主流设备上提供良好用户体验的能力，能够满足适老化终端的实际使用需求。
-
+% 综合上述测试，本系统在测试设备上的各项性能指标均达到或超过设计目标：响应时间普遍在500毫秒以内，页面加载速度满足流畅交互的人因工程要求，并发场景下系统保持稳定，内存占用与电池消耗均控制在合理范围。性能测试结果表明本系统具备在主流设备上提供良好用户体验的能力，能够满足适老化终端的实际使用需求。
+综合上述测试，本系统在测试设备上各项性能指标均达到或超过设计目标：响应时间普遍在 500 毫秒以内，页面加载速度满足流畅交互的人因工程要求，并发场景下系统运行稳定，内存占用与电池消耗均控制在合理范围。性能测试结果表明，本系统可在主流设备上提供良好用户体验，能够满足适老化终端的实际使用需求。
