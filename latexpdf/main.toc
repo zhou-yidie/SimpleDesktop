@@ -43,8 +43,8 @@
 \contentsline {subsection}{\numberline {3.3.2}适老化界面模块}{22}{subsection.3.3.2}%
 \contentsline {subsection}{\numberline {3.3.3}微信自动化直连模块}{23}{subsection.3.3.3}%
 \contentsline {subsection}{\numberline {3.3.4}WiFi网络守护模块}{25}{subsection.3.3.4}%
-\contentsline {subsection}{\numberline {3.3.5}语音辅助模块}{27}{subsection.3.3.5}%
-\contentsline {subsection}{\numberline {3.3.6}联系人管理模块}{28}{subsection.3.3.6}%
+\contentsline {subsection}{\numberline {3.3.5}语音辅助模块}{26}{subsection.3.3.5}%
+\contentsline {subsection}{\numberline {3.3.6}联系人管理模块}{27}{subsection.3.3.6}%
 \contentsline {section}{\numberline {3.4}软件操作流程}{29}{section.3.4}%
 \contentsline {subsection}{\numberline {3.4.1}首次启动与初始化流程}{29}{subsection.3.4.1}%
 \contentsline {subsection}{\numberline {3.4.2}日常使用主流程}{30}{subsection.3.4.2}%

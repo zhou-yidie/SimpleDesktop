@@ -65,8 +65,8 @@ def draw_tech_stack():
     canvas_width_inch = 16.0     # Matplotlib 画布宽度
     scale_factor = (latex_textwidth_inch * latex_scale) / canvas_width_inch  # 物理缩放比例
     
-    X_pdf = 12.0 * 0.8                 # 左侧层级大标题：与正文一致的 12pt (小四)
-    Y_pdf = 11.0 * 0.8                 # 右侧细节技术栈文字：11pt
+    X_pdf = 11.0                  # 左侧层级大标题：与正文一致的 12pt (小四)
+    Y_pdf = 11.0                  # 右侧细节技术栈文字：11pt
     
     font_title_size = X_pdf / scale_factor
     font_details_size = Y_pdf / scale_factor

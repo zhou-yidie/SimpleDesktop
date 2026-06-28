@@ -1045,8 +1045,8 @@
   \endoldtable
 }
 
-% 定义表头格式命令，确保表头所有列都使用黑体
-\newcommand{\tableheader}[1]{\heiti\fontsize{11pt}{13pt}\selectfont #1}
+% 定义表头格式命令，确保表头所有列都使用黑体且居中
+\newcommand{\tableheader}[1]{\multicolumn{1}{c}{\heiti\fontsize{11pt}{13pt}\selectfont #1}}
 
 % 参考文献相关命令
 \newcommand{\thesisbibliography}[1][references]{%

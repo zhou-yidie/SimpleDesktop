@@ -1,0 +1,83 @@
+\clearpage
+\newgeometry{right=1.75cm,top=1.75cm}
+\thispagestyle{empty}
+\makeatletter
+{\fangsong\fontsize{18pt}{18pt}\selectfont\centering 西安邮电大学毕业设计（论文）成绩评定表\par}
+
+\renewcommand{\arraystretch}{1.2}
+\linespread{1.1}
+
+\begin{center}
+\begingroup
+\fangsong\fontsize{12pt}{12pt}\selectfont
+% 在一个tabular中创建两个连接的表格
+\noindent
+\begin{tabular}{|m{2em}<{\centering}|m{4em}<{\centering}|m{2em}<{\centering}|m{1em}<{\centering}|m{2em}<{\centering}|m{8em}<{\centering}|m{2em}<{\centering}|m{9em}<{\centering}|}
+\hline
+
+\multirow{2}{*}{\makecell[c]{学生\\姓名}} &\multirow{2}{*}{\@scorestudent} &\multirow{2}{*}{性别} &\multirow{2}{*}{\@scoresex}& \multirow{2}{*}{学号} &\multirow{2}{*}{\@scoresid}& 专业 & \@scoremajor\\
+
+\cline{8-8}
+&&& && &班级&\@scoreclass  \\
+\hline
+\end{tabular}
+
+\noindent\hspace*{-0.1cm}
+\begin{tabular}{|m{2em}<{\centering}|m{34.25em}<{\centering}|}
+\makecell[l]{课程\\名称} &\@scorecoursename\\
+\hline
+\end{tabular}
+\hspace*{-0.1cm}
+\begin{tabular}{|m{2em}<{\centering}|m{8em}<{\centering}|*{6}{m{3.33em}<{\centering}|}}
+\multirow{6}{*}[-1em]{{\makecell[c]{指导\\教师\\意见} }} & {\fangsong\fontsize{10.5pt}{10.5pt}\selectfont 支撑指标点/赋分} & {\fangsong\fontsize{10.5pt}{10.5pt}\selectfont 3-3/20} & {\fangsong\fontsize{10.5pt}{10.5pt}\selectfont 5-3/20} & {\fangsong\fontsize{10.5pt}{10.5pt}\selectfont 7-2/20} & {\fangsong\fontsize{10.5pt}{10.5pt}\selectfont 10-1/20} & {\fangsong\fontsize{10.5pt}{10.5pt}\selectfont 11-2/20} & {\fangsong\fontsize{10.5pt}{10.5pt}\selectfont 合计} \\
+\cline{2-8}
+&{\fangsong\fontsize{10.5pt}{10.5pt}\selectfont 得分}&&&&&&\\
+\cline{2-8}
+&\multicolumn{7}{l|}{\makecell[r]{\\ \\ \\ \\\fangsong\fontsize{10.5pt}{10.5pt}\selectfont 指导教师(签字)：\hspace{8em}年\hspace{2em}   月\hspace{2em}   日}} \\
+\hline
+\end{tabular}
+\hspace*{-0.1cm}
+\begin{tabular}{|m{2em}<{\centering}|m{8em}<{\centering}|*{5}{m{4.2em}<{\centering}|}}
+\multirow{6}{*}[-1em]{{\makecell[c]{评阅\\教师\\意见} }} &  {\fangsong\fontsize{10.5pt}{10.5pt}\selectfont 支撑指标点/赋分} & {\fangsong\fontsize{10.5pt}{10.5pt}\selectfont 5-3/40} & {\fangsong\fontsize{10.5pt}{10.5pt}\selectfont 7-2/40} & {\fangsong\fontsize{10.5pt}{10.5pt}\selectfont 8-2/10} & {\fangsong\fontsize{10.5pt}{10.5pt}\selectfont 10-1/10} &{\fangsong\fontsize{10.5pt}{10.5pt}\selectfont 合计} \\
+\cline{2-7}
+&{\fangsong\fontsize{10.5pt}{10.5pt}\selectfont 得分}&&&&&\\
+\cline{2-7}
+&\multicolumn{6}{l|}{\makecell[r]{\\ \\ \\ \\\fangsong\fontsize{10.5pt}{10.5pt}\selectfont 评阅教师(签字)：\hspace{8em}年\hspace{2em}   月\hspace{2em}   日}} \\
+\hline
+\end{tabular}
+\hspace*{-0.1cm}
+\begin{tabular}{|m{2em}<{\centering}|m{8em}<{\centering}|*{5}{m{4.2em}<{\centering}|}}
+\multirow{6}{*}[-1em]{{\makecell[c]{验收\\小组\\意见} }} &  {\fangsong\fontsize{10.5pt}{10.5pt}\selectfont 支撑指标点/赋分} & {\fangsong\fontsize{10.5pt}{10.5pt}\selectfont 5-3/40} & {\fangsong\fontsize{10.5pt}{10.5pt}\selectfont 7-2/40} & {\fangsong\fontsize{10.5pt}{10.5pt}\selectfont 8-2/10} & {\fangsong\fontsize{10.5pt}{10.5pt}\selectfont 10-1/10} &{\fangsong\fontsize{10.5pt}{10.5pt}\selectfont 合计} \\
+\cline{2-7}
+&{\fangsong\fontsize{10.5pt}{10.5pt}\selectfont 得分}&&&&&\\
+\cline{2-7}
+&\multicolumn{6}{l|}{\makecell[r]{\\ \\ \\ \\\fangsong\fontsize{10.5pt}{10.5pt}\selectfont 验收小组组长(签字)：\hspace{8em}年\hspace{2em}   月\hspace{2em}   日}} \\
+\hline
+\end{tabular}
+\hspace*{-0.1cm}
+\begin{tabular}{|m{2em}<{\centering}|m{8em}<{\centering}|*{4}{m{5.5em}<{\centering}|}}
+\multirow{6}{*}[-1em]{{\makecell[c]{答辩\\小组\\意见} }} &   {\fangsong\fontsize{10.5pt}{10.5pt}\selectfont 支撑指标点/赋分} &  {{\fangsong\fontsize{10.5pt}{10.5pt}\selectfont 8-2/40}} & {{\fangsong\fontsize{10.5pt}{10.5pt}\selectfont 10-1/25}} & {{\fangsong\fontsize{10.5pt}{10.5pt}\selectfont 11-2/35}} & {\fangsong\fontsize{10.5pt}{10.5pt}\selectfont 合计}\\
+\cline{2-6}
+&{\fangsong\fontsize{10.5pt}{10.5pt}\selectfont 得分}&&&&\\
+\cline{2-6}
+&\multicolumn{5}{l|}{\makecell[r]{\\ \\ \\ \\\fangsong\fontsize{10.5pt}{10.5pt}\selectfont 答辩小组组长(签字)：\hspace{8em}年\hspace{2em}   月\hspace{2em}   日}}\\
+\hline
+\end{tabular}
+\hspace*{-0.1cm}
+\begin{tabular}{|m{2em}<{\centering}|m{8em}<{\centering}|*{5}{m{4.2em}<{\centering}|}}
+\multirow{3}{*}[0.5em]{{\makecell[c]{学生\\总评\\成绩} }} &  {\fangsong\fontsize{10.5pt}{10.5pt}\selectfont 评分比例} & {\fangsong\fontsize{10.5pt}{10.5pt}\selectfont 指导教师(20\%)} & {\fangsong\fontsize{10.5pt}{10.5pt}\selectfont 评阅教师(30\%)} & {\fangsong\fontsize{10.5pt}{10.5pt}\selectfont 验收小组(20\%)} & {\fangsong\fontsize{10.5pt}{10.5pt}\selectfont 答辩小组(30\%)} &{\fangsong\fontsize{10.5pt}{10.5pt}\selectfont 合计} \\
+\cline{2-7}
+&{\fangsong\fontsize{10.5pt}{10.5pt}\selectfont 得分}&&&&&\\
+\cline{2-7}
+&\multicolumn{6}{l|}{\makecell[l]{{\fangsong\fontsize{12pt}{12pt}\selectfont 毕业论文(设计)最终等级成绩（优秀、良好、中等、及格、不及格）}} }\\
+\hline
+\end{tabular}
+\noindent\hspace*{-0.1cm}
+\begin{tabular}{|m{2em}<{\centering}|m{34.25em}<{\centering}|}
+\makecell[c]{答辩\\委员\\会意\\见} &\makecell[r]{\\ \\ \\ \\\fangsong\fontsize{10.5pt}{10.5pt}\selectfont 学院答辩委员会主任(签字、学院盖章)：\hspace{8em}年\hspace{2em}   月\hspace{2em}   日} \\
+\hline
+\end{tabular}
+\endgroup
+\end{center}
+\makeatother
+\restoregeometry

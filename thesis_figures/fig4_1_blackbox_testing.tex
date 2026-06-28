@@ -1,32 +1,58 @@
 \begin{figure}[htbp]
 \centering
+% 声明 TikZ 绘图环境
 \begin{tikzpicture}[
+    % 设置节点之间的默认间距为 2.5 厘米
     node distance=2.5cm,
-    box/.style={draw, rectangle, rounded corners, minimum width=2.5cm, minimum height=1.2cm, text centered, font=\sffamily\small, fill=blue!5},
+    % box/.style：定义通用功能方框样式（含边框、圆角、最小宽度拓宽至 3.0cm、最小高度 1.2cm、文本水平居中、无衬线大号 \large 字体、淡蓝色背景填充）
+    box/.style={draw, rectangle, rounded corners, minimum width=3.0cm, minimum height=1.2cm, text centered, font=\sffamily\large, fill=blue!5},
+    % arrow/.style：定义流程指向箭头的样式（加粗线条、带实心箭头）
     arrow/.style={thick,->,>=stealth},
-    label/.style={font=\sffamily\small, text=black!70}
+    % label/.style：定义连线或上方文字标签的字体为无衬线大号 \large 字体，颜色为微弱变淡的黑色
+    label/.style={font=\sffamily\large, text=black!70}
 ]
 
-% 黑盒系统
-\node[draw, rectangle, minimum width=4cm, minimum height=3.5cm, fill=gray!10, dashed, thick] (blackbox) {};
-\node[font=\sffamily\bfseries, yshift=1.3cm] at (blackbox.center) {被测系统 (黑盒)};
-\node[font=\sffamily\small, text width=3.5cm, text centered, yshift=-0.2cm] at (blackbox.center) {SimpleDesktop\\适老化桌面系统\\(内部代码逻辑不可见)};
+% ==========================================
+% 1. 绘制中间的核心“被测系统”黑盒大外框
+% ==========================================
+% 定义被测系统的背景虚线大方框（宽拓宽至 4.5cm 高 3.5cm、填充淡灰色、虚线、加粗）
+\node[draw, rectangle, minimum width=4.5cm, minimum height=3.5cm, fill=gray!10, dashed, thick] (blackbox) {};
+% 在黑盒大框的顶部偏下位置（Y轴向上平移1.3cm）绘制主文字“被测系统 (黑盒)”，升级为大号加粗字体 \Large\bfseries
+\node[font=\sffamily\Large\bfseries, yshift=1.3cm] at (blackbox.center) {被测系统 (黑盒)};
+% 在黑盒大框的中央偏下位置（Y轴向下平移0.2cm）换行绘制该黑盒的具体描述，字体设为大号 \large
+\node[font=\sffamily\large, text width=4.0cm, text centered, yshift=-0.2cm] at (blackbox.center) {SimpleDesktop\\适老化桌面系统\\(内部代码逻辑不可见)};
 
-% 输入
+% ==========================================
+% 2. 绘制左侧的“测试输入条件”与激励举例
+% ==========================================
+% 绘制测试输入节点：位于黑盒左侧，X轴向左平移2.5cm，填充淡绿色背景，字号为 \large
 \node[box, left of=blackbox, xshift=-2.5cm, fill=green!10] (inputs) {测试输入条件};
+% 在测试输入节点上方放置大号文字 \large，列举具体的测试操作输入
 \node[label, above of=inputs, yshift=-1.5cm] {\begin{tabular}{c} 语音点击指令 \\ 界面触控操作 \\ 模拟断网事件 \end{tabular}};
 
-% 输出
+% ==========================================
+% 3. 绘制右侧的“实际系统输出”与响应举例
+% ==========================================
+% 绘制实际输出节点：位于黑盒右侧，X轴向右平移2.5cm，填充淡橙色背景，字号为 \large
 \node[box, right of=blackbox, xshift=2.5cm, fill=orange!10] (outputs) {实际系统输出};
+% 在实际输出节点上方放置大号文字 \large，列举系统接收输入后产生的实际响应行为
 \node[label, above of=outputs, yshift=-1.5cm] {\begin{tabular}{c} 拉起微信视频 \\ 跳转联系人面板 \\ 弹窗并语音报警 \end{tabular}};
 
-% 预期结果比对
+% ==========================================
+% 4. 绘制下方的“预期规范与需求”节点
+% ==========================================
+% 绘制预期输出节点：位于“实际输出”节点下方，Y轴向下偏移1.0cm，填充淡红色背景，字号为 \large
 \node[box, below of=outputs, yshift=-1cm, fill=red!10] (expected) {预期规范与需求};
-\draw[arrow, dashed, thick, red] (outputs) -- node[right] {一致性比对验证} (expected);
+% 从“实际系统输出”向“预期规范与需求”绘制一条红色、加粗、带箭头的虚线，并标注大号字体“一致性比对验证”
+\draw[arrow, dashed, thick, red] (outputs) -- node[right, font=\sffamily\large] {一致性比对验证} (expected);
 
-% 连线
-\draw[arrow, ultra thick, green!60!black] (inputs) -- node[above, font=\sffamily\small\bfseries] {激励} (blackbox.west);
-\draw[arrow, ultra thick, orange!80!black] (blackbox.east) -- node[above, font=\sffamily\small\bfseries] {响应} (outputs);
+% ==========================================
+% 5. 绘制核心的输入/输出激励-响应大箭头连线
+% ==========================================
+% 激励连线：从“测试输入条件”指向“黑盒系统”左边缘，采用超粗线条及深绿色渲染，并在连线上方标注大号加粗字体“激励”
+\draw[arrow, ultra thick, green!60!black] (inputs) -- node[above, font=\sffamily\large\bfseries] {激励} (blackbox.west);
+% 响应连线：从“黑盒系统”右边缘指向“实际系统输出”，采用超粗线条及深橙色渲染，并在连线上方标注大号加粗字体“响应”
+\draw[arrow, ultra thick, orange!80!black] (blackbox.east) -- node[above, font=\sffamily\large\bfseries] {响应} (outputs);
 
 \end{tikzpicture}
 \caption{基于激励-响应模型的黑盒测试原理架构图}
